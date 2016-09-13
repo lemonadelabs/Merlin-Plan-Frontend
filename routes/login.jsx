@@ -7,7 +7,7 @@ class Login extends React.Component {
     super(...args)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleLogin = this.handleLogin.bind(this)
-    }
+  }
   handleSubmit(e){
     e.preventDefault();
     let username = this.refs.username.value
