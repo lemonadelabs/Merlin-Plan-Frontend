@@ -2,12 +2,11 @@ import React from 'react'
 import {Layer, Label, Text, Rect, Stage, Group} from 'react-konva';
 import _ from 'lodash'
 import {Motion, spring} from 'react-motion';
-import {calculateYearWidthModePadding, yearsBetween, dateToQuarter, calculateIndicatorWidth, indicatorWidthFromMode} from './timeline-helpers'
+import {calculateYearWidthModePadding, yearsBetween, dateToQuarter, calculateIndicatorWidth, indicatorWidthFromMode} from '../utilities/timeline-utilities'
 
 class TimelineObject extends React.Component {
   constructor(...args) {
     super(...args);
-
     this.handleDragEnd = this.handleDragEnd.bind(this)
     this.handleDragmove = this.handleDragmove.bind(this)
     this.handleMousedown = this.handleMousedown.bind(this)
@@ -143,7 +142,7 @@ class TimelineObject extends React.Component {
     let rect = this.refs.rect;
     let scaleDirection = this.scaleDirection
     let newPos = {
-      x: scaleDirection === "right" ? this.state.x : pos.x,
+      x: scaleDirection !== "right" ? this.state.x : pos.x,
       y: this.state.y
     }
     return newPos

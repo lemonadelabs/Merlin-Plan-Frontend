@@ -1,16 +1,46 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom'
+import { loggedIn } from './utilities/auth'
 import App from './App';
+import Login from './routes/login';
+import Home from './routes/home';
+import Budget from './routes/budget';
+import Track from './routes/track';
+import Portfolio from './routes/portfolio';
+import Admin from './routes/admin';
+import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 import * as Webfont from 'webfontloader'
 
 let WebFontConfig = {
   /*Don't render the app till the font is loaded because canvas doesn't like not having the font not already there.
     this could be done in a more elegant way so that the rest of the app isn't waiting on the font but for now this works.*/
-  active: () => ReactDOM.render(<App />, document.getElementById('app')),
+  active: renderRouter(),
   google: {
     families: ['Roboto', 'Roboto Condensed']
   },
   timeout: 2000
+}
+function requireAuth(nextState, replace) {
+  if(!loggedIn()){
+    replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
+function renderRouter() {
+  render((
+    <Router history={browserHistory}>
+      <Route path="/" component={App}>
+        <IndexRoute component={Home} onEnter={requireAuth}/>
+        <Route path="login" component={Login} />
+        <Route path="portfolio" component={Portfolio} onEnter={requireAuth}/>
+        <Route path="track" component={Track} onEnter={requireAuth}/>
+        <Route path="budget" component={Budget} onEnter={requireAuth}/>
+        <Route path="admin" component={Admin} onEnter={requireAuth}/>
+      </Route>
+    </Router>
+  ), document.getElementById('app'))
 }
 
 Webfont.load(WebFontConfig)
