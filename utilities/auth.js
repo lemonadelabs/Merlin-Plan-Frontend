@@ -5,6 +5,19 @@ function login(username, password){
   return(fetchToken(request));
 }
 
+function loggedIn(){
+  let token = sessionStorage.getItem('token');
+  let expiryDate = sessionStorage.getItem('expiryDate');
+  let expired = moment().isSameOrAfter(expiryDate);
+  return(token && !expired);
+}
+
+function logout(){
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('expiryDate');
+}
+
+////Private Functions////
 function fetchToken(request){
   return fetch(request)
     .then( (response) => {
@@ -37,13 +50,6 @@ function loginSuccessful(response){
   }
 }
 
-function loggedIn(){
-  let token = sessionStorage.getItem('token');
-  let expiryDate = sessionStorage.getItem('expiryDate');
-  let expired = moment().isSameOrAfter(expiryDate);
-  return(token && !expired);
-}
-
 function createLoginRequest({headers, username, password}){
   let requestBody = {
     'username': username,
@@ -74,4 +80,4 @@ function toQueryString(obj) {
   }).join('&');
 };
 
-export {login, loggedIn}//, canAccess}
+export {login, logout, loggedIn}//, canAccess}
