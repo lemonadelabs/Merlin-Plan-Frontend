@@ -20,6 +20,7 @@ class Login extends React.Component {
       this.props.router.push("/");
     }
     else{
+      //TODO:Replace alert with a better solution
       alert("username or password incorrect")
       return;
     }
