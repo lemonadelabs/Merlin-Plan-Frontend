@@ -7,6 +7,7 @@ import Home from './routes/home';
 import Budget from './routes/budget';
 import Track from './routes/track';
 import Portfolio from './routes/portfolio';
+import Projects from './routes/projects';
 import Admin from './routes/admin';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 import * as Webfont from 'webfontloader'
@@ -35,6 +36,7 @@ function renderRouter() {
         <IndexRoute component={Home} onEnter={requireAuth}/>
         <Route path="login" component={Login} />
         <Route path="portfolio" component={Portfolio} onEnter={requireAuth}/>
+        <Route path="projects" component={Projects} onEnter={requireAuth}/>
         <Route path="track" component={Track} onEnter={requireAuth}/>
         <Route path="budget" component={Budget} onEnter={requireAuth}/>
         <Route path="admin" component={Admin} onEnter={requireAuth}/>
