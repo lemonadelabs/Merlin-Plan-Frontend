@@ -1,0 +1,17 @@
+.navigationBar{
+  position: fixed;
+  top: 0;
+  left:0;
+  z-index: 100;
+  width: 100%;
+  height:45px;
+  padding: 0 1em;
+  background-color: blue;
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+}
+
+.navigationBar p{
+  margin: 0;
+}

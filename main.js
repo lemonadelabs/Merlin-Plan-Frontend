@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom'
 import { loggedIn } from './utilities/auth'
-import App from './App';
+import App from './routes/app/app';
 import Login from './routes/login';
 import Home from './routes/home';
 import Budget from './routes/budget';
@@ -29,12 +29,22 @@ function requireAuth(nextState, replace) {
     })
   }
 }
+
+function requireLoggedOut(nextState, replace) {
+  if(loggedIn()){
+    replace({
+      pathname: '/',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
+
 function renderRouter() {
   render((
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} onEnter={requireAuth}/>
-        <Route path="login" component={Login} />
+        <Route path="login" component={Login} onEnter={requireLoggedOut}/>
         <Route path="portfolio" component={Portfolio} onEnter={requireAuth}/>
         <Route path="projects" component={Projects} onEnter={requireAuth}/>
         <Route path="track" component={Track} onEnter={requireAuth}/>
@@ -42,7 +52,7 @@ function renderRouter() {
         <Route path="admin" component={Admin} onEnter={requireAuth}/>
       </Route>
     </Router>
-  ), document.getElementById('app'))
+  ), document.getElementById('appContainer'))
 }
 
 Webfont.load(WebFontConfig)

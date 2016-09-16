@@ -1,9 +1,9 @@
-// var precss = require('precss');
+var autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: './main.js',
   output: {
-    path: './',
+    path: './dist/',
     filename: 'index.js'
   },
   debug: true,
@@ -31,7 +31,14 @@ module.exports = {
         query:{
           presets: ['es2015','react']
         }
+      },
+      {
+        test:   /\.css$/,
+        loader: "style-loader!css-loader?modules=true&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader?sourceMap=inline"
       }
     ]
+  },
+  postcss: function () {
+      return [autoprefixer];
   }
 }

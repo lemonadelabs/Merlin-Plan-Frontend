@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server -d --content-base dist/",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
@@ -26,9 +27,13 @@
     "webfontloader": "^1.6.26"
   },
   "devDependencies": {
-    "autoprefixer": "^6.4.0",
+    "autoprefixer": "^6.4.1",
+    "css-loader": "^0.25.0",
+    "extract-text-webpack-plugin": "^1.0.1",
     "postcss-loader": "^0.10.1",
     "precss": "^1.4.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.0"
   }
 }

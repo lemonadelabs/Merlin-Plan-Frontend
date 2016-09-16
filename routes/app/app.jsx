@@ -1,6 +1,7 @@
 import React from 'react'
-import { loggedIn } from './utilities/auth'
-import NavigationBar from './components/navigation-bar'
+import { loggedIn } from '../../utilities/auth'
+import NavigationBar from '../../components/navigation-bar/navigation-bar.jsx'
+import styles from './app.css'
 
 class App extends React.Component {
   constructor() {
@@ -19,10 +20,10 @@ class App extends React.Component {
   render() {
     let navbar
     if (loggedIn()){
-      navbar = <NavigationBar menuItems={this.state.menuItems}/>
+      navbar = <NavigationBar applicationTitle={'Lorem ipsum dolor sit amet, consectetur adipisicing elit.'} menuItems={this.state.menuItems}/>
     }
     return (
-      <div>
+      <div className={styles.app}>
         {navbar }
         {this.props.children}
       </div>
