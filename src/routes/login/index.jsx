@@ -1,5 +1,5 @@
 import React from 'react'
-import { login } from '../utilities/auth'
+import { login } from 'utilities/auth'
 import { withRouter } from 'react-router'
 
 class Login extends React.Component {
