@@ -1,4 +1,5 @@
-"Users": [{
+const UserFixture = {
+  "Users": [{
     "UserName": "fnietzsche",
     "FirstName": "Friedrich",
     "LastName": "Nietzsche",
@@ -62,3 +63,5 @@
     "Roles": ["Manager"],
     "Groups": ["EPMO"]
 }]
+}
+export default UserFixture
