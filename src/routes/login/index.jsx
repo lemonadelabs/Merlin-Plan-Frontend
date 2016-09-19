@@ -16,8 +16,9 @@ class Login extends React.Component {
       .then(this.handleLogin)
   }
   handleLogin(success){
+    let nextRoute = this.props.location.state.nextPathname || "/"
     if(success){
-      this.props.router.push("/");
+      this.props.router.push(nextRoute);
     }
     else{
       //TODO:Replace alert with a better solution
