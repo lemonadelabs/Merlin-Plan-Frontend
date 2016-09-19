@@ -1,5 +1,5 @@
 import React from 'react'
-import {TimelineYear} from './timeline-year'
+import {TimelineYear} from 'components/timeline-year'
 import {Layer, Label, Text, Rect, Stage, Group} from 'react-konva'
 import {calculateYearWidthModePadding} from 'utilities/timeline-utilities'
 import _ from 'lodash'

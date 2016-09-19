@@ -1,5 +1,5 @@
 import React from 'react'
-import {TimelineIndicator} from './timeline-indicator'
+import {TimelineIndicator} from 'components/timeline-indicator'
 import {Layer, Label, Text, Rect, Stage, Group} from 'react-konva'
 import {calculateYearWidthModePadding, calculateIndicatorWidth} from 'utilities/timeline-utilities'
 import {TransitionMotion, spring} from 'react-motion';

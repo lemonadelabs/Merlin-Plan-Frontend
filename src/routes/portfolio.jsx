@@ -1,7 +1,7 @@
 import React from 'react'
 import {Layer, Label, Text, Rect, Stage, Group} from 'react-konva'
-import {TimelineObject} from '../components/timeline-object'
-import {Timeline} from '../components/timeline'
+import {TimelineObject} from 'components/timeline-object'
+import {Timeline} from 'components/timeline'
 import _ from 'lodash'
 
 class Portfolio extends React.Component {

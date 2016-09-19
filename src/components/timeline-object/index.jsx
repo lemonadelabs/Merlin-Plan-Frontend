@@ -2,7 +2,7 @@ import React from 'react'
 import {Layer, Label, Text, Rect, Stage, Group} from 'react-konva';
 import _ from 'lodash'
 import {Motion, spring} from 'react-motion';
-import {calculateYearWidthModePadding, yearsBetween, dateToQuarter, calculateIndicatorWidth, indicatorWidthFromMode} from '../utilities/timeline-utilities'
+import {calculateYearWidthModePadding, yearsBetween, dateToQuarter, calculateIndicatorWidth, indicatorWidthFromMode} from 'utilities/timeline-utilities'
 
 class TimelineObject extends React.Component {
   constructor(...args) {
