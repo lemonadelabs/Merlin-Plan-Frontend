@@ -9,6 +9,7 @@ import Track from 'routes/track';
 import Portfolio from 'routes/portfolio';
 import Projects from 'routes/projects';
 import Admin from 'routes/admin';
+import AdminUsers from 'routes/admin/users';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 import * as Webfont from 'webfontloader'
 
@@ -50,6 +51,7 @@ function renderRouter() {
         <Route path="track" component={Track} onEnter={requireAuth}/>
         <Route path="budget" component={Budget} onEnter={requireAuth}/>
         <Route path="admin" component={Admin} onEnter={requireAuth}/>
+        <Route path="admin/users" component={AdminUsers} onEnter={requireAuth}/>
       </Route>
     </Router>
   ), document.getElementById('appContainer'))
