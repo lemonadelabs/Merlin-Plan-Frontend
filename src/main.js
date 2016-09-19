@@ -1,14 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom'
-import { loggedIn } from './utilities/auth'
-import App from './routes/app/';
-import Login from './routes/login';
-import Home from './routes/home';
-import Budget from './routes/budget';
-import Track from './routes/track';
-import Portfolio from './routes/portfolio';
-import Projects from './routes/projects';
-import Admin from './routes/admin/';
+import { loggedIn } from 'utilities/auth'
+import App from 'routes/app';
+import Login from 'routes/login';
+import Home from 'routes/home';
+import Budget from 'routes/budget';
+import Track from 'routes/track';
+import Portfolio from 'routes/portfolio';
+import Projects from 'routes/projects';
+import Admin from 'routes/admin';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 import * as Webfont from 'webfontloader'
 

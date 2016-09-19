@@ -2,7 +2,7 @@ var autoprefixer = require('autoprefixer');
 var path = require('path');
 
 module.exports = {
-  entry: './main.js',
+  entry: './src/main.js',
   output: {
     path: './dist/',
     filename: 'index.js'

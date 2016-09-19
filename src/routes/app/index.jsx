@@ -1,6 +1,6 @@
 import React from 'react'
-import { loggedIn } from '../../utilities/auth'
-import NavigationBar from '../../components/navigation-bar/navigation-bar.jsx'
+import { loggedIn } from 'utilities/auth'
+import NavigationBar from 'components/navigation-bar'
 import styles from './app.css'
 
 class App extends React.Component {

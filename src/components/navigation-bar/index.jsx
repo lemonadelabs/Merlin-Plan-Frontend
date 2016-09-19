@@ -1,8 +1,8 @@
 import React from 'react'
-import MenuButton from '../menu-button/menu-button'
-import { logout } from '../../utilities/auth'
+import MenuButton from 'components/menu-button'
+import { logout } from 'utilities/auth'
 import { withRouter } from 'react-router'
-import styles from './navigation-bar.css'
+import styles from './index.css'
 
 function NavigationBar({menuItems,applicationTitle, router}){
   return(
