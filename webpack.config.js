@@ -1,4 +1,5 @@
 var autoprefixer = require('autoprefixer');
+var path = require('path');
 
 module.exports = {
   entry: './main.js',
@@ -20,7 +21,8 @@ module.exports = {
     port: 3333
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
+    root: path.resolve('./src')
   },
   module:{
     loaders: [
