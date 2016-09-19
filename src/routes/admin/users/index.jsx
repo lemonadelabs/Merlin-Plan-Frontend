@@ -20,7 +20,7 @@ class AdminUsers extends React.Component {
               return (
                 //TODO: Replace shortid with user.id when available
                 <div key={user.EmployeeId} className={styles.userCard}>
-                  <p>{`${user.FirstName} ${user.LastName}`}</p>
+                  <h3>{`${user.FirstName} ${user.LastName}`}</h3>
                   <p>Email: {user.Email}</p>
                   <p>{`Id: ${user.EmployeeId}`}</p>
                   {/* <p>
