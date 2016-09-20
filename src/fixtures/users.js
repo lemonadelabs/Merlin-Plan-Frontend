@@ -7,7 +7,8 @@ const UserFixture = {
     "Password": "abyss",
     "Email": "friedrich@don.govt.nz",
     "Roles": ["Staff"],
-    "Groups": ["EPMO"]
+    "Groups": ["EPMO"],
+    "ProfilePic" : "https://upload.wikimedia.org/wikipedia/commons/1/1b/Nietzsche187a.jpg"
 }, {
     "UserName": "buddha",
     "FirstName": "Buddha",
@@ -16,7 +17,8 @@ const UserFixture = {
     "Password": "nirvana",
     "Email": "buddha@don.govt.nz",
     "Roles": ["Project Admin"],
-    "Groups": ["EPMO"]
+    "Groups": ["EPMO"],
+    "ProfilePic" : "https://upload.wikimedia.org/wikipedia/commons/7/7e/Departure_of_Siddhartha.jpg"
 }, {
     "UserName": "mduchamp",
     "FirstName": "Marcel",
@@ -25,17 +27,10 @@ const UserFixture = {
     "Password": "latrine",
     "Email": "duchamp@don.govt.nz",
     "Roles": ["Planner"],
-    "Groups": ["EPMO"]
-}, {
-    "UserName": "bhicks",
-    "FirstName": "Bill",
-    "LastName": "Hicks",
-    "EmployeeId": "0004",
-    "Password": "nonsmokersdieeveryday",
-    "Email": "hicks@don.govt.nz",
-    "Roles": ["Approver", "Tracker"],
-    "Groups": ["EPMO"]
-}, {
+    "Groups": ["EPMO"],
+    "ProfilePic" : "http://c300221.r21.cf1.rackcdn.com/marcel-duchamp-1375677827_b.jpg"
+},
+{
     "UserName": "csawtell",
     "FirstName": "Caleb",
     "LastName": "Sawtell",
@@ -43,8 +38,18 @@ const UserFixture = {
     "Password": "caleb",
     "Email": "caleb.sawtell@lemonadelabs.io",
     "Roles": ["Lemonade Admin"],
-    "Groups": ["EPMO"]
-}, {
+    "Groups": ["EPMO","Lemonade Labs"]
+},  {
+    "UserName": "bhicks",
+    "FirstName": "Bill",
+    "LastName": "Hicks",
+    "EmployeeId": "0004",
+    "Password": "nonsmokersdieeveryday",
+    "Email": "hicks@don.govt.nz",
+    "Roles": ["Approver", "Tracker"],
+    "Groups": ["EPMO"],
+    "ProfilePic" : "http://assets.vice.com/content-images/contentimage/no-slug/5c7dd82f9bc49f2678e8bbb3cf37e104.jpg"
+},  {
     "UserName": "swinmason",
     "FirstName": "Sam",
     "LastName": "Win-Mason",
@@ -52,7 +57,7 @@ const UserFixture = {
     "Password": "sam",
     "Email": "sam@lemonadelabs.io",
     "Roles": ["Lemonade Admin"],
-    "Groups": ["EPMO"]
+    "Groups": ["EPMO","Lemonade Labs"]
 }, {
     "UserName": "asandhu",
     "FirstName": "Amardeep",
@@ -61,7 +66,7 @@ const UserFixture = {
     "Password": "amardeep",
     "Email": "amardeep.sandhu@lemonadelabs.io",
     "Roles": ["Manager"],
-    "Groups": ["EPMO"]
+    "Groups": ["EPMO","Lemonade Labs"]
 }]
 }
 export default UserFixture

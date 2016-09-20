@@ -1,0 +1,30 @@
+.rule{
+  border: 0;
+  background-color: rgba(55,55,55,0.2);
+  margin: 1em 0;
+}
+
+.hair{
+
+  height:1px;
+}
+
+.medium{
+  height:3px;
+}
+
+.fat{
+  height:5px;
+}
+
+.full{
+  width: 100%;
+}
+
+.eighty{
+  width: 80%;
+}
+
+.sixty{
+  width: 60%;
+}

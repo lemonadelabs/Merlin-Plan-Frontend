@@ -4,15 +4,3 @@
   width: 90vw;
   margin: 0 auto;
 }
-
-.userCard{
-  flex-shrink: 0;
-  flex-basis: calc(90vw/4 - 1em);
-  color: rgb(55,55,55);
-  min-width: 350px;
-  width: auto;
-  background-color: rgba(255,255,255,0.9);
-  padding: 1em;
-  border-radius: 0.2em;
-  margin: 0.5em;
-}

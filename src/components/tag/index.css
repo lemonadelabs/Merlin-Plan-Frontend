@@ -1,0 +1,9 @@
+.tag{
+  width: fit-content;
+  border-radius: 2px;
+  padding: 0.1em 0.5em;
+  font-weight: bold;
+  font-size: 10.5pt;
+  margin: 0;
+  margin-right: 0.5em;
+}
