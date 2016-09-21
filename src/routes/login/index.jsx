@@ -15,9 +15,12 @@ class Login extends React.Component {
     login(username, password)
       .then(this.handleLogin)
   }
-  handleLogin(success){
-    let nextRoute = this.props.location.state.nextPathname || "/"
-    if(success){
+  handleLogin({loginSucceed, loginPayload}){
+    let nextRoute = "/"
+    if(this.props.location.state){
+      nextRoute = this.props.location.state.nextPathname
+    }
+    if(loginSucceed){
       this.props.router.push(nextRoute);
     }
     else{
