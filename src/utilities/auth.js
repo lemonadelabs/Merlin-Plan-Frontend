@@ -1,8 +1,18 @@
 import moment from 'moment'
+
 function login(username, password){
   let headers = createLoginHeaders();
   let request = createLoginRequest({headers, username, password})
-  return(fetchToken(request));
+  return fetchToken(request)
+       .then( (response) => {
+          saveSessionInfo(response)
+          let loginSucceed = loginSuccessful(response)
+          let loginPayload
+          if(loginSucceed){
+            loginPayload = decodePayload(response.access_token)
+          }
+          return ({'loginSucceed':loginSucceed,'loginPayload':loginPayload})
+       })
 }
 
 function loggedIn(){
@@ -17,6 +27,8 @@ function logout(){
   sessionStorage.removeItem('expiryDate');
 }
 
+export {login, logout, loggedIn}//, canAccess}
+
 ////Private Functions////
 function fetchToken(request){
   return fetch(request)
@@ -30,24 +42,36 @@ function fetchToken(request){
           throw new Error('Something went wrong on api server!');
       }
     })
-    .then( (response) => {
-      return loginSuccessful(response);
-    })
     .catch(function(error) {
       console.error(error);
     });
 }
 
-function loginSuccessful(response){
-  if(response.error){
+function loginSuccessful({error}){
+  if(error){
     return false;
   }
   else{
-    let expiryDate = moment().add(response.expires_in, "seconds").toISOString()
-    sessionStorage.setItem('token', response.access_token);
-    sessionStorage.setItem('expiryDate', expiryDate);
     return true;
   }
+}
+
+function saveSessionInfo({access_token, expires_in, refresh_token}){
+  let expiryDate = moment().add(expires_in, "seconds").toISOString()
+  sessionStorage.setItem('token', access_token);
+  sessionStorage.setItem('expiryDate', expiryDate);
+}
+
+function decodePayload(token){
+  let tokenFragments = splitToken(token)
+  let payloadB64 = tokenFragments[1]
+  let payloadJSON = window.atob(payloadB64)
+  let payload = JSON.parse(payloadJSON)
+  return payload
+}
+
+function splitToken(token){
+  return(token.split('.'))
 }
 
 function createLoginRequest({headers, username, password}){
@@ -56,14 +80,14 @@ function createLoginRequest({headers, username, password}){
     'password': password,
     'grant_type': 'password',
     'resource': 'http://localhost:5000/',
-    'scope': 'offline_access, roles'
+    'scope': 'offline_access roles'
   }
   let requestObject = {
     method:'POST',
     headers: headers,
     body: toQueryString(requestBody)
   }
-  let request = new Request('api/auth/token', requestObject)
+  let request = new Request('/api/auth/token', requestObject)
   return request
 }
 
@@ -79,5 +103,3 @@ function toQueryString(obj) {
     return encodeURIComponent(k) + '=' + encodeURIComponent(v);
   }).join('&');
 };
-
-export {login, logout, loggedIn}//, canAccess}
