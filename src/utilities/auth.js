@@ -65,7 +65,7 @@ function saveSessionInfo({access_token, expires_in, refresh_token}){
 function decodePayload(token){
   let tokenFragments = splitToken(token)
   let payloadB64 = tokenFragments[1]
-  let payloadJSON = window.atob(payloadB64)
+  let payloadJSON = window.atob(payloadB64) //TODO: There is an issue with non unicode strings and atob, see: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_.22Unicode_Problem.22
   let payload = JSON.parse(payloadJSON)
   return payload
 }
