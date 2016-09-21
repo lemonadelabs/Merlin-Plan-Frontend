@@ -1,5 +1,6 @@
 import React from 'react'
 import { login } from 'utilities/auth'
+import { getData } from 'utilities/api-interaction'
 import { withRouter } from 'react-router'
 
 class Login extends React.Component {
@@ -20,7 +21,12 @@ class Login extends React.Component {
     if(this.props.location.state){
       nextRoute = this.props.location.state.nextPathname
     }
+
     if(loginSucceed){
+      getData(`user/${loginPayload.sub}`)
+      .then((userData) => {
+        console.log(userData);
+      })
       this.props.router.push(nextRoute);
     }
     else{
