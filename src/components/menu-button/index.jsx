@@ -1,5 +1,5 @@
 import React from 'react'
-import MenuDropDown from 'components/menu-drop-down/menu-drop-down'
+import MenuDropDown from 'components/menu-drop-down'
 
 class MenuButton extends React.Component{
   constructor() {

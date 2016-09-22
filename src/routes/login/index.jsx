@@ -25,7 +25,6 @@ class Login extends React.Component {
     if(loginSucceed){
       getData(`user/${loginPayload.sub}`)
       .then((userData) => {
-        this.props.dispatch({type:'SET_ORG_ID',"id":userData.organisationId})
         this.props.dispatch({type:'SET_USER',"userData":userData})
         this.props.router.push(nextRoute)
       })

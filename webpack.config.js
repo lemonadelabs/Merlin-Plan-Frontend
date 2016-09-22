@@ -1,8 +1,13 @@
+var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var path = require('path');
 
 module.exports = {
-  entry: './src/main.js',
+  entry: [
+    'webpack-dev-server/client?http://localhost:3333', // WebpackDevServer host and port
+    'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+    './src/main.js' // Your appʼs entry point
+  ],
   output: {
     path: './dist/',
     filename: 'index.js'
@@ -17,7 +22,6 @@ module.exports = {
         changeOrigin:true
       }
     },
-    inline:true,
     port: 3333
   },
   resolve: {
@@ -28,11 +32,8 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query:{
-          presets: ['es2015','react']
-        }
+        include: path.join(__dirname, 'src'),
+        loaders: ['react-hot','babel-loader'],
       },
       {
         test:   /\.css$/,

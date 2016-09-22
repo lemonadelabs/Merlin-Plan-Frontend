@@ -7,16 +7,16 @@ import { Router, browserHistory } from 'react-router'
 import * as Webfont from 'webfontloader'
 import merlinApp from 'reducers'
 
-const store = createStore(merlinApp)
+const store = createStore(merlinApp, window.devToolsExtension && window.devToolsExtension())
 
 store.subscribe(()=>{
   console.log('subscribe',store.getState());
 })
 
 let WebFontConfig = {
-  /*Don't render the app till the font is loaded because canvas doesn't like not having the font not already there.
-    this could be done in a more elegant way so that the rest of the app isn't waiting on the font but for now this works.*/
-  active: renderRouter(),
+  // /*Don't render the app till the font is loaded because canvas doesn't like not having the font not already there.
+  //   this could be done in a more elegant way so that the rest of the app isn't waiting on the font but for now this works.*/
+  // active: renderRouter(),
   google: {
     families: ['Roboto', 'Roboto Condensed']
   },
@@ -25,12 +25,12 @@ let WebFontConfig = {
 
 
 
-function renderRouter() {
+// function renderRouter() {
   render((
     <Provider store={store}>
       <Router routes={Routes} history={browserHistory}/>
     </Provider>
   ), document.getElementById('appContainer'))
-}
+// }
 
 Webfont.load(WebFontConfig)

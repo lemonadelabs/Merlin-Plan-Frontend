@@ -3,6 +3,7 @@ import React from 'react';
 import UserFixture from 'fixtures/users'
 import UserCard from 'components/user-card'
 import styles from './index.css'
+import { connect } from 'react-redux'
 
 class AdminUsers extends React.Component {
   constructor(){
@@ -11,6 +12,7 @@ class AdminUsers extends React.Component {
       users: UserFixture.Users
     }
     console.log(UserFixture);
+    console.log(this);
   }
   render() {
     return (
@@ -30,4 +32,4 @@ class AdminUsers extends React.Component {
 
 }
 
-export default AdminUsers;
+export default connect()(AdminUsers);

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
-import styles from './menu-drop-down.css'
+import styles from './index.css'
 
 function MenuDropDown({menuItems}){
   let menuLinks = menuItems.map( item => {

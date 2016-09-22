@@ -14,7 +14,7 @@ import AdminUsers from 'routes/admin/users';
 function requireAuth(nextState, replace) {
   if(!loggedIn()){
     replace({
-      pathname: '/login',
+      pathname: 'login',
       state: { nextPathname: nextState.location.pathname }
     })
   }
