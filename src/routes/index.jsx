@@ -1,6 +1,8 @@
 import React from 'react'
-import { loggedIn } from 'utilities/auth'
 import {Route, IndexRoute} from 'react-router'
+import { loggedIn, decodePayload } from 'utilities/auth'
+import { getData } from 'utilities/api-interaction'
+import store from 'store'
 import App from 'routes/app';
 import Login from 'routes/login';
 import Home from 'routes/home';
@@ -11,11 +13,24 @@ import Projects from 'routes/projects';
 import Admin from 'routes/admin';
 import AdminUsers from 'routes/admin/users';
 
+function checkStoreForUserDetails(){
+  let hasUserId = store.getState().user.id ? true : false
+  return(hasUserId)
+}
+
 function requireAuth(nextState, replace) {
   if(!loggedIn()){
     replace({
       pathname: 'login',
       state: { nextPathname: nextState.location.pathname }
+    })
+  }
+  else if(!checkStoreForUserDetails()){
+    let token = sessionStorage.getItem('token');
+    let loginPayload = decodePayload(token)
+    getData(`user/${loginPayload.sub}`)
+    .then((userData) => {
+      store.dispatch({type:'SET_USER',"userData":userData})
     })
   }
 }

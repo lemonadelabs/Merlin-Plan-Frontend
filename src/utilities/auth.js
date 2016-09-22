@@ -27,7 +27,15 @@ function logout(){
   sessionStorage.removeItem('expiryDate');
 }
 
-export {login, logout, loggedIn}//, canAccess}
+function decodePayload(token){
+  let tokenFragments = splitToken(token)
+  let payloadB64 = tokenFragments[1]
+  let payloadJSON = window.atob(payloadB64) //TODO: There is an issue with non unicode strings and atob, see: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_.22Unicode_Problem.22
+  let payload = JSON.parse(payloadJSON)
+  return payload
+}
+
+export {login, logout, loggedIn, decodePayload}//, canAccess}
 
 ////Private Functions////
 function fetchToken(request){
@@ -60,14 +68,6 @@ function saveSessionInfo({access_token, expires_in, refresh_token}){
   let expiryDate = moment().add(expires_in, "seconds").toISOString()
   sessionStorage.setItem('token', access_token);
   sessionStorage.setItem('expiryDate', expiryDate);
-}
-
-function decodePayload(token){
-  let tokenFragments = splitToken(token)
-  let payloadB64 = tokenFragments[1]
-  let payloadJSON = window.atob(payloadB64) //TODO: There is an issue with non unicode strings and atob, see: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_.22Unicode_Problem.22
-  let payload = JSON.parse(payloadJSON)
-  return payload
 }
 
 function splitToken(token){

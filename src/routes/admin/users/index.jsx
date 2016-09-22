@@ -32,4 +32,10 @@ class AdminUsers extends React.Component {
 
 }
 
-export default connect()(AdminUsers);
+const mapStateToProps = (state, ownProps) => {
+  console.log(state); // state
+  console.log(ownProps); // ownProps
+  return(state)
+}
+
+export default connect(mapStateToProps)(AdminUsers);

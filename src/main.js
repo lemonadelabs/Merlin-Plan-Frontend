@@ -1,17 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom'
-import { createStore } from 'redux'
 import {Provider} from 'react-redux'
 import Routes from 'routes'
 import { Router, browserHistory } from 'react-router'
 import * as Webfont from 'webfontloader'
-import merlinApp from 'reducers'
+import store from 'store'
 
-const store = createStore(merlinApp, window.devToolsExtension && window.devToolsExtension())
-
-store.subscribe(()=>{
-  console.log('subscribe',store.getState());
-})
 
 let WebFontConfig = {
   // /*Don't render the app till the font is loaded because canvas doesn't like not having the font not already there.
