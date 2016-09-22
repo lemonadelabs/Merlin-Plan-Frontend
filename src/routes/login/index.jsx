@@ -25,8 +25,8 @@ class Login extends React.Component {
     if(loginSucceed){
       getData(`user/${loginPayload.sub}`)
       .then((userData) => {
-        this.props.setOrganisationId(userData.organisationId)
-        this.props.setUserData(userData)
+        this.props.dispatch({type:'SET_ORG_ID',"id":userData.organisationId})
+        this.props.dispatch({type:'SET_USER',"userData":userData})
         this.props.router.push(nextRoute)
       })
     }
@@ -49,22 +49,6 @@ class Login extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-  }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    setOrganisationId: (organisationId) => {
-      dispatch({type:'SET_ORG_ID',"id":organisationId})
-    },
-    setUserData: (userData) => {
-      dispatch({type:'SET_USER',"userData":userData})
-    }
-  }
-}
-
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Login)
+  connect()(Login)
 )
