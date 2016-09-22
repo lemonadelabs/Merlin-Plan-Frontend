@@ -1,8 +1,17 @@
 import React from 'react';
 import { render } from 'react-dom'
+import { createStore } from 'redux'
+import {Provider} from 'react-redux'
 import Routes from 'routes'
 import { Router, browserHistory } from 'react-router'
 import * as Webfont from 'webfontloader'
+import merlinApp from 'reducers'
+
+const store = createStore(merlinApp)
+
+store.subscribe(()=>{
+  console.log('subscribe',store.getState());
+})
 
 let WebFontConfig = {
   /*Don't render the app till the font is loaded because canvas doesn't like not having the font not already there.
@@ -15,9 +24,12 @@ let WebFontConfig = {
 }
 
 
+
 function renderRouter() {
   render((
-    <Router routes={Routes} history={browserHistory}/>
+    <Provider store={store}>
+      <Router routes={Routes} history={browserHistory}/>
+    </Provider>
   ), document.getElementById('appContainer'))
 }
 

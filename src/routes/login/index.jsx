@@ -2,6 +2,7 @@ import React from 'react'
 import { login } from 'utilities/auth'
 import { getData } from 'utilities/api-interaction'
 import { withRouter } from 'react-router'
+import { connect } from 'react-redux'
 
 class Login extends React.Component {
   constructor(...args){
@@ -21,13 +22,13 @@ class Login extends React.Component {
     if(this.props.location.state){
       nextRoute = this.props.location.state.nextPathname
     }
-
     if(loginSucceed){
       getData(`user/${loginPayload.sub}`)
       .then((userData) => {
-        console.log(userData);
+        this.props.setOrganisationId(userData.organisationId)
+        this.props.setUserData(userData)
+        this.props.router.push(nextRoute)
       })
-      this.props.router.push(nextRoute);
     }
     else{
       //TODO:Replace alert with a better solution
@@ -48,4 +49,22 @@ class Login extends React.Component {
   }
 }
 
-export default withRouter(Login)
+const mapStateToProps = (state, ownProps) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setOrganisationId: (organisationId) => {
+      dispatch({type:'SET_ORG_ID',"id":organisationId})
+    },
+    setUserData: (userData) => {
+      dispatch({type:'SET_USER',"userData":userData})
+    }
+  }
+}
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(Login)
+)
