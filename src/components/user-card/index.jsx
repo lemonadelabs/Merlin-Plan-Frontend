@@ -7,29 +7,28 @@ import Break from 'components/break'
 import styles from './index.css'
 
 const UserCard = ({user}) => (
-  //TODO: Replace shortid with user.id when available
-  <div key={user.EmployeeId} className={styles.userCard}>
+  <div key={user.id} className={styles.userCard}>
     <header>
       <ProfilePic
-        firstName={user.FirstName}
-        lastName={user.LastName}
-        profilePic={user.ProfilePic}
-        id={user.EmployeeId}/>
+        firstName={user.firstName}
+        lastName={user.lastName}
+        profilePic={user.profilePic}
+        id={user.id}/>
       <UserDetails
-        firstName={user.FirstName}
-        lastName={user.LastName}
-        email={user.Email}
-        id={user.EmployeeId}/>
+        firstName={user.firstName}
+        lastName={user.lastName}
+        email={user.email}
+        id={user.employeeId}/>
     </header>
     <Break width="full" thickness="hair"/>
     <p className={styles.heading}>
       Roles:
-      {user.Roles.map((role) => <span>{role}</span>)}
+      {user.roles.map((role) => <span>{role}</span>)}
     </p>
+    {/* <div className={styles.groupContainer}>
     <p className={styles.heading}>Groups:</p>
-    <div className={styles.groupContainer}>
-      {user.Groups.map( (group) => <Tag name={group}/>)}
-    </div>
+      {user.groups.map( (group) => <Tag name={group}/>)}
+    </div> */}
   </div>
 );
 
