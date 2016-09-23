@@ -9,11 +9,6 @@ import { getData } from 'utilities/api-interaction'
 class AdminUsers extends React.Component {
   constructor(){
     super()
-    this.state = {
-      users: UserFixture.Users
-    }
-    console.log(UserFixture);
-    console.log(this);
   }
   componentDidUpdate(prevProps){
     let {organisationId, dispatch} = this.props
