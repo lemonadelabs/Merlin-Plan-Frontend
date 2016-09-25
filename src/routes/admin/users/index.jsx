@@ -18,7 +18,7 @@ class AdminUsers extends React.Component {
   }
   getAndDespatchUsersData(organisationId,dispatch){
     getData(`organisation/${organisationId}/user`)
-    .then((orgUsers)=>{
+    .then( (orgUsers) => {
       dispatch({type:'SET_ORG_USERS', users:orgUsers})
     })
   }
@@ -41,9 +41,6 @@ class AdminUsers extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state); // state
-  console.log(ownProps); // ownProps
-  return(state)
   return({users:state.orgUsers,organisationId:state.user.organisationId})
 }
 
