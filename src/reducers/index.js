@@ -1,6 +1,7 @@
 const initialState = {
   user:{},
-  orgUsers:[]
+  orgUsers:[],
+  selectedOrgUsers:[]
 }
 function merlinApp(state = initialState, action){
   switch(action.type){
@@ -8,8 +9,11 @@ function merlinApp(state = initialState, action){
       return Object.assign({}, state, {user: action.userData})
       break
     case 'SET_ORG_USERS' :
-      console.log(action);
       return Object.assign({}, state, {orgUsers: action.users})
+      break
+    case 'SELECT_ORG_USER' :
+      let selectedOrgUsers = [...state.selectedOrgUsers,action.user]
+      return Object.assign({}, state, {selectedOrgUsers: selectedOrgUsers})
       break
     default:
       return state
