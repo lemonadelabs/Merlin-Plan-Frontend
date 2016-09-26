@@ -6,6 +6,22 @@ import { connect, compose } from 'react-redux'
 import { getData } from 'utilities/api-interaction'
 import store from 'store'
 
+const dummyNewUser = {
+  "userDetails": {
+      "userName": "newuser",
+      "organisationId": 1,
+      "email": "newuser@don.govt.nz",
+      "employeeId": "2345",
+      "firstName": "New",
+      "lastName": "User",
+      "nickName": "newbie",
+      "roles": [
+        "Staff"
+      ]
+  },
+  "password": "newgoddampassword1"
+}
+
 class AdminUsers extends React.Component {
   constructor(){
     super()
