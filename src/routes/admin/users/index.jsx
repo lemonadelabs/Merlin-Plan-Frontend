@@ -65,7 +65,7 @@ class AdminUsers extends React.Component {
     let {selectedUsers} = this.props
     let userSelected = find(selectedUsers,(u) => (u.id === user.id) )
     if(userSelected){
-
+      store.dispatch({type:'DESELECT_ORG_USER', user:user})
     }
     else{
       store.dispatch({type:'SELECT_ORG_USER', user:user})
