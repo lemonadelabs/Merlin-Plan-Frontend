@@ -1,6 +1,5 @@
 'use strict';
 import React from 'react';
-import UserFixture from 'fixtures/users'
 import UserCard from 'components/user-card'
 import styles from './index.css'
 import { connect, compose } from 'react-redux'
