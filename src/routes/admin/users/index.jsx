@@ -21,6 +21,7 @@ class AdminUsers extends React.Component {
     }
   }
   waitForUserData(){
+    //TODO: Try and find out if this is the best way to be doing this.
     let unsubscribeFromStore = store.subscribe(
       () => {
         let organisationId = store.getState().user.organisationId
