@@ -2,9 +2,10 @@
 import React from 'react';
 import UserCard from 'components/user-card'
 import styles from './index.css'
-import { connect, compose } from 'react-redux'
-import { getData } from 'utilities/api-interaction'
+import { connect } from 'react-redux'
+import { getData, postData, deleteData } from 'utilities/api-interaction'
 import store from 'store'
+import find from 'lodash/find'
 
 const dummyNewUser = {
   "userDetails": {
@@ -25,6 +26,7 @@ const dummyNewUser = {
 class AdminUsers extends React.Component {
   constructor(){
     super()
+    this.toggleUserSelection = this.toggleUserSelection.bind(this)
   }
   componentDidMount(){
     console.log(store.getState());
@@ -53,10 +55,34 @@ class AdminUsers extends React.Component {
       store.dispatch({type:'SET_ORG_USERS', users:orgUsers})
     })
   }
+  persistNewUser(){
+    postData('user', dummyNewUser)
+  }
+  deleteUsers(userIds){
+    deleteData('user', {users:userIds})
+  }
+  toggleUserSelection(user){
+    let {selectedUsers} = this.props
+    let userSelected = find(selectedUsers,(u) => (u.id === user.id) )
+    if(userSelected){
+
+    }
+    else{
+      store.dispatch({type:'SELECT_ORG_USER', user:user})
+    }
+  }
   render() {
     return (
-      <div className={styles['card-container']}>
-        { this.props.users.map( (user) => (<UserCard user={user}/>) ) }
+      <div>
+        <button onClick={this.persistNewUser}>Add User</button>
+        <div className={styles['card-container']}>
+          { this.props.users.map( 
+              (user) => {
+                let selected = find(this.props.selectedUsers,(u) => (u.id === user.id) ) ? true : false
+                return(<UserCard selected={selected} user={user} clickFunction={this.toggleUserSelection}/>)
+              } 
+            ) }
+        </div>
       </div>
     );
   }
@@ -64,7 +90,7 @@ class AdminUsers extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return({users:state.orgUsers,organisationId:state.user.organisationId})
+  return({users:state.orgUsers,selectedUsers:state.selectedOrgUsers})
 }
 
 export default connect(mapStateToProps)(AdminUsers);
