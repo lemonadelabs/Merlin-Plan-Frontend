@@ -6,8 +6,8 @@ import Tag from 'components/tag'
 import Break from 'components/break'
 import styles from './index.css'
 
-const UserCard = ({user}) => (
-  <div key={user.id} className={styles.userCard}>
+const UserCard = ({user, clickFunction, selected}) => (
+  <div key={user.id} onClick={()=>{clickFunction(user)}} className={styles.userCard}>
     <header>
       <ProfilePic
         firstName={user.firstName}
