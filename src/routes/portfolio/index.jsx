@@ -1,8 +1,8 @@
 import React from 'react'
-import {Layer, Label, Text, Rect, Stage, Group} from 'react-konva'
+import {Stage, Layer} from 'react-konva'
 import {TimelineObject} from 'components/timeline-object'
 import {Timeline} from 'components/timeline'
-import _ from 'lodash'
+import debounce from 'lodash/debounce'
 
 class Portfolio extends React.Component {
   constructor(...args) {
@@ -13,7 +13,7 @@ class Portfolio extends React.Component {
       numberOfYears: 3,
       timelineStartYear: 2016
     }
-    this.handleResize = _.debounce(this.handleResize.bind(this),50)
+    this.handleResize = debounce(this.handleResize.bind(this),50)
     this.handleRangeChange = this.handleRangeChange.bind(this)
   }
   componentDidMount() {
