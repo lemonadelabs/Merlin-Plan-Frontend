@@ -5,19 +5,33 @@ function getData(endpoint){
   return( fetchReqest(request) )
 }
 
-function postData(){
-
+function postData(endpoint, body){
+  let headers = createHeaders()
+  let request = createRequest(
+    { headers:headers,
+      method:"POST",
+      url:`/api/${endpoint}`,
+      requestBody:body
+    })
+  return( fetchReqest(request) )
 }
 
 function putData(){
 
 }
 
-function deleteData(){
-
+function deleteData(endPoint, body){
+  let headers = createHeaders()
+  let request = createRequest(
+    { headers:headers,
+      method:"DELETE",
+      url:`/api/${endpoint}`,
+      requestBody:body
+    })
+  return( fetchReqest(request) )
 }
 
-export {getData}
+export {getData, postData, deleteData}
 
 function fetchReqest(request){
   return fetch(request)
@@ -25,7 +39,6 @@ function fetchReqest(request){
       switch (response.status) {
         case 200:
           return response.json()
-          break;
         default:
           throw new Error('Something went wrong on api server!');
       }
@@ -47,7 +60,7 @@ function createRequest({headers, method, url, requestBody}){
     headers: headers
   }
   if(requestBody){
-    requestObject.body = requestBody
+    requestObject.body = JSON.stringify(requestBody)
   }
   let request = new Request(url, requestObject)
   return request
