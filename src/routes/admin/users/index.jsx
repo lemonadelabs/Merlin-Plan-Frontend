@@ -5,7 +5,7 @@ import styles from './index.css'
 import { connect } from 'react-redux'
 import { getData, postData, deleteData } from 'utilities/api-interaction'
 import store from 'store'
-import find from 'lodash/find'
+import { find, forEach} from 'lodash'
 
 const dummyNewUser = {
   "userDetails": {
@@ -27,6 +27,8 @@ class AdminUsers extends React.Component {
   constructor(){
     super()
     this.toggleUserSelection = this.toggleUserSelection.bind(this)
+    this.deleteUsers = this.deleteUsers.bind(this)
+    this.newUser = this.newUser.bind(this)
   }
   componentDidMount(){
     console.log(store.getState());
@@ -55,11 +57,25 @@ class AdminUsers extends React.Component {
       store.dispatch({type:'SET_ORG_USERS', users:orgUsers})
     })
   }
-  persistNewUser(){
-    postData('user', dummyNewUser)
+  newUser(){
+    postData('user', dummyNewUser).then(
+      (user) => {
+        console.log(user);
+        if (user.succeeded===false){
+          return
+        }
+        store.dispatch({type: 'NEW_ORG_USER', user: user})
+      }
+    )
   }
-  deleteUsers(userIds){
-    deleteData('user', {users:userIds})
+  deleteUsers(){
+    let selectedUsers = this.props.selectedUsers;
+    let userIds = selectedUsers.map( (user) => (user.id) )
+    store.dispatch({type:'DELETE_ORG_USERS', userIds:userIds})
+    store.dispatch({type:'DESELECT_ALL_ORG_USERS'})
+    forEach( userIds, (id) => {
+      deleteData( { endPoint:'user', id : id})
+    })
   }
   toggleUserSelection(user){
     let {selectedUsers} = this.props
@@ -74,7 +90,7 @@ class AdminUsers extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this.persistNewUser}>Add User</button>
+        <button onClick={this.newUser}>Add User</button><button onClick={this.deleteUsers}>Delete Users</button>
         <div className={styles['card-container']}>
           { this.props.users.map( 
               (user) => {
