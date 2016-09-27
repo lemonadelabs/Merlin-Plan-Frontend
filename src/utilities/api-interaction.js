@@ -20,14 +20,22 @@ function putData(){
 
 }
 
-function deleteData(endPoint, body){
-  let headers = createHeaders()
-  let request = createRequest(
-    { headers:headers,
+function deleteData({endPoint, id, body, contentType=''}){
+  let headers = createHeaders(contentType)
+  let url = `/api/${endPoint}`
+  if(id){
+    url+= `/${id}`
+  }
+  let requestParams = { 
+      headers:headers,
       method:"DELETE",
-      url:`/api/${endpoint}`,
-      requestBody:body
-    })
+      url: url
+    }
+  if(body){
+    requestParams.requestBody = body
+    console.log(body);
+  }
+  let request = createRequest( requestParams )
   return( fetchReqest(request) )
 }
 
@@ -38,10 +46,13 @@ function fetchReqest(request){
     .then( (response) => {
       switch (response.status) {
         case 200:
-          return response.json()
+          return response.text()
         default:
           throw new Error('Something went wrong on api server!');
       }
+    })
+    .then((responseText)=>{
+      return(responseText ? JSON.parse(responseText) : responseText)
     })
     .catch(function(error) {
       console.error(error);
