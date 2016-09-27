@@ -1,4 +1,6 @@
 .userCard{
+  transition: transform 200ms;
+  transform: translateZ(0px);
   flex-shrink: 0;
   flex-basis: calc(90vw/3 - 1em);
   color: rgb(55,55,55);
@@ -10,6 +12,9 @@
   margin: 0.5em;
 }
 
+.userCard:hover{
+  transform: translateZ(0.5em);
+}
 .userCard header{
   display: flex;
 }

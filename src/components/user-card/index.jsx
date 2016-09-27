@@ -6,8 +6,15 @@ import Tag from 'components/tag'
 import Break from 'components/break'
 import styles from './index.css'
 
+
 const UserCard = ({user, clickFunction, selected}) => (
-  <div key={user.id} onClick={()=>{clickFunction(user)}} className={styles.userCard}>
+  <div 
+    key={user.id} 
+    onClick={
+      () => { clickFunction(user) }
+    } 
+    style={{outline:selected?'solid 1px rgb(155,155,255)':'none'}}
+    className={styles.userCard}>
     <header>
       <ProfilePic
         firstName={user.firstName}
@@ -23,7 +30,7 @@ const UserCard = ({user, clickFunction, selected}) => (
     <Break width="full" thickness="hair"/>
     <p className={styles.heading}>
       Roles:
-      {user.roles.map((role) => <span>{role}</span>)}
+      {user.roles.map((role) => <span> {role}</span>)}
     </p>
     {/* <div className={styles.groupContainer}>
     <p className={styles.heading}>Groups:</p>
