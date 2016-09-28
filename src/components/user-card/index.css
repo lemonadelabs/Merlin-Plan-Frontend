@@ -13,7 +13,7 @@
 }
 
 .userCard:hover{
-  transform: translateZ(0.5em);
+  transform: translateZ(0.25em);
 }
 .userCard header{
   display: flex;
