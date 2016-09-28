@@ -5,11 +5,11 @@ import styles from './index.css'
 import { connect } from 'react-redux'
 import { getData, postData, deleteData } from 'utilities/api-interaction'
 import store from 'store'
-import { find, forEach} from 'lodash'
+import { find, findIndex, forEach} from 'lodash'
 
 const dummyNewUser = {
   "userDetails": {
-      "userName": "newuser",
+      "userName": "newuser@don.govt.nz",
       "organisationId": 1,
       "email": "newuser@don.govt.nz",
       "employeeId": "2345",
@@ -31,7 +31,6 @@ class AdminUsers extends React.Component {
     this.newUser = this.newUser.bind(this)
   }
   componentDidMount(){
-    console.log(store.getState());
     let organisationId = store.getState().user.organisationId
     if(organisationId){
       this.getAndDespatchUsersData(organisationId)
@@ -61,7 +60,7 @@ class AdminUsers extends React.Component {
     postData('user', dummyNewUser).then(
       (user) => {
         console.log(user);
-        if (user.succeeded===false){
+        if (user.succeeded === false){
           return
         }
         store.dispatch({type: 'NEW_ORG_USER', user: user})
@@ -71,10 +70,18 @@ class AdminUsers extends React.Component {
   deleteUsers(){
     let selectedUsers = this.props.selectedUsers;
     let userIds = selectedUsers.map( (user) => (user.id) )
+    let loggedInUserId = store.getState().user.id
+    let loggedInUserIndex = findIndex(userIds, (id) => ( id === loggedInUserId) )
+
+    if(loggedInUserIndex !== -1){
+      alert("Can't delete yourself")
+      userIds.splice(loggedInUserIndex, 1)
+    }
+
     store.dispatch({type:'DELETE_ORG_USERS', userIds:userIds})
     store.dispatch({type:'DESELECT_ALL_ORG_USERS'})
     forEach( userIds, (id) => {
-      deleteData( { endPoint:'user', id : id})
+        deleteData( { endPoint:'user', id : id})
     })
   }
   toggleUserSelection(user){
@@ -90,11 +97,12 @@ class AdminUsers extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this.newUser}>Add User</button><button onClick={this.deleteUsers}>Delete Users</button>
+        <button onClick={this.newUser}>Add User</button>
+        <button onClick={this.deleteUsers}>Delete Users</button>
         <div className={styles['card-container']}>
           { this.props.users.map( 
               (user) => {
-                let selected = find(this.props.selectedUsers,(u) => (u.id === user.id) ) ? true : false
+                let selected = find(this.props.selectedUsers, (u) => (u.id === user.id) ) ? true : false
                 return(<UserCard selected={selected} user={user} clickFunction={this.toggleUserSelection}/>)
               } 
             ) }
@@ -106,7 +114,7 @@ class AdminUsers extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return({users:state.orgUsers,selectedUsers:state.selectedOrgUsers})
+  return({users:state.orginisation.users, selectedUsers:state.orginisation.selectedUsers})
 }
 
 export default connect(mapStateToProps)(AdminUsers);

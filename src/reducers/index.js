@@ -1,43 +1,52 @@
-import {findIndex,forEach, cloneDeep} from 'lodash';
+import {findIndex, forEach, cloneDeep} from 'lodash';
+import { combineReducers } from 'redux'
 
-const initialState = {
-  user:{},
-  orgUsers:[],
-  selectedOrgUsers:[]
-}
-function merlinApp(state = initialState, action){
-  switch(action.type){
-    case 'SET_USER' :
-      return Object.assign({}, state, {user: action.userData})
+
+function orginisation(state = { users:[], selectedUsers:[] }, action){
+  switch (action.type) {
     case 'SET_ORG_USERS' :
-      return Object.assign({}, state, {orgUsers: action.users})
+      return Object.assign({}, state, {users: action.users})
     case 'NEW_ORG_USER' :
-      return Object.assign({}, state, {orgUsers: [...state.orgUsers, action.user]})
+      return Object.assign({}, state, {users: [...state.users, action.user]})
     case 'SELECT_ORG_USER' :
-      let selectedOrgUsersWithNewSelection = [...state.selectedOrgUsers,action.user]
-      return Object.assign({}, state, {selectedOrgUsers: selectedOrgUsersWithNewSelection})
+      let selectedUsersWithNewSelection = [...state.selectedUsers,action.user]
+      return Object.assign({}, state, {selectedUsers: selectedUsersWithNewSelection})
     case 'DESELECT_ORG_USER' :
-      let userIndex = findIndex(state.selectedOrgUsers, (user) => (user.id === action.user.id))
-      let selectedOrgUsersWithoutDeselectUser = [...state.selectedOrgUsers.slice(0,userIndex),
-                                                 ...state.selectedOrgUsers.slice(userIndex+1)]
+      let userIndex = findIndex(state.selectedUsers, (user) => (user.id === action.user.id))
+      let selectedUsers = [...state.selectedUsers.slice(0,userIndex), ...state.selectedUsers.slice(userIndex+1)]
 
-      return Object.assign({}, state, {selectedOrgUsers: selectedOrgUsersWithoutDeselectUser})
+      return Object.assign({}, state, {selectedUsers: selectedUsers})
     case 'DELETE_ORG_USERS' :
-      let orgUsers = cloneDeep(state.orgUsers)
-      let orgUsersWithoutDeletedUsers = orgUsers
+      let users = cloneDeep(state.users)
       forEach(action.userIds,
         (id) => {
-          let userIndex = findIndex(orgUsersWithoutDeletedUsers, (orgUser) => (orgUser.id === id))
-          orgUsersWithoutDeletedUsers = [...orgUsersWithoutDeletedUsers.slice(0,userIndex),
-                                         ...orgUsersWithoutDeletedUsers.slice(userIndex+1)]
+          let userIndex = findIndex(users, (orgUser) => (orgUser.id === id))
+          users = [...users.slice(0,userIndex),...users.slice(userIndex+1)]
         }
       )
-      return Object.assign({}, state, {orgUsers: orgUsersWithoutDeletedUsers})
+      return Object.assign({}, state, {users: users})
     case 'DESELECT_ALL_ORG_USERS' :
-      return Object.assign({}, state, {selectedOrgUsers:[]})
+      return Object.assign({}, state, {selectedUsers:[]})
     default:
       return state
   }
 }
+
+function user(state = {}, action){
+  switch(action.type){
+    case 'SET_USER' :
+      return Object.assign({}, state, action.userData)
+    default:
+      return state
+  }
+}
+
+const merlinApp = combineReducers(
+  {
+    user,
+    orginisation
+  }
+)
+
 
 export default merlinApp
