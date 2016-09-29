@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { getData, postData, deleteData } from 'utilities/api-interaction'
 import store from 'store'
 import { find, findIndex, forEach} from 'lodash'
+import UserForm from 'components/forms/user';
 
 const dummyNewUser = {
   "userDetails": {
@@ -99,6 +100,7 @@ class AdminUsers extends React.Component {
       <div>
         <button onClick={this.newUser}>Add User</button>
         <button onClick={this.deleteUsers}>Delete Users</button>
+        <UserForm/>
         <div className={styles['card-container']}>
           { this.props.users.map( 
               (user) => {

@@ -1,4 +1,8 @@
-import { createStore } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk';
 import merlinApp from 'reducers'
 
-export default createStore(merlinApp, window.devToolsExtension && window.devToolsExtension())
+
+const store = createStore(merlinApp, applyMiddleware(thunk), window.devToolsExtension && window.devToolsExtension())
+
+export default store

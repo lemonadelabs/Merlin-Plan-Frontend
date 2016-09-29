@@ -1,6 +1,17 @@
 import {findIndex, forEach, cloneDeep} from 'lodash';
 import { combineReducers } from 'redux'
+import { combineForms } from 'react-redux-form';
 
+const initialUserState = {
+  "userName": "",
+  "organisationId": 0,
+  "email": "",
+  "employeeId": "",
+  "firstName": "",
+  "lastName": "",
+  "nickName": "",
+  "roles": []
+}
 
 function orginisation(state = { users:[], selectedUsers:[] }, action){
   switch (action.type) {
@@ -44,7 +55,11 @@ function user(state = {}, action){
 const merlinApp = combineReducers(
   {
     user,
-    orginisation
+    orginisation,
+    forms: combineForms(
+      {
+        user: initialUserState
+      },'forms')
   }
 )
 
