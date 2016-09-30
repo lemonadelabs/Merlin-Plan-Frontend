@@ -3,6 +3,7 @@ import { Control, Form, Errors, actions } from 'react-redux-form';
 import generatePassword from 'password-generator'
 import { getData, postData } from 'utilities/api-interaction'
 import { connect } from 'react-redux'
+import {debounce} from 'lodash/debounce'
 
 const required = (val) => val && val.length
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val)
@@ -45,8 +46,7 @@ class UserForm extends Component {
         />
         <Control.text model="forms.user.firstName" 
           validators={{
-            required,
-            invalidNameChars
+            required
           }}/>
         <Errors
           model="forms.user.lastName"
