@@ -33,9 +33,8 @@ class UserForm extends Component {
   }
   render() {
     let firstName = this.props.firstName
-    console.log('firstName',firstName);
     return (
-      <Form autocomplete={"off"} model="forms.user" onSubmit={(userInfo)=>{this.handleSubmit(userInfo)}}>
+      <Form autoComplete={"off"} model="forms.user" onSubmit={(userInfo)=>{this.handleSubmit(userInfo)}}>
         <label>First name</label>
         <Errors
           model="forms.user.firstName"
