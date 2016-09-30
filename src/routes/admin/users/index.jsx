@@ -58,15 +58,7 @@ class AdminUsers extends React.Component {
     })
   }
   newUser(){
-    postData('user', dummyNewUser).then(
-      (user) => {
-        console.log(user);
-        if (user.succeeded === false){
-          return
-        }
-        store.dispatch({type: 'NEW_ORG_USER', user: user})
-      }
-    )
+    //this should trigger opening the form
   }
   deleteUsers(){
     let selectedUsers = this.props.selectedUsers;
@@ -100,7 +92,7 @@ class AdminUsers extends React.Component {
       <div>
         <button onClick={this.newUser}>Add User</button>
         <button onClick={this.deleteUsers}>Delete Users</button>
-        <UserForm/>
+        <UserForm organisationId={store.getState().user.organisationId}/>
         <div className={styles['card-container']}>
           { this.props.users.map( 
               (user) => {

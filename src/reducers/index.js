@@ -4,7 +4,6 @@ import { combineForms } from 'react-redux-form';
 
 const initialUserState = {
   "userName": "",
-  "organisationId": 0,
   "email": "",
   "employeeId": "",
   "firstName": "",

@@ -1,7 +1,17 @@
-
-function getData(endpoint){
+import {size, forEach} from 'lodash';
+function getData(endpoint,query = {}){
+  let url = `/api/${endpoint}`
+  if(size(query)){
+    url +='?'
+    let currentQuery=0
+    forEach(query,(value,key)=>{
+      let seperator = currentQuery > 0 ? '&' : ""
+      url+= `${seperator}${key}=${value}`
+      currentQuery++
+    })
+  }
   let headers = createHeaders()
-  let request = createRequest({headers:headers, method:"GET", url:`/api/${endpoint}`})
+  let request = createRequest({headers:headers, method:"GET", url:url})
   return( fetchReqest(request) )
 }
 

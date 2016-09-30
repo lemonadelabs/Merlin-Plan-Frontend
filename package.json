@@ -20,6 +20,7 @@
     "konva": "^1.0.2",
     "lodash": "^4.15.0",
     "moment": "^2.15.0",
+    "password-generator": "^2.0.2",
     "react": "^15.3.0",
     "react-chartjs-2": "^1.2.5",
     "react-dom": "^15.3.0",
