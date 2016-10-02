@@ -13,6 +13,8 @@ function checkAvailability(email) {
     return getData('user/validate',{'email':email})
 }
 
+const roles = ["Staff", "Project Admin", "Planner", "Approver", "Tracker", "Manager"]
+
 class UserForm extends Component {
   handleSubmit(userInfo){
     let {dispatch} = this.props
@@ -83,6 +85,13 @@ class UserForm extends Component {
               .then(res => done(res.valid))
           }}
           asyncValidateOn="change"/>
+        <Control.select model="forms.user.roles">
+          {
+            roles.map((role)=>{
+              return(<option value={role}>{role}</option>)
+            })
+          }
+        </Control.select>
         <button type="submit">Add User</button>
       </Form>
     );
