@@ -4,7 +4,6 @@ import generatePassword from 'password-generator'
 import { getData, postData } from 'utilities/api-interaction'
 import { connect } from 'react-redux'
 import { debounce } from 'lodash/debounce'
-import { Dropdown } from 'stardust'
 
 const required = (val) => val && val.length
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val)
