@@ -6,6 +6,7 @@
   border: 1px solid rgba(255,255,255,0.9);
   border-radius: 2px;
   background: rgba(255,255,255,0.5);
+  padding: 0.3em 0.5em;
 }
 :global(input:focus) {
   border: 2px solid rgba(255,255,255,0.9);
@@ -16,6 +17,10 @@
   display: block;
   font-size: 10pt;
   margin-bottom: 0.2em;
+}
+
+:global(input:-webkit-autofill) {
+  -webkit-box-shadow: 0 0 0px 1000px rgba(255,255,255,1) inset;
 }
 
 .app{

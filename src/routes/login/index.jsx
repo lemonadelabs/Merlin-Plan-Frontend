@@ -3,6 +3,7 @@ import { login } from 'utilities/auth'
 import { getData } from 'utilities/api-interaction'
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
+import styles from './index.css'
 
 class Login extends React.Component {
   constructor(...args){
@@ -37,13 +38,11 @@ class Login extends React.Component {
   }
   render(){
     return(
-      <div>
-        <form className="loginForm" onSubmit={this.handleSubmit}>
-          <input ref='username' type='text' placeholder="Username"/>
-          <input ref='password' type='password' placeholder="Password"/>
-          <button type='submit'>Login</button>
-        </form>
-      </div>
+      <form className={styles.loginForm} onSubmit={this.handleSubmit}>
+        <input ref='username' type='text' placeholder="Username"/>
+        <input ref='password' type='password' placeholder="Password"/>
+        <button type='submit'>Login</button>
+      </form>
     )
   }
 }
