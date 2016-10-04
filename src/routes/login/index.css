@@ -1,11 +1,41 @@
+@keyframes loginFail{
+  0%{transform:translateX(0px)}
+  30%{transform:translateX(40px)}
+  70%{transform:translateX(-40px)}
+  100%{transform:translateX(0px)}
+}
+
 
 .loginForm{
+  position: relative;
   width: 300px;
   margin-left:auto;
   margin-right:auto;
 }
 
+.loginFailAnimation {
+  animation: loginFail 600ms;
+}
+
 .loginForm input{
+  
   width: 100%;
   margin-bottom:0.5em;
+}
+
+.loginForm button{
+  width: 50px;
+  margin-left: calc(100% - 50px);
+}
+
+.container{
+  width:80%;
+  height:100%;
+  position: absolute;
+  top:0;
+  left:10%;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction: column;
 }

@@ -10,6 +10,19 @@ class Login extends React.Component {
     super(...args)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleLogin = this.handleLogin.bind(this)
+    this.handleLoginFailAnimationEnd = this.handleLoginFailAnimationEnd.bind(this)
+    this.state={
+      loginFailed:false,
+      playAnimation:false,
+    }
+  }
+  componentDidMount(){
+    let loginForm = this.refs.loginForm
+    loginForm.addEventListener('animationend', this.handleLoginFailAnimationEnd)
+  }
+  handleLoginFailAnimationEnd(){
+    this.setState({playAnimation:false})
+    console.log(this.state);
   }
   handleSubmit(e){
     e.preventDefault();
@@ -32,17 +45,29 @@ class Login extends React.Component {
     }
     else{
       //TODO:Replace alert with a better solution
-      alert("username or password incorrect")
+      this.setState({loginFailed:true, playAnimation:true})
+      
       return;
     }
   }
   render(){
+
+    let message = this.state.loginFailed ? 
+      <p>Login unsuccessful, check that your username and password are correct.</p> :
+      <p>Login to Merlin: Plan</p>
+    let loginFormClassnames = this.state.playAnimation ? `${styles.loginForm} ${styles.loginFailAnimation}`: styles.loginForm
+
     return(
-      <form className={styles.loginForm} onSubmit={this.handleSubmit}>
-        <input ref='username' type='text' placeholder="Username"/>
-        <input ref='password' type='password' placeholder="Password"/>
-        <button type='submit'>Login</button>
-      </form>
+      <div className={styles.container}>
+        {message}
+        <form ref='loginForm' 
+          className={loginFormClassnames}
+          onSubmit={this.handleSubmit}>
+          <input ref='username' type='text' placeholder="Username"/>
+          <input ref='password' type='password' placeholder="Password"/>
+          <button type='submit'>Login</button>
+        </form>
+      </div>
     )
   }
 }
