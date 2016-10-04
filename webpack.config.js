@@ -6,6 +6,7 @@ module.exports = {
   entry: [
     'webpack-dev-server/client?http://localhost:3333', // WebpackDevServer host and port
     'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+    'whatwg-fetch',
     './src/main.js' // Your appʼs entry point
   ],
   output: {
