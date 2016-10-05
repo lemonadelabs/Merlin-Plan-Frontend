@@ -5,10 +5,13 @@ import { getData } from 'utilities/api-interaction'
 import store from 'store'
 import App from 'routes/app';
 import Login from 'routes/login';
+import ResetPassword from 'routes/login/reset-password';
 import Home from 'routes/home';
 import Budget from 'routes/budget';
 import Track from 'routes/track';
 import Portfolio from 'routes/portfolio';
+import Confirm from 'routes/confirm'
+import ConfirmEmail from 'routes/confirm/email';
 import Projects from 'routes/projects';
 import Admin from 'routes/admin';
 import AdminUsers from 'routes/admin/users';
@@ -47,7 +50,12 @@ function requireLoggedOut(nextState, replace) {
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home} onEnter={requireAuth}/>
-    <Route path="login" component={Login} onEnter={requireLoggedOut}/>
+    <Route path="confirm" component={Confirm}>
+      <Route path="email/:email/:code" component={ConfirmEmail}/>
+    </Route>
+    <Route path="login" component={Login} onEnter={requireLoggedOut}>
+      <Route path="resetpassword" component={ResetPassword} onEnter={requireLoggedOut}/>
+    </Route>
     <Route path="portfolio" component={Portfolio} onEnter={requireAuth}/>
     <Route path="projects" component={Projects} onEnter={requireAuth}/>
     <Route path="track" component={Track} onEnter={requireAuth}/>

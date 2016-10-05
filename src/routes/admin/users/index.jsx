@@ -8,22 +8,6 @@ import store from 'store'
 import { find, findIndex, forEach} from 'lodash'
 import UserForm from 'components/forms/user';
 
-const dummyNewUser = {
-  "userDetails": {
-      "userName": "newuser@don.govt.nz",
-      "organisationId": 1,
-      "email": "newuser@don.govt.nz",
-      "employeeId": "2345",
-      "firstName": "New",
-      "lastName": "User",
-      "nickName": "newbie",
-      "roles": [
-        "Staff"
-      ]
-  },
-  "password": "newgoddampassword1"
-}
-
 class AdminUsers extends React.Component {
   constructor(){
     super()
@@ -88,6 +72,7 @@ class AdminUsers extends React.Component {
     }
   }
   render() {
+    console.log(this.props.users);
     return (
       <div>
         <button onClick={this.newUser}>Add User</button>
