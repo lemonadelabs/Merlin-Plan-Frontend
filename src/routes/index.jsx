@@ -4,14 +4,17 @@ import { loggedIn, decodePayload } from 'utilities/auth'
 import { getData } from 'utilities/api-interaction'
 import store from 'store'
 import App from 'routes/app';
-import Login from 'routes/login';
+import LoginRoot from 'routes/login';
+import Login from 'routes/login/login';
 import ResetPassword from 'routes/login/reset-password';
+import ForgotPassword from 'routes/login/forgot-password';
 import Home from 'routes/home';
 import Budget from 'routes/budget';
 import Track from 'routes/track';
 import Portfolio from 'routes/portfolio';
 import Confirm from 'routes/confirm'
 import ConfirmEmail from 'routes/confirm/email';
+import ConfirmDetails from 'routes/confirm/details';
 import Projects from 'routes/projects';
 import Admin from 'routes/admin';
 import AdminUsers from 'routes/admin/users';
@@ -24,7 +27,7 @@ function checkStoreForUserDetails(){
 function requireAuth(nextState, replace) {
   if(!loggedIn()){
     replace({
-      pathname: 'login',
+      pathname: '/login',
       state: { nextPathname: nextState.location.pathname }
     })
   }
@@ -51,10 +54,13 @@ export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home} onEnter={requireAuth}/>
     <Route path="confirm" component={Confirm}>
-      <Route path="email/:email/:code" component={ConfirmEmail}/>
+      <Route path="email" component={ConfirmEmail}/>
+      <Route path="details" component={ConfirmDetails}/>
     </Route>
-    <Route path="login" component={Login} onEnter={requireLoggedOut}>
-      <Route path="resetpassword" component={ResetPassword} onEnter={requireLoggedOut}/>
+    <Route path="login" component={LoginRoot} onEnter={requireLoggedOut}>
+      <IndexRoute component={Login}/>
+      <Route path="resetpassword" component={ResetPassword}/>
+      <Route path="forgot" component={ForgotPassword}/>
     </Route>
     <Route path="portfolio" component={Portfolio} onEnter={requireAuth}/>
     <Route path="projects" component={Projects} onEnter={requireAuth}/>
