@@ -52,21 +52,19 @@ function deleteData({endPoint, id, body, contentType=''}){
 export {getData, postData, deleteData}
 
 function fetchReqest(request){
-  return fetch(request)
+   let promise = fetch(request)
     .then( (response) => {
       switch (response.status) {
         case 200:
           return response.text()
         default:
-          throw new Error('Something went wrong on api server!');
+          promise.reject(error)
       }
     })
     .then((responseText)=>{
       return(responseText ? JSON.parse(responseText) : responseText)
     })
-    .catch(function(error) {
-      console.error(error);
-    });
+    return promise
 }
 
 function createHeaders(contentType = 'application/json'){
