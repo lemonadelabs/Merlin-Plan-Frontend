@@ -25,10 +25,11 @@ class UserForm extends Component {
     newUserPayload.password = generatePassword()
     postData('user', newUserPayload).then(
       (user) => {
-        console.log(user);
+        console.log(user,actions);
         if (user.succeeded === false){
           return
         }
+        actions.reset('user')
         dispatch({type: 'NEW_ORG_USER', user: user})
       }
     )
