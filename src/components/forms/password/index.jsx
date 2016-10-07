@@ -12,7 +12,7 @@ class PasswordForm extends Component {
       let password = this.refs.password.value
       postData('user/password',{email,code,password})
       .then(()=>{
-        handleChangeSuccess();
+        handleChangeSuccess(password);
       })
     }
   }
