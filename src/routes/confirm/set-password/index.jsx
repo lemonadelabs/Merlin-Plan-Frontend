@@ -23,7 +23,6 @@ class ConfimSetPassword extends Component {
   }
   render() {
     let email = this.props.location.query.email
-    console.log(this.state);
     return (
       <div>
         <PasswordForm email={email} code={this.state.emailCode} handleChangeSuccess={this.handleChangeSuccess}/>
