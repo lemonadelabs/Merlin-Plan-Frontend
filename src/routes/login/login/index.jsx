@@ -1,6 +1,7 @@
 import React from 'react'
 import { login } from 'utilities/auth'
 import { getData } from 'utilities/api-interaction'
+import { getUserInfoAndSetUserState } from 'utilities/user'
 import { Link, withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import styles from './index.css'
@@ -37,16 +38,14 @@ class Login extends React.Component {
       nextRoute = this.props.location.state.nextPathname
     }
     if(loginSucceed){
-      getData(`user/${loginPayload.sub}`)
-      .then((userData) => {
-        this.props.dispatch({type:'SET_USER',"userData":userData})
-        this.props.router.push(nextRoute)
-      })
+      getUserInfoAndSetUserState(loginPayload.sub, this.props.dispatch)
+      .then( () => {
+          this.props.router.push(nextRoute)
+        }
+      )
     }
     else{
-      //TODO:Replace alert with a better solution
       this.setState({loginFailed:true, playAnimation:true})
-      
       return;
     }
   }
