@@ -9,7 +9,7 @@ class Admin extends React.Component {
     return(
       <div>
         <h1>Admin</h1>
-        <Link to={'admin/users'}>Users</Link>
+        <Link to={'/admin/users'}>Users</Link>
       </div>
     )
   }

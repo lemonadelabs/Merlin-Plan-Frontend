@@ -16,7 +16,7 @@ function NavigationBar({menuItems,applicationTitle, router}){
 
 function handleLogout(router){
   logout()
-  router.replace('login')
+  router.replace('/login')
 }
 
 export default withRouter(NavigationBar)
