@@ -13,7 +13,6 @@ import Budget from 'routes/budget';
 import Track from 'routes/track';
 import Portfolio from 'routes/portfolio';
 import Confirm from 'routes/confirm'
-import ConfirmEmail from 'routes/confirm/email';
 import ConfimSetPassword from 'routes/confirm/set-password';
 import ConfirmDetails from 'routes/confirm/details';
 import Projects from 'routes/projects';
@@ -55,8 +54,7 @@ export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home} onEnter={requireAuth}/>
     <Route path="confirm" component={Confirm}>
-      <Route path="email" component={ConfirmEmail}/>
-      <Route path="password" component={ConfimSetPassword}/>
+      <IndexRoute component={ConfimSetPassword}/>
       <Route path="details" component={ConfirmDetails} onEnter={requireAuth}/>
     </Route>
     <Route path="login" component={LoginRoot} onEnter={requireLoggedOut}>
