@@ -57,7 +57,7 @@ export default (
     <Route path="confirm" component={Confirm}>
       <Route path="email" component={ConfirmEmail}/>
       <Route path="password" component={ConfimSetPassword}/>
-      <Route path="details" component={ConfirmDetails}/>
+      <Route path="details" component={ConfirmDetails} onEnter={requireAuth}/>
     </Route>
     <Route path="login" component={LoginRoot} onEnter={requireLoggedOut}>
       <IndexRoute component={Login}/>
