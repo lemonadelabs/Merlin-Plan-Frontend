@@ -16,6 +16,7 @@ class ConfimSetPassword extends Component {
     }
     this.handleChangeSuccess=this.handleChangeSuccess.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.handleLogin = this.handleLogin.bind(this)
   }
   handleClick(e){
     let email = this.props.location.query.email
