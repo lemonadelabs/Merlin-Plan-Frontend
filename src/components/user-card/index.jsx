@@ -4,10 +4,23 @@ import UserDetails from 'components/user-details'
 import ProfilePic from 'components/profile-pic'
 import Tag from 'components/tag'
 import Break from 'components/break'
+import { isEmpty } from 'lodash'
 import styles from './index.css'
 
+let fallbackUserModal = {
+  firstName:'Unnamed',
+  lastName:'Unnamed',
+  email:'No Email',
+  id:'',
+  roles:[]
+} 
 
-const UserCard = ({user, clickFunction, selected}) => (
+const UserCard = ({user = userModal, clickFunction, selected}) => {
+  if(isEmpty(user)){
+    user = fallbackUserModal
+  }
+  console.log(user);
+  return (
   <div 
     key={user.id} 
     onClick={
@@ -37,6 +50,6 @@ const UserCard = ({user, clickFunction, selected}) => (
       {user.groups.map( (group) => <Tag name={group}/>)}
     </div> */}
   </div>
-);
+)};
 
 export default UserCard;
