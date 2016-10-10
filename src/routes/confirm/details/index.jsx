@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import UserCard from 'components/user-card';
 import Modal from 'components/modal'
-
+import UserForm from 'components/forms/user'
 class ConfirmDetails extends Component {
   constructor(args) {
     super(args)
@@ -29,7 +29,7 @@ class ConfirmDetails extends Component {
         <UserCard user={this.props.user}/>
         <button onClick={this.incorrectDetails}>No</button>
         <button onClick={this.correctDetails}>Yes</button>
-        <Modal show={this.props.showModal}> <p>Foo foo</p> </Modal>
+        <Modal show={this.props.showModal}> <UserForm modelToLoad={this.props.user}/> </Modal>
       </div>
     );
   }

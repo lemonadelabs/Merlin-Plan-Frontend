@@ -16,6 +16,7 @@ function checkAvailability(email) {
 const roles = ["Staff", "Project Admin", "Planner", "Approver", "Tracker", "Manager"]
 
 class UserForm extends Component {
+  
   handleSubmit(userInfo){
     let {dispatch} = this.props
     let newUserPayload = {userDetails:{}, password:""}
@@ -33,6 +34,12 @@ class UserForm extends Component {
         dispatch({type: 'NEW_ORG_USER', user: user})
       }
     )
+  }
+  componentDidMount(){
+    let {modelToLoad, dispatch} = this.props
+    if(modelToLoad){
+      dispatch(actions.load('forms.user',modelToLoad))
+    }
   }
   render() {
     let firstName = this.props.firstName
