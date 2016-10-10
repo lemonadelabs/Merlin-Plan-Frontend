@@ -19,7 +19,6 @@ const UserCard = ({user = userModal, clickFunction, selected}) => {
   if(isEmpty(user)){
     user = fallbackUserModal
   }
-  console.log(user);
   return (
   <div 
     key={user.id} 
