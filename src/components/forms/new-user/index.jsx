@@ -25,13 +25,14 @@ class NewUserForm extends Component {
         if (user.succeeded === false){
           return
         }
-        actions.reset('user')
         dispatch({type: 'NEW_ORG_USER', user: user})
+        dispatch({type: 'HIDE_MODAL'})
+        dispatch(actions.reset('forms.user'))
+
       }
     )
   }
   render() {
-    let firstName = this.props.firstName
     return (
       <Form autoComplete={"off"} model="forms.user" onSubmit={(userInfo)=>{this.handleSubmit(userInfo)}}>
         <UserDetails/>
@@ -41,10 +42,10 @@ class NewUserForm extends Component {
             required
           }}
           multiple={true} 
-          model="forms.user.roles">
+          model=".roles">
           {
             roles.map((role)=>{
-              return(<option value={role}>{role}</option>)
+              return(<option key={role} value={role}>{role}</option>)
             })
           }
         </Control.select>
@@ -53,9 +54,5 @@ class NewUserForm extends Component {
     );
   }
 }
-const mapStateToProps = (state, ownProps) => {
-  let firstName = state.forms.user.firstName
-  return({firstName:firstName})
-}
 
-export default connect(mapStateToProps)(NewUserForm);
+export default connect()(NewUserForm);
