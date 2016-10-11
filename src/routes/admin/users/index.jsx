@@ -7,12 +7,13 @@ import { getData, postData, deleteData } from 'utilities/api-interaction'
 import store from 'store'
 import { find, findIndex, forEach} from 'lodash'
 import NewUserForm from 'components/forms/new-user';
+import Modal from 'components/modal'
 
 class AdminUsers extends React.Component {
   constructor(){
     super()
     this.toggleUserSelection = this.toggleUserSelection.bind(this)
-    this.deleteUsers = this.deleteUsers.bind(this)
+    this.deactivateUsers = this.deactivateUsers.bind(this)
     this.newUser = this.newUser.bind(this)
   }
   componentDidMount(){
@@ -43,8 +44,9 @@ class AdminUsers extends React.Component {
   }
   newUser(){
     //this should trigger opening the form
+    this.props.dispatch({type:"SHOW_MODAL"})
   }
-  deleteUsers(){
+  deactivateUsers(){
     let selectedUsers = this.props.selectedUsers;
     let userIds = selectedUsers.map( (user) => (user.id) )
     let loggedInUserId = store.getState().user.id
@@ -76,17 +78,21 @@ class AdminUsers extends React.Component {
     return (
       <div>
         <button onClick={this.newUser}>Add User</button>
-        <button onClick={this.deleteUsers}>Deactivate Users</button>
-        <NewUserForm organisationId={store.getState().user.organisationId}/>
+        <button onClick={this.deactivateUsers}>Deactivate Users</button>
         <div className={styles['card-container']}>
-          { this.props.users.map( 
+          {
+            this.props.users.map( 
               (user) => {
                 let selected = find(this.props.selectedUsers, (u) => (u.id === user.id) ) ? true : false
                 let userCard = user.active ? <UserCard key={user.id} selected={selected} user={user} clickFunction={this.toggleUserSelection}/> : ''
                 return(userCard)
-              } 
-            ) }
+              }
+            )
+          }
         </div>
+        <Modal show={this.props.showModal}>
+          <NewUserForm organisationId={store.getState().user.organisationId}/>
+        </Modal>
       </div>
     );
   }
@@ -94,7 +100,7 @@ class AdminUsers extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return({users:state.orginisation.users, selectedUsers:state.orginisation.selectedUsers})
+  return({users:state.orginisation.users, selectedUsers:state.orginisation.selectedUsers,showModal:state.modal.visability})
 }
 
 export default connect(mapStateToProps)(AdminUsers);
