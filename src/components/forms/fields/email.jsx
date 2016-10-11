@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import { Control, Errors, actions } from 'react-redux-form';
 import { required, validEmail } from 'components/forms/validators';
 import { getData } from 'utilities/api-interaction'
+import { connect } from 'react-redux';
 
 function checkAvailability(email) {
   //THIS NEEDS TO BE DEBOUNCED!!!
@@ -9,6 +10,7 @@ function checkAvailability(email) {
 }
 
 const EmailField = props => {
+  let firstName = props.firstName
   return (
     <div>
       <label>Email</label>
@@ -40,4 +42,9 @@ EmailField.propTypes = {
   
 };
 
-export default EmailField;
+function mapStateToProps(state,props) {
+  let firstName = state.forms.user.firstName
+  return({firstName:firstName})
+}
+
+export default connect(mapStateToProps)(EmailField);
