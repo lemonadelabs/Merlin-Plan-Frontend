@@ -1,19 +1,16 @@
 import React, {Component} from 'react';
-import { postData } from 'utilities/api-interaction';
+
 class PasswordForm extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   handleSubmit(e){
     e.preventDefault();
+    let password = this.refs.password.value
     if(this.passwordsMatch()){
-      let {email, code, handleChangeSuccess} = this.props
-      let password = this.refs.password.value
-      postData('user/password',{email,code,password})
-      .then(()=>{
-        handleChangeSuccess(password);
-      })
+      this.props.handlePasswordSet(password)
     }
   }
   passwordsMatch(){
