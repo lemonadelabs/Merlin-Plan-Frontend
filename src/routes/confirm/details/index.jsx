@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import UserCard from 'components/user-card';
 import Modal from 'components/modal'
-import UserForm from 'components/forms/user'
+import UpdateUserForm from 'components/forms/update-user'
 class ConfirmDetails extends Component {
   constructor(args) {
     super(args)
@@ -29,14 +29,13 @@ class ConfirmDetails extends Component {
         <UserCard user={this.props.user}/>
         <button onClick={this.incorrectDetails}>No</button>
         <button onClick={this.correctDetails}>Yes</button>
-        <Modal show={this.props.showModal}> <UserForm modelToLoad={this.props.user}/> </Modal>
+        <Modal show={this.props.showModal}> <UpdateUserForm modelToLoad={this.props.user}/> </Modal>
       </div>
     );
   }
 }
 
 function mapStateToProps(state,ownProps){
-  console.log('state',state);
   return({user : state.user, showModal: state.modal.visability})
 }
 

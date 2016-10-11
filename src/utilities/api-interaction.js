@@ -1,5 +1,6 @@
 import {size, forEach} from 'lodash';
-function getData(endpoint,query = {}){
+
+function getData(endpoint, query = {}){
   let url = `/api/${endpoint}`
   if(size(query)){
     url +='?'
@@ -26,8 +27,15 @@ function postData(endpoint, body){
   return( fetchReqest(request) )
 }
 
-function putData(){
-
+function putData(endpoint, body){
+  let headers = createHeaders()
+  let request = createRequest(
+  { headers:headers,
+    method:"PUT",
+    url:`/api/${endpoint}`,
+    requestBody:body
+  })
+  return( fetchReqest(request) )
 }
 
 function deleteData({endPoint, id, body, contentType=''}){
@@ -49,7 +57,7 @@ function deleteData({endPoint, id, body, contentType=''}){
   return( fetchReqest(request) )
 }
 
-export {getData, postData, deleteData}
+export {getData, postData, putData, deleteData}
 
 function fetchReqest(request){
    let promise = fetch(request)

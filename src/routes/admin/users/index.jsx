@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { getData, postData, deleteData } from 'utilities/api-interaction'
 import store from 'store'
 import { find, findIndex, forEach} from 'lodash'
-import UserForm from 'components/forms/user';
+import NewUserForm from 'components/forms/new-user';
 
 class AdminUsers extends React.Component {
   constructor(){
@@ -77,7 +77,7 @@ class AdminUsers extends React.Component {
       <div>
         <button onClick={this.newUser}>Add User</button>
         <button onClick={this.deleteUsers}>Delete Users</button>
-        <UserForm organisationId={store.getState().user.organisationId}/>
+        <NewUserForm organisationId={store.getState().user.organisationId}/>
         <div className={styles['card-container']}>
           { this.props.users.map( 
               (user) => {
