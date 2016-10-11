@@ -14,7 +14,7 @@ class ConfimSetPassword extends Component {
       password:'',
       passwordSet:false
     }
-    this.handleChangeSuccess=this.handleChangeSuccess.bind(this)
+    this.handlePasswordSet=this.handlePasswordSet.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.handleLogin = this.handleLogin.bind(this)
   }
@@ -22,7 +22,7 @@ class ConfimSetPassword extends Component {
     let email = this.props.location.query.email
     let password = this.state.password
     login(email,password)
-    .then(this.handleLogin)
+      .then(this.handleLogin)
   }
   handleLogin({loginSucceed, loginPayload}){
     getUserInfoAndSetUserState(loginPayload.sub, this.props.dispatch)
@@ -30,20 +30,14 @@ class ConfimSetPassword extends Component {
       this.props.router.push('/confirm/details')
     })
   }
-  handleChangeSuccess(password){
-    console.log('Password set')
-    this.setState({passwordSet:true,password:password})
-  }
-  componentDidMount(){
-    let email = this.props.location.query.email
-    postData('user/passwordreset',{email:email,sendEmail:false})
-      .then((result)=>{
-        let decodedCode = decodeURIComponent(result.code)
-        this.setState({emailCode:decodedCode})
-      })
+  handlePasswordSet(password){
+    let {email, code} = this.props.location.query
+    postData("user/confirm", {email:email, code:code, password:password})
+      .then(
+        this.setState( { passwordSet:true, password:password } )
+      )
   }
   render() {
-    let email = this.props.location.query.email
     let passwordSet = this.state.passwordSet
     let nextButton
     if(passwordSet){
@@ -51,7 +45,7 @@ class ConfimSetPassword extends Component {
     }
     return (
       <div>
-        <PasswordForm email={email} code={this.state.emailCode} handleChangeSuccess={this.handleChangeSuccess}/>
+        <PasswordForm handlePasswordSet={this.handlePasswordSet}/>
         {nextButton}
       </div>
     );
