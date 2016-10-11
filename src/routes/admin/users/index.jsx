@@ -76,13 +76,14 @@ class AdminUsers extends React.Component {
     return (
       <div>
         <button onClick={this.newUser}>Add User</button>
-        <button onClick={this.deleteUsers}>Delete Users</button>
+        <button onClick={this.deleteUsers}>Deactivate Users</button>
         <NewUserForm organisationId={store.getState().user.organisationId}/>
         <div className={styles['card-container']}>
           { this.props.users.map( 
               (user) => {
                 let selected = find(this.props.selectedUsers, (u) => (u.id === user.id) ) ? true : false
-                return(<UserCard selected={selected} user={user} clickFunction={this.toggleUserSelection}/>)
+                let userCard = user.active ? <UserCard key={user.id} selected={selected} user={user} clickFunction={this.toggleUserSelection}/> : ''
+                return(userCard)
               } 
             ) }
         </div>
