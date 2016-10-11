@@ -42,12 +42,12 @@ const UserCard = ({user = userModal, clickFunction, selected}) => {
     <Break width="full" thickness="hair"/>
     <p className={styles.heading}>
       Roles:
-      {user.roles.map((role) => <span> {role}</span>)}
+      {user.roles.map((role) => <span key={role}> {role}</span>)}
     </p>
-    {/* <div className={styles.groupContainer}>
+    <div className={styles.groupContainer}>
     <p className={styles.heading}>Groups:</p>
-      {user.groups.map( (group) => <Tag name={group}/>)}
-    </div> */}
+      {user.groups.map( (group) => <Tag key={group.id} name={group.name}/>)}
+    </div>
   </div>
 )};
 
