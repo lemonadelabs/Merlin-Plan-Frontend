@@ -6,6 +6,10 @@ export default function organisation(state = { users:[], selectedUsers:[], group
       return Object.assign({}, state, {users: action.users})
     case 'NEW_ORG_USER' :
       return Object.assign({}, state, {users: [...state.users, action.user]})
+    case 'UPDATE_ORG_USER' :
+      let updateUserIndex = findIndex(state.users, (user) => (user.id === action.user.id))
+      let updatedUsers = [...state.users.slice(0, updateUserIndex),action.user, ...state.users.slice(userIndex+1)]
+      return Object.assign({}, state, {users:updatedUsers})
     case 'SET_ORG_GROUPS' :
       return Object.assign({}, state, {groups: [...state.groups, ...action.groups]})
     case 'SELECT_ORG_USER' :
