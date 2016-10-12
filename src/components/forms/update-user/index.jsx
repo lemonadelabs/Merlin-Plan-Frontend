@@ -17,11 +17,11 @@ class UpdateUserForm extends Component {
     }
   }
   handleSubmit(user){
-    let {dispatch} = this.props
+    let {dispatch, handleDataUpdate} = this.props
     console.log('user',user);
     putData(`user/${user.id}`,user)
     .then((resp)=>{
-      dispatch({type:'SET_USER',userData:user})
+      handleDataUpdate(user)
       dispatch({type:'HIDE_MODAL'})
     })
   }
