@@ -3,6 +3,7 @@ import { combineForms } from 'react-redux-form';
 import organisation from 'reducers/organisation';
 import user from 'reducers/user'
 import modal from 'reducers/modal'
+import adminUsers from 'reducers/admin/users'
 
 const initialUserState = {
   "userName": "",
@@ -20,6 +21,7 @@ const merlinApp = combineReducers(
     user,
     organisation,
     modal,
+    adminUsers,
     forms: combineForms(
       {
         user: initialUserState
