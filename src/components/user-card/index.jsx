@@ -12,7 +12,8 @@ let fallbackUserModal = {
   lastName:'Unnamed',
   email:'No Email',
   id:'',
-  roles:[]
+  roles:[],
+  groups:[]
 } 
 
 const UserCard = ({user = userModal, clickFunction, selected}) => {
