@@ -13,7 +13,7 @@ const initialUserState = {
   "groups": []
 }
 
-function orginisation(state = { users:[], selectedUsers:[], groups:[] }, action){
+function organisation(state = { users:[], selectedUsers:[], groups:[] }, action){
   switch (action.type) {
     case 'SET_ORG_USERS' :
       return Object.assign({}, state, {users: action.users})
@@ -68,7 +68,7 @@ function modal(state = { visability : false }, action){
 const merlinApp = combineReducers(
   {
     user,
-    orginisation,
+    organisation,
     modal,
     forms: combineForms(
       {

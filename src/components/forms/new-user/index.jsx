@@ -109,7 +109,7 @@ function propsToState(state, props) {
   return(
     {
       organisationId:state.user.organisationId,
-      organisationGroups:state.orginisation.groups
+      organisationGroups:state.organisation.groups
     }
   )
 }

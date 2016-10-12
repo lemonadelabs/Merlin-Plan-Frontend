@@ -100,7 +100,7 @@ class AdminUsers extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return({users:state.orginisation.users, selectedUsers:state.orginisation.selectedUsers,showModal:state.modal.visability})
+  return({users:state.organisation.users, selectedUsers:state.organisation.selectedUsers,showModal:state.modal.visability})
 }
 
 export default connect(mapStateToProps)(AdminUsers);
