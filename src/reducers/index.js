@@ -9,15 +9,18 @@ const initialUserState = {
   "firstName": "",
   "lastName": "",
   "nickName": "",
-  "roles": []
+  "roles": [],
+  "groups": []
 }
 
-function orginisation(state = { users:[], selectedUsers:[] }, action){
+function orginisation(state = { users:[], selectedUsers:[], groups:[] }, action){
   switch (action.type) {
     case 'SET_ORG_USERS' :
       return Object.assign({}, state, {users: action.users})
     case 'NEW_ORG_USER' :
       return Object.assign({}, state, {users: [...state.users, action.user]})
+    case 'SET_ORG_GROUPS' :
+      return Object.assign({}, state, {groups: [...state.groups, ...action.groups]})
     case 'SELECT_ORG_USER' :
       let selectedUsersWithNewSelection = [...state.selectedUsers,action.user]
       return Object.assign({}, state, {selectedUsers: selectedUsersWithNewSelection})
