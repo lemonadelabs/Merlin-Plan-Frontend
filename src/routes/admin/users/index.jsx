@@ -7,6 +7,7 @@ import { getData, postData, deleteData } from 'utilities/api-interaction'
 import store from 'store'
 import { find, findIndex, forEach} from 'lodash'
 import NewUserForm from 'components/forms/new-user';
+import UpdateUserForm from 'components/forms/update-user';
 import Modal from 'components/modal'
 
 class AdminUsers extends React.Component {
@@ -15,6 +16,8 @@ class AdminUsers extends React.Component {
     this.toggleUserSelection = this.toggleUserSelection.bind(this)
     this.deactivateUsers = this.deactivateUsers.bind(this)
     this.newUser = this.newUser.bind(this)
+    this.editUsers = this.editUsers.bind(this)
+    this.updateOrgUser = this.updateOrgUser.bind(this)
   }
   componentDidMount(){
     let organisationId = store.getState().user.organisationId
@@ -44,6 +47,11 @@ class AdminUsers extends React.Component {
   }
   newUser(){
     //this should trigger opening the form
+    this.props.dispatch({type:'SET_MODAL_MODE', mode:'NEW'})
+    this.props.dispatch({type:"SHOW_MODAL"})
+  }
+  editUsers(){
+    this.props.dispatch({type:'SET_MODAL_MODE', mode:'EDIT'})
     this.props.dispatch({type:"SHOW_MODAL"})
   }
   deactivateUsers(){
@@ -73,34 +81,61 @@ class AdminUsers extends React.Component {
       store.dispatch({type:'SELECT_ORG_USER', user:user})
     }
   }
+  updateOrgUser(user){
+    this.props.dispatch({type:'UPDATE_ORG_USER', user:user})
+  }
+  getModalContents({modalMode, organisationId, modelToLoad}){
+    let modalContents
+    switch (modalMode) {
+      case 'NEW':
+        modalContents = <NewUserForm organisationId={organisationId}/>
+        break;
+      case 'EDIT':
+        modalContents = <UpdateUserForm 
+          modelToLoad={modelToLoad} 
+          organisationId={organisationId} 
+          handleDataUpdate={this.updateOrgUser}/>
+        break;
+      default:
+        modalContents = ''
+    }
+    return modalContents
+  }
   render() {
-    console.log(this.props.users);
+    let {selectedUsers, modalMode, showModal, users} = this.props
+    let organisationId = store.getState().user.organisationId
+    let modalContents = this.getModalContents({modalMode,organisationId,modelToLoad:selectedUsers[0]})
     return (
       <div>
         <button onClick={this.newUser}>Add User</button>
+        <button onClick={this.editUsers}>Edit Users</button>
         <button onClick={this.deactivateUsers}>Deactivate Users</button>
         <div className={styles['card-container']}>
           {
-            this.props.users.map( 
+            users.map( 
               (user) => {
-                let selected = find(this.props.selectedUsers, (u) => (u.id === user.id) ) ? true : false
+                let selected = find(selectedUsers, (u) => (u.id === user.id) ) ? true : false
                 let userCard = user.active ? <UserCard key={user.id} selected={selected} user={user} clickFunction={this.toggleUserSelection}/> : ''
                 return(userCard)
               }
             )
           }
         </div>
-        <Modal show={this.props.showModal}>
-          <NewUserForm organisationId={store.getState().user.organisationId}/>
+        <Modal show={showModal}>
+          {modalContents}
         </Modal>
       </div>
     );
   }
-
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return({users:state.organisation.users, selectedUsers:state.organisation.selectedUsers,showModal:state.modal.visability})
+  return({
+    users:state.organisation.users, 
+    selectedUsers:state.organisation.selectedUsers,
+    showModal:state.modal.visability,
+    modalMode:state.adminUsers.modalMode
+  })
 }
 
 export default connect(mapStateToProps)(AdminUsers);
