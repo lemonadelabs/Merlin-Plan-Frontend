@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { Form, Control, Errors, actions } from 'react-redux-form'
 import { postData } from 'utilities/api-interaction'
 import { required } from 'components/forms/validators'
-
+import { connect } from 'react-redux';
 class GroupForm extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +16,10 @@ class GroupForm extends Component {
     newGroupPayload.organisationId = organisationId
     console.log(newGroupPayload);
     postData('group',newGroupPayload)
+      .then( newGroup => { 
+        this.props.dispatch({type:'SET_ORG_GROUPS',groups:[newGroup]})
+        this.props.dispatch({type:"HIDE_MODAL"})
+      })
   }
   render() {
     return (
@@ -36,4 +40,4 @@ GroupForm.propTypes = {
 
 };
 
-export default GroupForm;
+export default connect()(GroupForm);
