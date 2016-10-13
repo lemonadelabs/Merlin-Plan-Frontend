@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
-import { Form, Control, Error } from 'react-redux-form'
+import { Form, Control, Errors, actions } from 'react-redux-form'
 import { postData } from 'utilities/api-interaction'
+import { required } from 'components/forms/validators'
 
 class GroupForm extends Component {
   constructor(props) {
@@ -20,9 +21,11 @@ class GroupForm extends Component {
     return (
       <Form model={'forms.group'} onSubmit={this.handleSubmit}>
         <label>Name</label>
-        <Control.text model={'.name'}/>
+        <Errors model={'.name'} show="touched" messages={{required:"Please enter a name for your group"}}/>
+        <Control.text model={'.name'} validators={{required}}/>
         <label>Description</label>
-        <Control.text model={'.description'}/>   
+        <Errors model={'.description'} show="touched" messages={{required:"Please enter a description for your group"}}/>
+        <Control.text model={'.description'} validators={{required}}/>   
         <button type="submit">Add Group</button>
       </Form>
     );
