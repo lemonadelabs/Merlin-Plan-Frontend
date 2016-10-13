@@ -7,4 +7,9 @@ function getUserInfoAndSetUserState(userId, dispatch){
   })
 }
 
-export {getUserInfoAndSetUserState}
+function checkStoreForUserDetails(store){
+  let hasUserId = store.getState().user.id ? true : false
+  return(hasUserId)
+}
+
+export {getUserInfoAndSetUserState, checkStoreForUserDetails}
