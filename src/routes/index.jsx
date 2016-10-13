@@ -19,12 +19,7 @@ import Projects from 'routes/projects';
 import Admin from 'routes/admin';
 import AdminUsers from 'routes/admin/users';
 import AdminGroups from 'routes/admin/groups';
-
-
-function checkStoreForUserDetails(){
-  let hasUserId = store.getState().user.id ? true : false
-  return(hasUserId)
-}
+import {checkStoreForUserDetails} from 'utilities/user'
 
 function requireAuth(nextState, replace) {
   if(!loggedIn()){
@@ -33,7 +28,7 @@ function requireAuth(nextState, replace) {
       state: { nextPathname: nextState.location.pathname }
     })
   }
-  else if(!checkStoreForUserDetails()){
+  else if(!checkStoreForUserDetails(store)){
     let token = sessionStorage.getItem('token');
     let loginPayload = decodePayload(token)
     getData(`user/${loginPayload.sub}`)
