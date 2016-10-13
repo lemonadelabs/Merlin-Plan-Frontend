@@ -35,7 +35,7 @@ class AdminGroups extends Component {
               </div>)
           })
         }
-        <Modal>
+        <Modal title={"New Group"}>
           <GroupForm organisationId={this.props.organisationId || 1}/>          
         </Modal>
       </div>

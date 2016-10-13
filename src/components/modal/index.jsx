@@ -13,9 +13,13 @@ class Modal extends Component {
   }
   render() {
     let modal = <div></div>
+    let modalHeader = this.props.title ? <h2>{this.props.title}</h2> : ''
+
     if(this.props.show){
       modal = <div className={styles.shade} onClick={this.hideModal}>
+        
         <div className={styles.modal } onClick={ (e) => {e.stopPropagation()} }>
+          {modalHeader}
           {this.props.children}
         </div>
       </div>
