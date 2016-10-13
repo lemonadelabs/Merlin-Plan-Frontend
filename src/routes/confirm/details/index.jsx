@@ -32,14 +32,14 @@ class ConfirmDetails extends Component {
         <UserCard user={this.props.user}/>
         <button onClick={this.incorrectDetails}>No</button>
         <button onClick={this.correctDetails}>Yes</button>
-        <Modal show={this.props.showModal}> <UpdateUserForm handleDataUpdate={this.updateUserDetails} modelToLoad={this.props.user}/> </Modal>
+        <Modal> <UpdateUserForm handleDataUpdate={this.updateUserDetails} modelToLoad={this.props.user}/> </Modal>
       </div>
     );
   }
 }
 
 function mapStateToProps(state,ownProps){
-  return({user : state.user, showModal: state.modal.visability})
+  return({user : state.user})
 }
 
 export default withRouter(

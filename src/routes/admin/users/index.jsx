@@ -102,7 +102,7 @@ class AdminUsers extends React.Component {
     return modalContents
   }
   render() {
-    let {selectedUsers, modalMode, showModal, users} = this.props
+    let {selectedUsers, modalMode, users} = this.props
     let organisationId = store.getState().user.organisationId
     let modalContents = this.getModalContents({modalMode,organisationId,modelToLoad:selectedUsers[0]})
     return (
@@ -121,7 +121,7 @@ class AdminUsers extends React.Component {
             )
           }
         </div>
-        <Modal show={showModal}>
+        <Modal>
           {modalContents}
         </Modal>
       </div>
@@ -133,7 +133,6 @@ const mapStateToProps = (state, ownProps) => {
   return({
     users:state.organisation.users, 
     selectedUsers:state.organisation.selectedUsers,
-    showModal:state.modal.visability,
     modalMode:state.adminUsers.modalMode
   })
 }
