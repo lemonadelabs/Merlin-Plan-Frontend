@@ -63,7 +63,6 @@ class NewUserForm extends Component {
     getData(`organisation/${organisationId}/group`)
       .then((groups)=>{
         let newGroupAction = {type:'SET_ORG_GROUPS', groups}
-        console.log('groups motherfuckers',groups);
         dispatch(newGroupAction)
       })
   }
