@@ -9,7 +9,6 @@ class Modal extends Component {
     this.hideModal = this.hideModal.bind(this)
   }
   hideModal(){
-    console.log('bubble');
     this.props.dispatch({type:'HIDE_MODAL'})
   }
   render() {
@@ -25,4 +24,8 @@ class Modal extends Component {
   }
 }
 
-export default connect()(Modal);
+function mapStateToProps(state,props) {
+  return({show:state.modal.visability})
+}
+
+export default connect(mapStateToProps)(Modal);
