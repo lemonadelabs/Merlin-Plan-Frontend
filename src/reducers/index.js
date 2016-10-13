@@ -16,6 +16,11 @@ const initialUserState = {
   "groups": []
 }
 
+const initialGroupState = {
+  "name": "",
+  'description':""
+}
+
 const merlinApp = combineReducers(
   {
     user,
@@ -24,7 +29,8 @@ const merlinApp = combineReducers(
     adminUsers,
     forms: combineForms(
       {
-        user: initialUserState
+        user: initialUserState,
+        group: initialGroupState
       },'forms')
   }
 )
