@@ -10,6 +10,7 @@ class Admin extends React.Component {
       <div>
         <h1>Admin</h1>
         <Link to={'/admin/users'}>Users</Link>
+        <Link to={'/admin/groups'}>Groups</Link>
       </div>
     )
   }

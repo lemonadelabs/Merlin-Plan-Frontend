@@ -18,6 +18,8 @@ import ConfirmDetails from 'routes/confirm/details';
 import Projects from 'routes/projects';
 import Admin from 'routes/admin';
 import AdminUsers from 'routes/admin/users';
+import AdminGroups from 'routes/admin/groups';
+
 
 function checkStoreForUserDetails(){
   let hasUserId = store.getState().user.id ? true : false
@@ -68,5 +70,6 @@ export default (
     <Route path="budget" component={Budget} onEnter={requireAuth}/>
     <Route path="admin" component={Admin} onEnter={requireAuth}/>
     <Route path="admin/users" component={AdminUsers} onEnter={requireAuth}/>
+    <Route path="admin/groups" component={AdminGroups} onEnter={requireAuth}/>
   </Route>
 )
