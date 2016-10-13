@@ -5,6 +5,10 @@ import Modal from 'components/modal'
 import GroupForm from 'components/forms/group';
 
 class AdminGroups extends Component {
+  constructor(props) {
+    super(props);
+    this.showNewGroupModal = this.showNewGroupModal.bind(this)
+  } 
   componentDidMount(){
     let organisationId = this.props.organisationId || 1 //this needs to be fixed later!!!
     let { dispatch } = this.props
@@ -13,12 +17,15 @@ class AdminGroups extends Component {
         dispatch({type:'SET_ORG_GROUPS', groups})
       })
   }
+  showNewGroupModal(){
+    this.props.dispatch({type:"SHOW_MODAL"})
+  }
   render() {
     let groups = this.props.groups || []
     return (
       <div>
         <p>Admin Groups</p>
-        <GroupForm organisationId={1}/>
+        <button onClick={this.showNewGroupModal}>New Group</button>
         {
           groups.map( group => {
             return (
@@ -28,13 +35,15 @@ class AdminGroups extends Component {
               </div>)
           })
         }
+        <Modal>
+          <GroupForm organisationId={this.props.organisationId || 1}/>          
+        </Modal>
       </div>
     );
   }
 }
 
 function mapStateToProps(state, props) {
-  console.log(state);
   return({organisationId:state.user.organisationId,groups:state.organisation.groups})
 }
 export default connect(mapStateToProps)(AdminGroups);
