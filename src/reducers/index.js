@@ -18,7 +18,8 @@ const initialUserState = {
 
 const initialGroupState = {
   "name": "",
-  'description':""
+  'description':"",
+  'members':[]
 }
 
 const merlinApp = combineReducers(
