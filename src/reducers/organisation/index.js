@@ -11,6 +11,8 @@ export default function organisation(state = { users:[], selectedUsers:[], group
       let updatedUsers = [...state.users.slice(0, updateUserIndex),action.user, ...state.users.slice(userIndex+1)]
       return Object.assign({}, state, {users:updatedUsers})
     case 'SET_ORG_GROUPS' :
+      return Object.assign({}, state, {groups: action.groups})
+    case 'ADD_ORG_GROUP' :
       return Object.assign({}, state, {groups: [...state.groups, ...action.groups]})
     case 'SELECT_ORG_USER' :
       let selectedUsersWithNewSelection = [...state.selectedUsers,action.user]

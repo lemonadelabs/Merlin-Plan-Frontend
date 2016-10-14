@@ -25,7 +25,7 @@ class GroupForm extends Component {
     postData('group',newGroupPayload)
       .then( newGroup => {
         this.addUsersToGroup(groupInfo.members, newGroup.id)
-        dispatch({type:'SET_ORG_GROUPS',groups:[newGroup]})
+        dispatch({type:'ADD_ORG_GROUP',groups:[newGroup]})
         dispatch({type:"HIDE_MODAL"})
       })
   }
