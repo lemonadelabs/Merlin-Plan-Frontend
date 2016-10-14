@@ -54,7 +54,6 @@ GroupForm.propTypes = {
 };
 
 function stateToProps(state, props) {
-  console.log(state);
     return({
       users : state.organisation.users
     })

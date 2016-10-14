@@ -9,7 +9,6 @@ class MultiSelectDropdown extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
   handleClick(option){
-    console.log(find(this.props.value, o => ( o === option.id)));
     let selectionIndex = findIndex(this.props.value, (o) => ( o === option.id))
     if( selectionIndex === -1){
       this.addToSelection(option.id)
@@ -19,7 +18,6 @@ class MultiSelectDropdown extends Component {
   }
   removeFromSelection(index){
     let newSelection = [...this.props.value.slice(0,index), ...this.props.value.slice(index+1)]
-    console.log('newSelection',newSelection);
     this.props.dispatch(actions.change(this.props.name, newSelection))
   }
   addToSelection(selection){
@@ -27,7 +25,6 @@ class MultiSelectDropdown extends Component {
     this.props.dispatch(actions.change(this.props.name, newSelection))
   }
   render() {
-    console.log(this.props);
     let labelTemplate = this.props.labelTemplate
     return (
       <div>
