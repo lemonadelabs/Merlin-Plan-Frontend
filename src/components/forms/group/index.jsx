@@ -3,7 +3,7 @@ import { Form, Control, Errors, actions } from 'react-redux-form'
 import { getData, postData } from 'utilities/api-interaction'
 import { required } from 'components/forms/validators'
 import { connect } from 'react-redux';
-
+import MultiSelectDropdown from 'components/multi-select-dropdown';
 class GroupForm extends Component {
   constructor(props) {
     super(props);
@@ -42,11 +42,7 @@ class GroupForm extends Component {
         <label>Description</label>
         <Errors model={'.description'} show="touched" messages={{required:"Please enter a description for your group"}}/>
         <Control.text model={'.description'} validators={{required}}/>
-        <Control.select model={'.members'} multiple={true}>
-          {
-            users.map( user => (<option key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</option>))
-          }
-        </Control.select>
+        <Control.select component={MultiSelectDropdown} controlProps={{options:users, labelTemplate: user => (`${user.firstName} ${user.lastName}`) }} model={'.members'}/>
         <button type="submit">Add Group</button>
       </Form>
     );
