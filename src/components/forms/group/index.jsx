@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import { Form, Control, Errors, actions } from 'react-redux-form'
-import { getData, postData } from 'utilities/api-interaction'
+import { getData, postData, putData } from 'utilities/api-interaction'
 import { required } from 'components/forms/validators'
 import { connect } from 'react-redux';
 import MultiSelectDropdown from 'components/multi-select-dropdown';
@@ -30,7 +30,7 @@ class GroupForm extends Component {
       })
   }
   addUsersToGroup(users,groupId){
-    postData(`group/${groupId}/user`, {users})
+    putData(`group/${groupId}/adduser`, {users})
   }
   render() {
     let users = this.props.users || []
