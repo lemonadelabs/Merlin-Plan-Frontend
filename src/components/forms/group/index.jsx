@@ -35,7 +35,7 @@ class GroupForm extends Component {
   render() {
     let users = this.props.users || []
     return (
-      <Form model={'forms.group'} onSubmit={this.handleSubmit}>
+      <Form style={{width:'300px'}} model={'forms.group'} onSubmit={this.handleSubmit}>
         <label>Name</label>
         <Errors model={'.name'} show="touched" messages={{required:"Please enter a name for your group"}}/>
         <Control.text model={'.name'} validators={{required}}/>
