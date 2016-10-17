@@ -1,21 +1,18 @@
 import {size, forEach} from 'lodash';
 
+/**Will make GET request to `/api/${endpoint}` if you pass a query object it will convert the javascript object into a url query
+ * @returns a promise*/
 function getData(endpoint, query = {}){
   let url = `/api/${endpoint}`
   if(size(query)){
-    url +='?'
-    let currentQuery=0
-    forEach(query,(value,key)=>{
-      let seperator = currentQuery > 0 ? '&' : ""
-      url+= `${seperator}${key}=${value}`
-      currentQuery++
-    })
+   url += queryStringFromObject(query)
   }
   let headers = createHeaders()
   let request = createRequest({headers:headers, method:"GET", url:url})
-  return( fetchReqest(request) )
+  return( fetchRequest(request) )
 }
 
+/**Will make POST request to `/api/${endpoint}` and returns a promise*/
 function postData(endpoint, body){
   let headers = createHeaders()
   let request = createRequest(
@@ -24,9 +21,10 @@ function postData(endpoint, body){
       url:`/api/${endpoint}`,
       requestBody:body
     })
-  return( fetchReqest(request) )
+  return( fetchRequest(request) )
 }
 
+/**Will make PUT request to `/api/${endpoint}` and returns a promise*/
 function putData(endpoint, body){
   let headers = createHeaders()
   let request = createRequest(
@@ -35,9 +33,10 @@ function putData(endpoint, body){
     url:`/api/${endpoint}`,
     requestBody:body
   })
-  return( fetchReqest(request) )
+  return( fetchRequest(request) )
 }
 
+/**Will make DELETE request to `/api/${endpoint}/${id}` with an optional Id parameter being optional and returns a promise*/
 function deleteData({endPoint, id, body, contentType=''}){
   let headers = createHeaders(contentType)
   let url = `/api/${endPoint}`
@@ -54,12 +53,24 @@ function deleteData({endPoint, id, body, contentType=''}){
     console.log(body);
   }
   let request = createRequest( requestParams )
-  return( fetchReqest(request) )
+  return( fetchRequest(request) )
 }
 
 export {getData, postData, putData, deleteData}
 
-function fetchReqest(request){
+/**If passed an object it will use the keys and values of the object to generate a url query string*/
+function queryStringFromObject(query){
+  let queryString ='?'
+  let currentQuery=0
+  forEach(query, (value, key) => {
+    let seperator = currentQuery > 0 ? '&' : ""
+    queryString += `${seperator}${key}=${value}`
+    currentQuery++
+  })
+  return queryString
+}
+
+function fetchRequest(request){
    let promise = fetch(request)
     .then( (response) => {
       switch (response.status) {

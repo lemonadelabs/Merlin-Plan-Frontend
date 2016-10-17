@@ -15,6 +15,7 @@ function login(username, password){
        })
 }
 
+/** Checks sessionStorage for the JWT stored with the key 'token' and gets the expiryDate of the JWT and checks to see if it is expired*/
 function loggedIn(){
   let token = sessionStorage.getItem('token');
   let expiryDate = sessionStorage.getItem('expiryDate');
@@ -22,11 +23,13 @@ function loggedIn(){
   return(token && !expired);
 }
 
+/** Removes the token and expiry date from session storage*/
 function logout(){
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('expiryDate');
 }
 
+/** Decodeds the JWT and returns the payload encoded in the token*/
 function decodePayload(token){
   let tokenFragments = splitToken(token)
   let payloadB64 = tokenFragments[1]
