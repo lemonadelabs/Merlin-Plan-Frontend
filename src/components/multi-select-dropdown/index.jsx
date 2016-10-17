@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { actions } from 'react-redux-form';
 import { findIndex, find } from 'lodash';
 import styles from './styles.css'
+
 class MultiSelectDropdown extends Component {
   constructor(props) {
     super(props);
@@ -53,13 +54,14 @@ class MultiSelectDropdown extends Component {
         {
           this.props.options.map( 
             option => {
+              let classNames = styles.dropDownOption
               let selectionIndex = findIndex(this.props.value, (o) => ( o === option.id))
               if(selectionIndex !== -1){
-                
+                classNames += ` ${styles.dropDownOptionSelected}`
               }
               return (
                 <p 
-                  className={styles.dropDownOption} 
+                  className={classNames} 
                   key={option.id} 
                   onClick={()=>{this.handleOptionClick(option)}}
                 >
