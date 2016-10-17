@@ -1,6 +1,7 @@
 import React from 'react'
 import { loggedIn } from 'utilities/auth'
 import NavigationBar from 'components/navigation-bar'
+import { connect } from 'react-redux';
 import styles from './app.css'
 
 class App extends React.Component {
@@ -20,7 +21,7 @@ class App extends React.Component {
   render() {
     let navbar
     if (loggedIn()){
-      navbar = <NavigationBar applicationTitle={'Hello'} menuItems={this.state.menuItems}/>
+      navbar = <NavigationBar applicationTitle={this.props.title} menuItems={this.state.menuItems}/>
     }
     return (
       <div className={styles.app}>
@@ -31,4 +32,8 @@ class App extends React.Component {
   }
 }
 
-export default App
+function mapStateToProps(state, props){
+  return({title:state.app.title})
+}
+
+export default connect(mapStateToProps)(App)
