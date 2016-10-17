@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { actions } from 'react-redux-form';
 import { findIndex, find } from 'lodash';
 import styles from './styles.css'
+import hashbow from 'hashbow';
 
 class MultiSelectDropdown extends Component {
   constructor(props) {
@@ -43,11 +44,12 @@ class MultiSelectDropdown extends Component {
             this.props.value.map(
               value => {
                 let selected = find(this.props.options, option => ( option.id === value))
-                return(<p className={styles.selectedOption}>{labelTemplate(selected)}</p>)
+                let label = labelTemplate(selected)
+                return(<p style={{backgroundColor:hashbow(label)}} className={styles.selectedOption}>{label}</p>)
               }
             )
             : 
-            <p>No Selection</p>
+            ''
           }
         </div>
         <div style={{display: menuVisable ? 'block' : 'none'}} className={styles.optionsContainer}>
