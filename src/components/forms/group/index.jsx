@@ -42,6 +42,7 @@ class GroupForm extends Component {
         <label>Description</label>
         <Errors model={'.description'} show="touched" messages={{required:"Please enter a description for your group"}}/>
         <Control.text model={'.description'} validators={{required}}/>
+        <label>Members</label>
         <Control.select component={MultiSelectDropdown} controlProps={{options:users, labelTemplate: user => (`${user.firstName} ${user.lastName}`) }} model={'.members'}/>
         <button type="submit">Add Group</button>
       </Form>
