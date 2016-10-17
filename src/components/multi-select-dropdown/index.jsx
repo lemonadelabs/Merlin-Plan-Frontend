@@ -9,13 +9,31 @@ class MultiSelectDropdown extends Component {
   constructor(props) {
     super(props);
     this.handleOptionClick = this.handleOptionClick.bind(this)
-    this.toggleOptions = this.toggleOptions.bind(this)
+    this.handleDropDownClick = this.handleDropDownClick.bind(this)
+    this.hideOptionsIfVisable = this.hideOptionsIfVisable.bind(this)
     this.state = {
       menuVisable:false
     }
   }
+  hideOptionsIfVisable(e){
+    if(e.target.parentElement.className === styles.optionsContainer || e.target.className === styles.optionsContainer){
+      return;
+    }
+    if(this.state.menuVisable){
+      this.toggleOptions()
+      document.removeEventListener('click',this.hideOptionsIfVisable)
+      e.stopPropagation()
+    }
+  }
+  handleDropDownClick(){
+    let menuToggled = this.toggleOptions()
+    if(menuToggled){
+      document.addEventListener('click', this.hideOptionsIfVisable, true)
+    }
+  }
   toggleOptions(){
     this.setState({menuVisable:!this.state.menuVisable})
+    return !this.state.menuVisable
   }
   handleOptionClick(option){
     let selectionIndex = findIndex(this.props.value, (o) => ( o === option.id))
@@ -38,7 +56,7 @@ class MultiSelectDropdown extends Component {
     let {menuVisable} = this.state
     return (
       <div className={styles.multiSelectDropDown}>
-        <div className={styles.selectedOptionContainer} onClick={()=>{this.toggleOptions()}}>
+        <div className={styles.selectedOptionContainer} onClick={(e)=>{e.stopPropagation();this.handleDropDownClick()}}>
           {
             this.props.value.length > 0 ? 
             this.props.value.map(
@@ -65,7 +83,7 @@ class MultiSelectDropdown extends Component {
                 <p 
                   className={classNames} 
                   key={option.id} 
-                  onClick={()=>{this.handleOptionClick(option)}}
+                  onClick={(e)=>{ e.stopPropagation(); this.handleOptionClick(option)}}
                 >
                   {labelTemplate(option)}
                 </p>
