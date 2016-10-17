@@ -52,11 +52,21 @@ class MultiSelectDropdown extends Component {
         <div style={{display: menuVisable ? 'block' : 'none'}} className={styles.optionsContainer}>
         {
           this.props.options.map( 
-            option => (
-              <p className={styles.dropDownOption} key={option.id} onClick={()=>{this.handleOptionClick(option)}}>
-                {labelTemplate(option)}
-              </p>
-            )
+            option => {
+              let selectionIndex = findIndex(this.props.value, (o) => ( o === option.id))
+              if(selectionIndex !== -1){
+                
+              }
+              return (
+                <p 
+                  className={styles.dropDownOption} 
+                  key={option.id} 
+                  onClick={()=>{this.handleOptionClick(option)}}
+                >
+                  {labelTemplate(option)}
+                </p>
+              )
+            }
           )
         }
         </div>
