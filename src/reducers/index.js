@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { combineForms } from 'react-redux-form';
 import organisation from 'reducers/organisation';
 import user from 'reducers/user'
+import app from 'reducers/app'
 import modal from 'reducers/modal'
 import adminUsers from 'reducers/admin/users'
 
@@ -24,6 +25,7 @@ const initialGroupState = {
 
 const merlinApp = combineReducers(
   {
+    app,
     user,
     organisation,
     modal,
