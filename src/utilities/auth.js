@@ -48,7 +48,6 @@ function fetchToken(request){
         case 200:
         case 400:
           return response.json()
-          break;
         default:
           throw new Error('Something went wrong on api server!');
       }
