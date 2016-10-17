@@ -20,6 +20,7 @@ class AdminUsers extends React.Component {
     this.updateOrgUser = this.updateOrgUser.bind(this)
   }
   componentDidMount(){
+    this.props.dispatch({type:'SET_TITLE',title:'Admin: Users'})
     let organisationId = store.getState().user.organisationId
     if(organisationId){
       this.getAndDespatchUsersData(organisationId)

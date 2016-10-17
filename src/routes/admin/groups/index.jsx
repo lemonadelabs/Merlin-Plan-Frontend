@@ -12,6 +12,7 @@ class AdminGroups extends Component {
   componentDidMount(){
     let organisationId = this.props.organisationId || 1 //this needs to be fixed later!!!
     let { dispatch } = this.props
+    dispatch({type:'SET_TITLE',title:'Admin: Groups'})
     getData(`organisation/${organisationId}/group`)
       .then( groups => {
         dispatch({type:'SET_ORG_GROUPS', groups})

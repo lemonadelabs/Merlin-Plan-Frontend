@@ -1,9 +1,12 @@
 import React from 'react'
 import {Link} from 'react-router'
-
+import { connect } from 'react-redux';
 class Admin extends React.Component {
   constructor(...args){
     super(...args)
+  }
+  componentDidMount(){
+    this.props.dispatch({type:'SET_TITLE',title:'Admin'})
   }
   render(){
     return(
@@ -16,4 +19,4 @@ class Admin extends React.Component {
   }
 }
 
-export default Admin
+export default connect()(Admin)
