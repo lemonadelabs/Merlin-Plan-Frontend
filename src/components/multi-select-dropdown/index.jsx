@@ -35,10 +35,10 @@ class MultiSelectDropdown extends Component {
     this.setState({menuVisable:!this.state.menuVisable})
     return !this.state.menuVisable
   }
-  handleOptionClick(option){
-    let selectionIndex = findIndex(this.props.value, (o) => ( o === option.id))
+  handleOptionClick(selection){
+    let selectionIndex = findIndex(this.props.value, (o) => ( o === selection))
     if( selectionIndex === -1){
-      this.addToSelection(option.id)
+      this.addToSelection(selection)
     }else{
       this.removeFromSelection(selectionIndex)
     }
@@ -52,7 +52,7 @@ class MultiSelectDropdown extends Component {
     this.props.dispatch(actions.change(this.props.name, newSelection))
   }
   render() {
-    let labelTemplate = this.props.labelTemplate
+    let {labelTemplate, valueMapping} = this.props
     let {menuVisable} = this.state
     return (
       <div className={styles.multiSelectDropDown}>
@@ -61,7 +61,7 @@ class MultiSelectDropdown extends Component {
             this.props.value.length > 0 ? 
             this.props.value.map(
               value => {
-                let selected = find(this.props.options, option => ( option.id === value))
+                let selected = find(this.props.options, option => ( valueMapping(option) === value))
                 let label = labelTemplate(selected)
                 return(<p style={{backgroundColor:hashbow(label)}} className={styles.selectedOption}>{label}</p>)
               }
@@ -74,16 +74,17 @@ class MultiSelectDropdown extends Component {
         {
           this.props.options.map( 
             option => {
+              let optionValue = valueMapping(option)
               let classNames = styles.dropDownOption
-              let selectionIndex = findIndex(this.props.value, (o) => ( o === option.id))
+              let selectionIndex = findIndex(this.props.value, (o) => ( o === optionValue))
               if(selectionIndex !== -1){
                 classNames += ` ${styles.dropDownOptionSelected}`
               }
               return (
                 <p 
-                  className={classNames} 
-                  key={option.id} 
-                  onClick={(e)=>{ e.stopPropagation(); this.handleOptionClick(option)}}
+                  className = {classNames} 
+                  key = {optionValue} 
+                  onClick = { (e) => { e.stopPropagation(); this.handleOptionClick(optionValue)}}
                 >
                   {labelTemplate(option)}
                 </p>
