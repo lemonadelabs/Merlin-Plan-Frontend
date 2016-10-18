@@ -8,6 +8,8 @@ import { required } from 'components/forms/validators';
 import EmailField from 'components/forms/fields/email'
 import UserDetails from 'components/forms/fields/user-details'
 import { forEach } from 'lodash';
+import MultiSelectDropdown from 'components/multi-select-dropdown';
+
 
 const roles = ["Staff", "Project Admin", "Planner", "Approver", "Tracker", "Manager"]
 
@@ -77,27 +79,27 @@ class NewUserForm extends Component {
           validators={{
             required
           }}
+          component={MultiSelectDropdown} 
+          controlProps={{options:roles, labelTemplate: role => (`${role}`), valueMapping: role => ( role ) }}
           multiple={true} 
-          model=".roles">
-          {
-            roles.map((role)=>{
-              return(<option key={role} value={role}>{role}</option>)
-            })
-          }
-        </Control.select>
+          model=".roles"/>
         <Control.select            
           validators={{
             required
           }}
-          multiple={true} 
-          model=".groups">
-          {
-            organisationGroups.map((group)=>{
-              let groupStringified = JSON.stringify(group)
-              return(<option key={group.id} value={groupStringified}> {group.name}</option>)
-            })
+          component={MultiSelectDropdown} 
+          controlProps={
+            {
+              options: organisationGroups, 
+              labelTemplate: group => (`${group.name}`), 
+              valueMapping: group => { 
+                let groupStringified = JSON.stringify(group)
+                return( groupStringified )
+              }
+            }
           }
-        </Control.select>
+          multiple={true} 
+          model=".groups"/>
         <button type="submit">Add User</button>
       </Form>
     );
