@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Control, Form, Errors, actions } from 'react-redux-form';
 import generatePassword from 'password-generator'
-import { getData, postData } from 'utilities/api-interaction'
+import { getData, postData, putData } from 'utilities/api-interaction'
 import { connect } from 'react-redux'
 import { debounce } from 'lodash/debounce'
 import { required } from 'components/forms/validators';
@@ -44,7 +44,7 @@ class NewUserForm extends Component {
     forEach(groups, (group) => {
       console.log(group);
       groupPromises.push(
-        postData( `group/${group.id}/user`, { users : [ userId ] } )
+        putData( `group/${group.id}/adduser`, { users : [ userId ] } )
       )
     })
     return groupPromises
