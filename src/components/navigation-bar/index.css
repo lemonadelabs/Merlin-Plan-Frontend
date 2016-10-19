@@ -4,7 +4,7 @@
   left:0;
   z-index: 100;
   width: 100%;
-  height:45px;
+  height: 50px;
   padding: 0 1em;
   background-color: blue;
   display: flex;
@@ -18,12 +18,24 @@
 
 .userInfo{
   display: inline-flex;
+  height: 80%;
 }
 
 .userFullName{
   margin: 0;
+  padding-top: 0.7em;
+  padding-bottom: 0.3em;
+  font-weight: 600;
+  line-height: 0;
 }
 
-.nameAndLogout{
-  
+.nameAndLogoutContainer{
+  margin-left: 0.8em;
+}
+
+.logoutLink{
+  line-height: 0.8;
+  font-size: 13px;
+  color: white;
+  text-decoration: none;
 }

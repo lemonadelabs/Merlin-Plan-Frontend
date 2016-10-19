@@ -16,12 +16,13 @@ function NavigationBar({menuItems, applicationTitle, router, user}){
           lastName={user.lastName}
           profilePic={user.profilePic}
           id={user.id}/>
-        <div className={styles.nameAndLogout}>
-          <p className={styles.userFullName}>{`${user.firstName} ${user.lastName}`}</p>
-          <a onClick={ () => handleLogout(router) }>Logout</a>
-        </div>
+      <div className={styles.nameAndLogoutContainer}>
+        <p className={styles.userFullName}>{`${user.firstName} ${user.lastName}`}</p>
+        <a href='#' className={styles.logoutLink} onClick={ (e) => { e.preventDefault(); handleLogout(router)} }>Logout</a>
+      </div>
       </div>
     </header>
+
   )
 }
 

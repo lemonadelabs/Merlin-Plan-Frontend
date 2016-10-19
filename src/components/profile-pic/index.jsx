@@ -8,16 +8,28 @@ class ProfilePic extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      width:'auto'
+      width:'auto',
+      padding:'15px'
     }
   }
   
+  componentWillMount() {
+    console.log('this.refs',this.refs);
+  }
+  
   componentDidMount() {
-   this.setState({width:this.refs.profileCircle.clientHeight});
+    let circle = this.refs.profileCircle
+    let width = circle.clientHeight
+    let padding = circle.clientHeight * 0.5
+    if (circle.children.length){
+      let initalsHeight = circle.firstChild.clientHeight
+      padding -= initalsHeight / 2
+    }
+    this.setState({width,padding:`${padding}px`});
   }
   render() {
     let {profilePic, firstName = '', lastName = '', id} = this.props
-    let {width} = this.state
+    let {width, padding} = this.state
     if(firstName === undefined){
       firstName = ''
     }
@@ -34,6 +46,8 @@ class ProfilePic extends Component {
         className={styles.container} 
         style={
           {
+            paddingTop:padding,
+            paddingBottom:padding,
             width:width,
             backgroundImage:`url(${profilePic})`,
             backgroundColor:userColor,
