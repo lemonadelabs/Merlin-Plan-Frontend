@@ -20,8 +20,9 @@ class App extends React.Component {
 
   render() {
     let navbar
+    let {user, title} = this.props
     if (loggedIn()){
-      navbar = <NavigationBar applicationTitle={this.props.title} menuItems={this.state.menuItems}/>
+      navbar = <NavigationBar user={user} applicationTitle={title} menuItems={this.state.menuItems}/>
     }
     return (
       <div className={styles.app}>
@@ -33,7 +34,7 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state, props){
-  return({title:state.app.title})
+  return({title:state.app.title, user:state.user})
 }
 
 export default connect(mapStateToProps)(App)

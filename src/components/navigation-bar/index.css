@@ -15,3 +15,15 @@
 .navigationBar p{
   margin: 0;
 }
+
+.userInfo{
+  display: inline-flex;
+}
+
+.userFullName{
+  margin: 0;
+}
+
+.nameAndLogout{
+  
+}

@@ -17,6 +17,7 @@
 }
 .userCard header{
   display: flex;
+  height: 60px;
 }
 
 .groupContainer{
