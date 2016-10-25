@@ -3,7 +3,7 @@ import { Control, Form, Errors, actions } from 'react-redux-form';
 import { connect } from 'react-redux';
 import UserDetails from 'components/forms/fields/user-details'
 import UserGroupField from 'components/forms/fields/user-group'
-import { forEach, findIndex, concat } from 'lodash';
+import { forEach, findIndex} from 'lodash';
 import { addUserToGroups, removeUserFromGroups } from 'utilities/user';
 import { getData, putData } from 'utilities/api-interaction';
 
@@ -26,7 +26,7 @@ class UpdateUserForm extends Component {
   handleSubmit(user){
     let {dispatch, handleDataUpdate, modelToLoad} = this.props
     let {groupsToAdd, groupsToRemove} = this.findGroupsToAddAndRemove(user.groups, modelToLoad.groups)
-    let groupAdditionRemovingPromises = concat(addUserToGroups(groupsToAdd, user.id), removeUserFromGroups(groupsToRemove, user.id))
+    let groupAdditionRemovingPromises = [...addUserToGroups(groupsToAdd, user.id), ...removeUserFromGroups(groupsToRemove, user.id)]
 
     putData(`user/${user.id}`,user)
     .then((resp)=>{
