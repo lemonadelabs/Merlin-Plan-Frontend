@@ -24,15 +24,9 @@ class ProfilePic extends Component {
     this.setState({width,padding:`${padding}px`});
   }
   render() {
-    let {profilePic, firstName = '', lastName = '', id} = this.props
+    let {profilePic, firstName, lastName, id} = this.props
     let {width, padding} = this.state
-    if(firstName === undefined){
-      firstName = ''
-    }
-    if(lastName === undefined){
-      lastName = ''
-    }
-    let initials = firstName[0] + lastName[0]
+    let initials = firstName && lastName ? firstName[0] + lastName[0] : "??"
     let userColor = hashbow(firstName+lastName+id,60)
     let userColorLight = Color(userColor).light()
 
