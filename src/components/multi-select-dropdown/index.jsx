@@ -54,11 +54,9 @@ class MultiSelectDropdown extends Component {
   }
   render() {
     let {labelTemplate, valueMapping, selectionFind, value, options} = this.props
-    console.log(options);
     if(!Array.isArray(options)){
       options = toArray(options)
     }
-    console.log(options);
     let {menuVisable} = this.state
     return (
       <div className={styles.multiSelectDropDown}>
@@ -86,7 +84,6 @@ class MultiSelectDropdown extends Component {
         {
           options.map( 
             option => {
-              console.log('options.map option',option);
               let key = option.id || valueMapping(option)
               let optionValue = valueMapping(option)
               let classNames = styles.dropDownOption
