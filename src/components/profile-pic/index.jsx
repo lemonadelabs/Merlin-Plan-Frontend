@@ -13,10 +13,6 @@ class ProfilePic extends Component {
     }
   }
   
-  componentWillMount() {
-    console.log('this.refs',this.refs);
-  }
-  
   componentDidMount() {
     let circle = this.refs.profileCircle
     let width = circle.clientHeight
