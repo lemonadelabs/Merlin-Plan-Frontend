@@ -25,7 +25,6 @@ class UpdateUserForm extends Component {
   }
   handleSubmit(user){
     let {dispatch, handleDataUpdate, modelToLoad} = this.props
-    console.log('user',user);
     let {groupsToAdd, groupsToRemove} = this.findGroupsToAddAndRemove(user.groups, modelToLoad.groups)
     let groupAdditionRemovingPromises = concat(addUserToGroups(groupsToAdd, user.id), removeUserFromGroups(groupsToRemove, user.id))
 
