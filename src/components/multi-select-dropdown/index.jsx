@@ -53,6 +53,19 @@ class MultiSelectDropdown extends Component {
     let newSelection = [...this.props.value, selection]
     this.props.dispatch(actions.change(this.props.name, newSelection))
   }
+  showSelections(value){
+    let {labelTemplate, valueMapping, selectionFind,  options} = this.props
+    if(!options.length){
+      return
+    }
+    return value.map(
+      value => {
+        let selected = find(options, option => ( selectionFind ? selectionFind({option, value}) : valueMapping( option ) === value ) )
+        let label = labelTemplate(selected)
+        return <p style={{backgroundColor:hashbow(label)}} className={styles.selectedOption}>{label}</p>
+      }
+    )
+  }
   render() {
     let {labelTemplate, valueMapping, selectionFind, value, options} = this.props
     if(!Array.isArray(options)){
@@ -63,21 +76,7 @@ class MultiSelectDropdown extends Component {
       <div className={styles.multiSelectDropDown}>
         <div className={styles.selectedOptionContainer} onClick={ e => { e.stopPropagation(); this.handleDropDownClick() }}>
           {
-            value.length > 0 ? 
-            value.map(
-              value => {
-                if(!options.length){
-                  return
-                }
-                let selected = find(options, option => {
-
-                  return ( selectionFind ? selectionFind({option, value}) : valueMapping(option) === value )
-                })
-                let label = labelTemplate(selected)
-                return(<p style={{backgroundColor:hashbow(label)}} className={styles.selectedOption}>{label}</p>)
-              }
-            )
-            : ''
+            value.length > 0 ? this.showSelections(value) : ''
           }
         </div>
         <div style={{display: menuVisable ? 'block' : 'none'}} className={styles.optionsContainer}>
@@ -115,7 +114,8 @@ MultiSelectDropdown.propTypes = {
   labelTemplate:PropTypes.func.isRequired,
   valueMapping:PropTypes.func.isRequired,
   options:PropTypes.array.isRequired,
-  name:PropTypes.string
+  name:PropTypes.string,
+  dispatch:PropTypes.func
 }
 
 export default connect()(MultiSelectDropdown);
