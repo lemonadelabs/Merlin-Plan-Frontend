@@ -19,6 +19,7 @@ function loggedIn(){
 /** Removes the token and expiry date from session storage*/
 function logout(){
   sessionStorage.removeItem('token');
+  sessionStorage.removeItem('refreshToken');
   sessionStorage.removeItem('expiryDate');
 }
 
@@ -56,6 +57,7 @@ function loginSuccessful({error}){
 function saveSessionInfo({access_token, expires_in, refresh_token}){
   let expiryDate = moment().add(expires_in, "seconds").toISOString()
   sessionStorage.setItem('token', access_token);
+  sessionStorage.setItem('refreshToken', refresh_token);
   sessionStorage.setItem('expiryDate', expiryDate);
 }
 
