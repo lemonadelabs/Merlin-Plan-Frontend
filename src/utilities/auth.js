@@ -1,18 +1,11 @@
 import moment from 'moment'
+import { map } from 'lodash';
+import { postData } from 'utilities/api-interaction';
 
 function login(username, password){
-  let headers = createLoginHeaders();
-  let request = createLoginRequest({headers, username, password})
-  return fetchToken(request)
-       .then( (response) => {
-          saveSessionInfo(response)
-          let loginSucceed = loginSuccessful(response)
-          let loginPayload
-          if(loginSucceed){
-            loginPayload = decodePayload(response.access_token)
-          }
-          return ({'loginSucceed':loginSucceed,'loginPayload':loginPayload})
-       })
+  let loginBody = createLoginRequestBody({username, password})
+  return postData('auth/token',loginBody, 'application/x-www-form-urlencoded')
+          .then(handleLoginResponse)
 }
 
 /** Checks sessionStorage for the JWT stored with the key 'token' and gets the expiryDate of the JWT and checks to see if it is expired*/
@@ -41,20 +34,14 @@ function decodePayload(token){
 export {login, logout, loggedIn, decodePayload}//, canAccess}
 
 ////Private Functions////
-function fetchToken(request){
-  return fetch(request)
-    .then( (response) => {
-      switch (response.status) {
-        case 200:
-        case 400:
-          return response.json()
-        default:
-          throw new Error('Something went wrong on api server!');
-      }
-    })
-    .catch(function(error) {
-      console.error(error);
-    });
+function handleLoginResponse(response) {
+  saveSessionInfo(response)
+  let loginSucceed = loginSuccessful(response)
+  let loginPayload
+  if(loginSucceed){
+    loginPayload = decodePayload(response.access_token)
+  }
+  return ({'loginSucceed':loginSucceed,'loginPayload':loginPayload})
 }
 
 function loginSuccessful({error}){
@@ -76,7 +63,7 @@ function splitToken(token){
   return(token.split('.'))
 }
 
-function createLoginRequest({headers, username, password}){
+function createLoginRequestBody({username, password}){
   let requestBody = {
     'username': username,
     'password': password,
@@ -84,24 +71,11 @@ function createLoginRequest({headers, username, password}){
     'resource': 'http://localhost:5000/',
     'scope': 'offline_access roles'
   }
-  let requestObject = {
-    method:'POST',
-    headers: headers,
-    body: toQueryString(requestBody)
-  }
-  let request = new Request('/api/auth/token', requestObject)
-  return request
+  return toQueryString(requestBody)
 }
-
-function createLoginHeaders(){
-  let headers = new Headers()
-  headers.append('Content-Type', 'application/x-www-form-urlencoded')
-  return headers
-}
-
 //taken from http://stackoverflow.com/a/26148931
 function toQueryString(obj) {
-  return _.map(obj,function(v,k){
+  return map(obj,function(v,k){
     return encodeURIComponent(k) + '=' + encodeURIComponent(v);
   }).join('&');
-};
+}

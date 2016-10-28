@@ -13,8 +13,8 @@ function getData(endpoint, query = {}){
 }
 
 /**Will make POST request to `/api/${endpoint}` and returns a promise*/
-function postData(endpoint, body){
-  let headers = createHeaders()
+function postData(endpoint, body, contentType){
+  let headers = createHeaders(contentType)
   let request = createRequest(
     { headers:headers,
       method:"POST",
@@ -75,8 +75,10 @@ function fetchRequest(request){
       switch (response.status) {
         case 200:
           return response.text()
-        default:
+        default:{
+          console.warn('Bad response from server', response.text());
           promise.reject(error)
+        }
       }
     })
     .then( responseText => {
@@ -96,8 +98,9 @@ function createRequest({headers, method, url, requestBody}){
     method: method,
     headers: headers
   }
+  let contentType = headers.get('Content-Type')
   if(requestBody){
-    requestObject.body = JSON.stringify(requestBody)
+    requestObject.body = contentType === 'application/json' ? JSON.stringify(requestBody) : requestBody
   }
   let request = new Request(url, requestObject)
   return request
