@@ -50,7 +50,6 @@ function deleteData({endPoint, id, body, contentType=''}){
     }
   if(body){
     requestParams.requestBody = body
-    console.log(body);
   }
   let request = createRequest( requestParams )
   return( fetchRequest(request) )
@@ -72,7 +71,7 @@ function queryStringFromObject(query){
 
 function fetchRequest(request){
    let promise = fetch(request)
-    .then( (response) => {
+    .then( response => {
       switch (response.status) {
         case 200:
           return response.text()
@@ -80,7 +79,7 @@ function fetchRequest(request){
           promise.reject(error)
       }
     })
-    .then((responseText)=>{
+    .then( responseText => {
       return(responseText ? JSON.parse(responseText) : responseText)
     })
     return promise

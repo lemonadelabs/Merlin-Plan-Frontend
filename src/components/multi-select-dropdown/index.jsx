@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { actions } from 'react-redux-form';
 import { findIndex, find, toArray } from 'lodash';
@@ -37,10 +37,11 @@ class MultiSelectDropdown extends Component {
   }
   handleOptionClick(selection){
     let {value, selectionFind} = this.props
-    let selectionIndex = findIndex(value, (option) => ( selectionFind ? selectionFind({option, value:selection}) : option === selection))
+    let selectionIndex = findIndex(value, option => ( selectionFind ? selectionFind({option, value:selection}) : option === selection))
     if( selectionIndex === -1){
       this.addToSelection(selection)
-    }else{
+    }
+    else{
       this.removeFromSelection(selectionIndex)
     }
   }
@@ -60,7 +61,7 @@ class MultiSelectDropdown extends Component {
     let {menuVisable} = this.state
     return (
       <div className={styles.multiSelectDropDown}>
-        <div className={styles.selectedOptionContainer} onClick={(e)=>{e.stopPropagation();this.handleDropDownClick()}}>
+        <div className={styles.selectedOptionContainer} onClick={ e => { e.stopPropagation(); this.handleDropDownClick() }}>
           {
             value.length > 0 ? 
             value.map(
@@ -68,7 +69,7 @@ class MultiSelectDropdown extends Component {
                 if(!options.length){
                   return
                 }
-                let selected = find(options, (option) => {
+                let selected = find(options, option => {
 
                   return ( selectionFind ? selectionFind({option, value}) : valueMapping(option) === value )
                 })
@@ -76,8 +77,7 @@ class MultiSelectDropdown extends Component {
                 return(<p style={{backgroundColor:hashbow(label)}} className={styles.selectedOption}>{label}</p>)
               }
             )
-            : 
-            ''
+            : ''
           }
         </div>
         <div style={{display: menuVisable ? 'block' : 'none'}} className={styles.optionsContainer}>
@@ -87,7 +87,7 @@ class MultiSelectDropdown extends Component {
               let key = option.id || valueMapping(option)
               let optionValue = valueMapping(option)
               let classNames = styles.dropDownOption
-              let selectionIndex = findIndex(value, (o) => (selectionFind ? selectionFind({option : o, value: optionValue}) : o === optionValue))
+              let selectionIndex = findIndex(value, o => (selectionFind ? selectionFind({option : o, value: optionValue}) : o === optionValue))
               if(selectionIndex !== -1){
                 classNames += ` ${styles.dropDownOptionSelected}`
               }
@@ -95,7 +95,7 @@ class MultiSelectDropdown extends Component {
                 <p 
                   className = {classNames} 
                   key = {key} 
-                  onClick = { (e) => { e.stopPropagation(); this.handleOptionClick(optionValue)}}
+                  onClick = { e => { e.stopPropagation(); this.handleOptionClick(optionValue) }}
                 >
                   {labelTemplate(option)}
                 </p>
@@ -107,6 +107,15 @@ class MultiSelectDropdown extends Component {
       </div>
     );
   }
+}
+
+MultiSelectDropdown.propTypes = {
+  value:PropTypes.array.isRequired,
+  selectionFind:PropTypes.func,
+  labelTemplate:PropTypes.func.isRequired,
+  valueMapping:PropTypes.func.isRequired,
+  options:PropTypes.array.isRequired,
+  name:PropTypes.string
 }
 
 export default connect()(MultiSelectDropdown);

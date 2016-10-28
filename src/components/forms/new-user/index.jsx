@@ -1,14 +1,13 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux'
-import { forEach, debounce } from 'lodash';
-import { Control, Form, Errors, actions } from 'react-redux-form';
+import { Control, Form, actions } from 'react-redux-form';
 import generatePassword from 'password-generator'
 import { required } from 'components/forms/validators';
 import EmailField from 'components/forms/fields/email'
 import UserDetails from 'components/forms/fields/user-details'
 import UserGroupField from 'components/forms/fields/user-group'
 import MultiSelectDropdown from 'components/multi-select-dropdown';
-import { getData, postData, putData } from 'utilities/api-interaction'
+import { getData, postData } from 'utilities/api-interaction'
 import { addUserToGroups } from 'utilities/user';
 
 const roles = ["Staff", "Project Admin", "Planner", "Approver", "Tracker", "Manager"]
@@ -20,7 +19,7 @@ class NewUserForm extends Component {
     let groups = userInfo.groups
     let newUserPayload = this.createNewUserPayload(userInfo)
     postData('user', newUserPayload).then(
-      (user) => {
+      user => {
         if (user.succeeded === false){
           return
         }
@@ -39,23 +38,22 @@ class NewUserForm extends Component {
     newUserPayload.userDetails = Object.assign({},userInfo)
     newUserPayload.userDetails.organisationId = this.props.organisationId
     newUserPayload.userDetails.userName = newUserPayload.userDetails.email
-    delete newUserPayload.userDetails.groups
+    Reflect.deleteProperty(newUserPayload.userDetails, 'groups')
     newUserPayload.password = generatePassword()
     return newUserPayload
   }
   componentDidMount(){
-    let {organisationId,dispatch} = this.props
+    let {organisationId, dispatch} = this.props
     getData(`organisation/${organisationId}/group`)
-      .then((groups)=>{
+      .then( groups => {
         let newGroupAction = {type:'SET_ORG_GROUPS', groups}
         dispatch(newGroupAction)
       })
   }
   render() {
-    console.log(this.props);
     let organisationGroups = this.props.organisationGroups || []
     return (
-      <Form autoComplete={"off"} model="forms.user" onSubmit={(userInfo)=>{this.handleSubmit(userInfo)}}>
+      <Form autoComplete={"off"} model="forms.user" onSubmit={userInfo=>{ this.handleSubmit(userInfo) }}>
         <UserDetails/>
         <EmailField/>
         <Control.select            
@@ -73,7 +71,13 @@ class NewUserForm extends Component {
   }
 }
 
-function propsToState(state, props) {
+NewUserForm.propTypes = {
+  organisationId : PropTypes.number,
+  organisationGroups : PropTypes.array,
+  dispatch: PropTypes.func
+}
+
+function propsToState(state) {
   return(
     {
       organisationId:state.user.organisationId,

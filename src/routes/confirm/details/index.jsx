@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import { getData } from 'utilities/api-interaction'
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import UserCard from 'components/user-card';
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
+import UserCard from 'components/user-card'
 import Modal from 'components/modal'
 import UpdateUserForm from 'components/forms/update-user'
+
 class ConfirmDetails extends Component {
   constructor(args) {
     super(args)
@@ -38,7 +38,13 @@ class ConfirmDetails extends Component {
   }
 }
 
-function mapStateToProps(state,ownProps){
+ConfirmDetails.propTypes = {
+  dispatch:PropTypes.func,
+  user: PropTypes.object,
+  router: PropTypes.any
+}
+
+function mapStateToProps(state){
   return({user : state.user})
 }
 

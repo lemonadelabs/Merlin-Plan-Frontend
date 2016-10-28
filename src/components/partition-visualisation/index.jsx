@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import { Stage, Layer, Rect, Group} from 'react-konva';
 import { clone } from 'lodash';
 import hashbow from 'hashbow';
@@ -13,7 +13,7 @@ class PartitionVisualisation extends Component {
           <Layer>
             {
               partitions.map(
-                (partition) => {
+                partition => {
                   let x = clone(totalPixelsUsed)
                   let partitionWidth = width * (partition.value / available)
                   totalPixelsUsed += partitionWidth; 
@@ -33,7 +33,7 @@ class PartitionVisualisation extends Component {
         <div>
           {
             partitions.map(
-              (partition) => (<p>`{partition.name}`</p>)
+              partition => (<p>`{partition.name}`</p>)
             )
           }
         </div>
@@ -42,6 +42,13 @@ class PartitionVisualisation extends Component {
       
     );
   }
+}
+
+PartitionVisualisation.propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
+  available: PropTypes.number,
+  partitions: PropTypes.arrayOf(PropTypes.object)
 }
 
 function renderUnusedPartition(totalPixelsUsed,containerWidth,height){

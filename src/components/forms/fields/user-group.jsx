@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Control } from 'react-redux-form';
 import MultiSelectDropdown from 'components/multi-select-dropdown';
 import { required } from 'components/forms/validators'
@@ -14,9 +14,8 @@ const UserGroupField = ({organisationGroups}) => {
         controlProps={
           {
             options: organisationGroups, 
-            labelTemplate: group => {return(`${group.name}`)}, 
+            labelTemplate: group => { return(`${group.name}`) }, 
             valueMapping: group => { 
-              let groupStringified = JSON.stringify(group)
               return( group )
             },
             selectionFind: ({option, value}) => {
@@ -30,4 +29,7 @@ const UserGroupField = ({organisationGroups}) => {
   );
 };
 
+UserGroupField.propTypes = {
+  organisationGroups: PropTypes.array
+}
 export default UserGroupField;

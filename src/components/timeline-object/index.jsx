@@ -1,10 +1,9 @@
-import React from 'react'
-import {Layer, Label, Text, Rect, Stage, Group} from 'react-konva';
-import _ from 'lodash'
+import React, {Component, PropTypes} from 'react'
+import { Label, Text, Rect, Group} from 'react-konva';
 import {Motion, spring} from 'react-motion';
-import {calculateYearWidthModePadding, yearsBetween, dateToQuarter, calculateIndicatorWidth, indicatorWidthFromMode} from 'utilities/timeline-utilities'
+import {calculateYearWidthModePadding, unitsBetween, dateToQuarter, calculateIndicatorWidth, indicatorWidthFromMode, numberOfMonthsChanged, numberOfYearsChanged} from 'utilities/timeline-utilities'
 
-class TimelineObject extends React.Component {
+class TimelineObject extends Component {
   constructor(...args) {
     super(...args);
     this.handleDragEnd = this.handleDragEnd.bind(this)
@@ -14,8 +13,7 @@ class TimelineObject extends React.Component {
 
     let startDate = new Date(this.props.startDate)
     let endDate = new Date(this.props.endDate)
-    let {stageWidth, numberOfYears, timelineStartYear} = this.props
-    let {x,width} = this.calculateWidthAndX(startDate, endDate, stageWidth, numberOfYears, timelineStartYear)
+    let {x,width} = this.calculateWidthAndX(startDate, endDate)
 
     this.state = {
       x: x,
@@ -27,12 +25,22 @@ class TimelineObject extends React.Component {
       endDate:endDate
     }
   }
-  calculateWidthAndX(startDate, endDate, stageWidth, numberOfYears, timelineStartYear){
-    let x = this.findStartPositionFromDate(startDate, stageWidth, numberOfYears, timelineStartYear)
-    let width = this.findWidthFromEndDate(startDate, endDate, stageWidth, numberOfYears, timelineStartYear)
+  componentWillReceiveProps(nextProps){
+    this.updateWidthAndX(nextProps)
+  }
+  updateWidthAndX(props) {
+    let {stageWidth, numberOfYears, timelineStartYear} = props
+    let {x, width} = this.calculateWidthAndX(this.state.startDate, this.state.endDate, stageWidth, numberOfYears, timelineStartYear)
+
+    this.setState({width: width, x: x})
+  }
+  calculateWidthAndX(startDate, endDate){
+    let x = this.findStartPositionFromDate(startDate)
+    let width = this.calculateWidth(startDate, endDate)
     return {x, width}
   }
-  findStartPositionFromDate(startDate,stageWidth,numberOfYears,timelineStartYear){
+  findStartPositionFromDate(startDate){
+    let {stageWidth, numberOfYears, timelineStartYear} = this.props
     let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
     let yearsFromStartYear = this.amountOfYearsFromTimelineStartYear(startDate, timelineStartYear)
     let yearOffset = (yearWidth * yearsFromStartYear) + (padding * yearsFromStartYear)
@@ -56,7 +64,8 @@ class TimelineObject extends React.Component {
     let x = yearOffset + indicatorOffset
     return x;
   }
-  findDateFromPosition(x,stageWidth,numberOfYears,timelineStartYear){
+  findDateFromPosition(x, timelineStartYear){
+    let {stageWidth, numberOfYears} = this.props
     let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
     let numberOfYearsFromStart = Math.floor(x / yearWidth)
     let yearOffset = (yearWidth + padding) * numberOfYearsFromStart
@@ -70,39 +79,10 @@ class TimelineObject extends React.Component {
 
     return(date);
   }
-  unitsBetween(startDate,endDate,mode){
-    let years = yearsBetween(startDate,endDate)
-    let startOffset
-    let totalTimeUnits
-    switch (mode) {
-      case "Months":
-        startOffset = startDate.getMonth()
-        totalTimeUnits = (years * 12) - startOffset
-        totalTimeUnits += endDate.getMonth() + 1
-        break;
-      case "Quarters":
-        startOffset = dateToQuarter(startDate) - 1
-        totalTimeUnits = (years * 4) - startOffset
-        totalTimeUnits += dateToQuarter(endDate)
-        break;
-      default:
-        console.error(`Incorrect mode: ${mode} not defined`)
-    }
-    return totalTimeUnits
-  }
-  numberOfMonthsChanged(date1,date2){
-    let month1 = date1.getMonth()
-    let month2 = date2.getMonth()
-    return month1 - month2
-  }
-  numberOfYearsChanged(date1,date2){
-    let year1 = date1.getFullYear()
-    let year2 = date2.getFullYear()
-    return year1 - year2
-  }
-  findWidthFromEndDate(startDate, endDate, stageWidth, numberOfYears, timelineStartYear){
+  calculateWidth(startDate, endDate){
+    let {stageWidth, numberOfYears} = this.props
     let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
-    let timeUnits = this.unitsBetween(startDate, endDate, mode)
+    let timeUnits = unitsBetween(startDate, endDate, mode)
     let indicatorWidth = indicatorWidthFromMode(mode,padding,yearWidth)
     let monthPadding = padding * timeUnits - padding
     let width = (indicatorWidth * timeUnits) + (monthPadding)
@@ -139,10 +119,9 @@ class TimelineObject extends React.Component {
     this.updateWidthAndX(this.props)
   }
   handleDragBound(pos){
-    let rect = this.refs.rect;
     let scaleDirection = this.scaleDirection
     let newPos = {
-      x: scaleDirection !== "right" ? this.state.x : pos.x,
+      x: scaleDirection === "right" ? pos.x : this.state.x,
       y: this.state.y
     }
     return newPos
@@ -171,8 +150,8 @@ class TimelineObject extends React.Component {
         break;
       default:
         startDate = this.findDateFromPosition(x, this.props.stageWidth, this.props.numberOfYears, this.props.timelineStartYear)
-        let monthChange = this.numberOfMonthsChanged(startDate,oldState.startDate)
-        let yearChange = this.numberOfYearsChanged(startDate,oldState.startDate)
+        let monthChange = numberOfMonthsChanged(startDate, oldState.startDate)
+        let yearChange = numberOfYearsChanged(startDate, oldState.startDate)
         let oldEndMonth = endDate.getMonth()
         let oldEndYear = endDate.getFullYear()
         endDate = new Date(oldEndYear+yearChange,oldEndMonth+monthChange)
@@ -204,15 +183,7 @@ class TimelineObject extends React.Component {
     }
     return newState
   }
-  updateWidthAndX(props) {
-    let {stageWidth, numberOfYears, timelineStartYear} = props
-    let {x, width} = this.calculateWidthAndX(this.state.startDate, this.state.endDate, stageWidth, numberOfYears, timelineStartYear)
 
-    this.setState({width: width, x: x})
-  }
-  componentWillReceiveProps(nextProps){
-    this.updateWidthAndX(nextProps)
-  }
   render() {
     let SliderMotionSettings = {stiffness: 90, damping: 12}
       return (
@@ -234,7 +205,7 @@ class TimelineObject extends React.Component {
                 cornerRadius={3}
                 shadowBlur={4}
               />
-              <TruncatingText text={this.props.name} width={interpolatingStyles.width}/>
+              <TimelineLabel text={this.props.name} width={interpolatingStyles.width}/>
             </Group>
           }
         </Motion>
@@ -242,29 +213,34 @@ class TimelineObject extends React.Component {
   }
 }
 
-class TruncatingText extends React.Component {
-  constructor(...args) {
-    super(...args);
-  }
-  render() {
-    // if(this.refs.text){
-    //   console.log(this.refs.text);
-    // }
-    return (
-      <Label x={10} y={6}>
-        <Text
-          ref="text"
-          fontSize={12}
-          weight={'bold'}
-          fill={'white'}
-          fontFamily={'Roboto Condensed'}
-          wrap={'none'}
-          width={this.props.width - 20}
-          text={this.props.text}/>
-      </Label>
-    )
-    // <Text text={'...'} x={this.props.width - 20} />
-  }
+TimelineObject.propTypes = {
+  name:PropTypes.string,
+  startDate:PropTypes.string,
+  endDate:PropTypes.string,
+  stageWidth:PropTypes.number,
+  numberOfYears:PropTypes.number,
+  timelineStartYear:PropTypes.number
+}
+
+function TimelineLabel({text,width}){
+  return (
+    <Label x={10} y={6}>
+      <Text
+        ref="text"
+        fontSize={12}
+        weight={'bold'}
+        fill={'white'}
+        fontFamily={'Roboto Condensed'}
+        wrap={'none'}
+        width={width - 20}
+        text={text}/>
+    </Label>
+  )
+}
+
+TimelineLabel.propTypes = {
+  text: PropTypes.string,
+  width: PropTypes.number
 }
 
 export {TimelineObject}

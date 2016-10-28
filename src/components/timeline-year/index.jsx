@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import {TimelineIndicator} from 'components/timeline-indicator'
-import {Layer, Label, Text, Rect, Stage, Group} from 'react-konva'
-import {calculateYearWidthModePadding, calculateIndicatorWidth} from 'utilities/timeline-utilities'
-import {TransitionMotion, spring} from 'react-motion';
+import {Text, Rect, Group} from 'react-konva'
+import {calculateIndicatorWidth} from 'utilities/timeline-utilities'
+import { times } from 'lodash';
 
-function TimelineYear ({width, iterate, padding, startYear, endYear, mode}){
-  let timeUnits = buildTimeline(width, mode, padding)
+function TimelineYear ({width, iterate, padding, startYear, mode}){
+  let timeUnits = buildIndicatorArray(padding, width, mode)
   let year = startYear + iterate
   return(
     <Group x={(width * iterate) + (padding * iterate) }>
@@ -17,26 +17,13 @@ function TimelineYear ({width, iterate, padding, startYear, endYear, mode}){
   )
 }
 
-function buildTimeline(width, mode, padding){
-  let yearWidth = width
-  switch (mode) {
-    case "Quarters":
-      return buildQuarters(yearWidth, padding)
-      break;
-    case "Months":
-      return buildMonths(yearWidth, padding)
-      break;
-    default:
-      return buildMonths(yearWidth, padding)
-  }
-}
-
-function buildQuarters(yearWidth, padding){
-  return buildIndicatorArray(padding, yearWidth, "Quarters")
-}
-
-function buildMonths(yearWidth, padding){
-  return buildIndicatorArray(padding, yearWidth, "Months")
+TimelineYear.propTypes = {
+  width: PropTypes.number.isRequired,
+  iterate: PropTypes.number.isRequired,
+  padding: PropTypes.number.isRequired,
+  startYear: PropTypes.number.isRequired,
+  endYear: PropTypes.number.isRequired,
+  mode:PropTypes.string.isRequired
 }
 
 function buildIndicatorArray(indicatorPadding, yearWidth, mode){
@@ -56,9 +43,9 @@ function buildIndicatorArray(indicatorPadding, yearWidth, mode){
   }
 
   let indicatorWidth = calculateIndicatorWidth(iterations, indicatorPadding, yearWidth)
-  _.times(iterations, (i) => {
+  times(iterations, i => {
     let label = mode === "Months" ? months[i] : `Q${i+1}`
-    timelineIndicators.push (
+    timelineIndicators.push(
       <TimelineIndicator
         key={i}
         label={label}

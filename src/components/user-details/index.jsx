@@ -1,8 +1,7 @@
-'use strict';
-import React from 'react';
+import React, {Component} from 'react';
 import styles from './index.css'
 
-class UserDetails extends React.Component {
+class UserDetails extends Component {
   render() {
     let user = this.props
     return (

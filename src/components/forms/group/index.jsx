@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import { Form, Control, Errors, actions } from 'react-redux-form'
+import { Form, Control, Errors } from 'react-redux-form'
 import { getData, postData, putData } from 'utilities/api-interaction'
 import { required } from 'components/forms/validators'
 import { connect } from 'react-redux';
@@ -22,7 +22,6 @@ class GroupForm extends Component {
     let newGroupPayload = {}
     Object.assign(newGroupPayload, {name: groupInfo.name, description: groupInfo.description})
     newGroupPayload.organisationId = organisationId
-    console.log('groupInfo',groupInfo,'newGroupPayload',newGroupPayload);
     postData('group',newGroupPayload)
       .then( newGroup => {
         this.addUsersToGroup(groupInfo.members, newGroup.id)
@@ -30,7 +29,7 @@ class GroupForm extends Component {
         dispatch({type:"HIDE_MODAL"})
       })
   }
-  addUsersToGroup(users,groupId){
+  static addUsersToGroup(users,groupId){
     putData(`group/${groupId}/adduser`, {users})
   }
   render() {
@@ -52,10 +51,12 @@ class GroupForm extends Component {
 }
 
 GroupForm.propTypes = {
-
+  users:PropTypes.array,
+  organisationId:PropTypes.number,
+  dispatch:PropTypes.func
 };
 
-function stateToProps(state, props) {
+function stateToProps(state) {
     return({
       users : state.organisation.users
     })

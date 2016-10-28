@@ -1,10 +1,8 @@
-'use strict';
-import React from 'react';
+import React, { PropTypes } from 'react';
 import UserDetails from 'components/user-details'
 import ProfilePic from 'components/profile-pic'
 import Tag from 'components/tag'
 import Break from 'components/break'
-import { isEmpty } from 'lodash'
 import styles from './index.css'
 
 let fallbackUserModal = {
@@ -16,10 +14,7 @@ let fallbackUserModal = {
   groups:[]
 } 
 
-const UserCard = ({user = userModal, clickFunction, selected}) => {
-  if(isEmpty(user)){
-    user = fallbackUserModal
-  }
+const UserCard = ({user = fallbackUserModal, clickFunction, selected}) => {
   return (
   <div 
     key={user.id} 
@@ -43,13 +38,19 @@ const UserCard = ({user = userModal, clickFunction, selected}) => {
     <Break width="full" thickness="hair"/>
     <p className={styles.heading}>
       Roles:
-      {user.roles.map((role) => <span key={role}> {role}</span>)}
+      {user.roles.map( role => <span key={role}> {role} </span>)}
     </p>
     <div className={styles.groupContainer}>
     <p className={styles.heading}>Groups:</p>
-      {user.groups.map( (group) => <Tag key={group.id} name={group.name}/>)}
+      {user.groups.map( group => <Tag key={group.id} name={group.name}/>)}
     </div>
   </div>
-)};
+) };
+
+UserCard.propTypes = {
+  user: PropTypes.object,
+  clickFunction: PropTypes.func,
+  selected: PropTypes.bool
+}
 
 export default UserCard;

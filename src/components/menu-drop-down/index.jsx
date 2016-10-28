@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import {Link} from 'react-router'
 import styles from './index.css'
 
@@ -8,6 +8,10 @@ function MenuDropDown({menuItems}){
   })
 
   return(<nav className={styles['menu-drop-down']} >{menuLinks}</nav>)
+}
+
+MenuDropDown.propTypes = {
+  menuItems: PropTypes.array.isRequired
 }
 
 export default MenuDropDown

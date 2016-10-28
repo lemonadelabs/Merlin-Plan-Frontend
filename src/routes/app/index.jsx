@@ -1,10 +1,10 @@
-import React from 'react'
+import React,{Component, PropTypes} from 'react'
 import { loggedIn } from 'utilities/auth'
 import NavigationBar from 'components/navigation-bar'
 import { connect } from 'react-redux';
 import styles from './app.css'
 
-class App extends React.Component {
+class App extends Component {
   constructor() {
     super()
     this.state={
@@ -20,20 +20,26 @@ class App extends React.Component {
 
   render() {
     let navbar
-    let {user, title} = this.props
+    let {user, title, children} = this.props
     if (loggedIn()){
       navbar = <NavigationBar user={user} applicationTitle={title} menuItems={this.state.menuItems}/>
     }
     return (
       <div className={styles.app}>
         {navbar }
-        {this.props.children}
+        {children}
       </div>
     )
   }
 }
 
-function mapStateToProps(state, props){
+App.propTypes = {
+  user: PropTypes.object,
+  title: PropTypes.string,
+  children: PropTypes.element
+}
+
+function mapStateToProps(state){
   return({title:state.app.title, user:state.user})
 }
 

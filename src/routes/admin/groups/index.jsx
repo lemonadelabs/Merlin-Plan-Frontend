@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { getData } from 'utilities/api-interaction';
 import Modal from 'components/modal'
@@ -44,7 +44,13 @@ class AdminGroups extends Component {
   }
 }
 
-function mapStateToProps(state, props) {
+AdminGroups.propTypes = {
+  organisationId: PropTypes.number,
+  groups: PropTypes.array,
+  dispatch: PropTypes.func
+}
+
+function mapStateToProps(state) {
   return({organisationId:state.user.organisationId,groups:state.organisation.groups})
 }
 export default connect(mapStateToProps)(AdminGroups);

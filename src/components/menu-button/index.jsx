@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {Component, PropTypes} from 'react'
 import MenuDropDown from 'components/menu-drop-down'
 
-class MenuButton extends React.Component{
+class MenuButton extends Component{
   constructor() {
     super()
     this.handleClick = this.handleClick.bind(this)
@@ -25,7 +25,8 @@ class MenuButton extends React.Component{
     if(showMenu){
       //this feels a bit hacky :|
       setTimeout(this.addWindowEventListener.bind(this), 1)
-    }else{
+    }
+    else{
       this.removeWindowEventListener()
     }
   }
@@ -42,6 +43,10 @@ class MenuButton extends React.Component{
     }
     return(<div><div onClick={this.handleClick}>Menu</div>{menuDropDown}</div>)
   }
+}
+
+MenuButton.propTypes = {
+  menuItems: PropTypes.array.isRequired
 }
 
 export default MenuButton

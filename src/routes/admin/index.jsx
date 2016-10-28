@@ -1,10 +1,7 @@
-import React from 'react'
+import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import { connect } from 'react-redux';
-class Admin extends React.Component {
-  constructor(...args){
-    super(...args)
-  }
+class Admin extends Component {
   componentDidMount(){
     this.props.dispatch({type:'SET_TITLE',title:'Admin'})
   }
@@ -17,6 +14,10 @@ class Admin extends React.Component {
       </div>
     )
   }
+}
+
+Admin.propTypes = {
+  dispatch:PropTypes.func
 }
 
 export default connect()(Admin)

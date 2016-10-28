@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import MenuButton from 'components/menu-button'
 import { logout } from 'utilities/auth'
 import { withRouter } from 'react-router'
@@ -18,14 +18,19 @@ function NavigationBar({menuItems, applicationTitle, router, user}){
           id={user.id}/>
       <div className={styles.nameAndLogoutContainer}>
         <p className={styles.userFullName}>{`${user.firstName} ${user.lastName}`}</p>
-        <a href='#' className={styles.logoutLink} onClick={ (e) => { e.preventDefault(); handleLogout(router)} }>Logout</a>
+        <a href="#" className={styles.logoutLink} onClick={ e => { e.preventDefault(); handleLogout(router) } }>Logout</a>
       </div>
       </div>
     </header>
 
   )
 }
-
+NavigationBar.propTypes = {
+  menuItems:PropTypes.array.isRequired,
+  applicationTitle:PropTypes.string.isRequired,
+  router:PropTypes.any,
+  user:PropTypes.object
+}
 function handleLogout(router){
   logout()
   router.replace('/login')

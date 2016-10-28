@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 
 class PasswordForm extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   handleSubmit(e){
@@ -32,5 +31,9 @@ class PasswordForm extends Component {
     );
   }
 }
+PasswordForm.propTypes = {
+  handlePasswordSet: PropTypes.func.isRequired
+}
+
 
 export default PasswordForm;

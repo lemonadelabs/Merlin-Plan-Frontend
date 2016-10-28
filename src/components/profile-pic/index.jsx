@@ -1,7 +1,6 @@
-'use strict';
 import React, {Component, PropTypes} from 'react';
 import hashbow from 'hashbow'
-import Color from 'color'
+import color from 'color'
 import styles from './index.css'
 
 class ProfilePic extends Component {
@@ -12,8 +11,10 @@ class ProfilePic extends Component {
       padding:'15px'
     }
   }
-  
   componentDidMount() {
+    this.calculatePaddingForInitials() 
+  }
+  calculatePaddingForInitials() {
     let circle = this.refs.profileCircle
     let width = circle.clientHeight
     let padding = circle.clientHeight * 0.5
@@ -28,7 +29,7 @@ class ProfilePic extends Component {
     let {width, padding} = this.state
     let initials = firstName && lastName ? firstName[0] + lastName[0] : "??"
     let userColor = hashbow(firstName+lastName+id,60)
-    let userColorLight = Color(userColor).light()
+    let userColorLight = color(userColor).light()
 
     return (
       <div
@@ -48,6 +49,13 @@ class ProfilePic extends Component {
       </div>
     )
   }
+}
+
+ProfilePic.propTypes = {
+  profilePic : PropTypes.string,
+  firstName : PropTypes.string,
+  lastName : PropTypes.string,
+  id : PropTypes.string
 }
 
 

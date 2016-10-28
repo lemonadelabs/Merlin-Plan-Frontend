@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component,PropTypes} from 'react';
 import styles from './styles.css'
 import { connect } from 'react-redux';
 
@@ -18,7 +18,7 @@ class Modal extends Component {
     if(this.props.show){
       modal = <div className={styles.shade} onClick={this.hideModal}>
         
-        <div className={styles.modal } onClick={ (e) => {e.stopPropagation()} }>
+        <div className={styles.modal } onClick={ e => { e.stopPropagation() } }>
           {modalHeader}
           {this.props.children}
         </div>
@@ -28,7 +28,14 @@ class Modal extends Component {
   }
 }
 
-function mapStateToProps(state,props) {
+Modal.propTypes = {
+  children:PropTypes.element.isRequired,
+  show:PropTypes.bool.isRequired,
+  title: PropTypes.string,
+  dispatch:PropTypes.func
+}
+
+function mapStateToProps(state) {
   return({show:state.modal.visability})
 }
 

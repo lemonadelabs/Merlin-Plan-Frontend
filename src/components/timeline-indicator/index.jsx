@@ -1,6 +1,5 @@
-import React from 'react'
-import {Layer, Label, Text, Rect, Stage, Group} from 'react-konva'
-import {TransitionMotion, spring} from 'react-motion';
+import React, {PropTypes} from 'react'
+import { Text, Rect, Group} from 'react-konva'
 
 function TimelineIndicator ({label, width, padding, iterate, startYear, y}){
   return(
@@ -17,5 +16,15 @@ function TimelineIndicator ({label, width, padding, iterate, startYear, y}){
     </Group>
   )
 }
+
+TimelineIndicator.propTypes = {
+  label: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
+  padding: PropTypes.number.isRequired,
+  iterate: PropTypes.number.isRequired,
+  startYear: PropTypes.number.isRequired,
+  y:PropTypes.number.isRequired
+}
+
 
 export {TimelineIndicator}

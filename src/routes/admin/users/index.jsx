@@ -1,16 +1,15 @@
-'use strict';
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import UserCard from 'components/user-card'
 import styles from './index.css'
 import { connect } from 'react-redux'
-import { getData, postData, deleteData } from 'utilities/api-interaction'
+import { getData, deleteData } from 'utilities/api-interaction'
 import store from 'store'
 import { find, findIndex, forEach} from 'lodash'
 import NewUserForm from 'components/forms/new-user';
 import UpdateUserForm from 'components/forms/update-user';
 import Modal from 'components/modal'
 
-class AdminUsers extends React.Component {
+class AdminUsers extends Component {
   constructor(){
     super()
     this.toggleUserSelection = this.toggleUserSelection.bind(this)
@@ -24,7 +23,8 @@ class AdminUsers extends React.Component {
     let organisationId = store.getState().user.organisationId
     if(organisationId){
       this.getAndDespatchUsersData(organisationId)
-    }else{
+    }
+    else{
       this.waitForUserData()
     }
   }
@@ -42,7 +42,7 @@ class AdminUsers extends React.Component {
   }
   getAndDespatchUsersData(organisationId){
     getData(`organisation/${organisationId}/user`)
-    .then( (orgUsers) => {
+    .then( orgUsers => {
       store.dispatch({type:'SET_ORG_USERS', users:orgUsers})
     })
   }
@@ -57,9 +57,9 @@ class AdminUsers extends React.Component {
   }
   deactivateUsers(){
     let selectedUsers = this.props.selectedUsers;
-    let userIds = selectedUsers.map( (user) => (user.id) )
+    let userIds = selectedUsers.map( user => (user.id) )
     let loggedInUserId = store.getState().user.id
-    let loggedInUserIndex = findIndex(userIds, (id) => ( id === loggedInUserId) )
+    let loggedInUserIndex = findIndex(userIds, id => ( id === loggedInUserId) )
 
     if(loggedInUserIndex !== -1){
       alert("Can't delete yourself")
@@ -68,13 +68,13 @@ class AdminUsers extends React.Component {
 
     store.dispatch({type:'DELETE_ORG_USERS', userIds:userIds})
     store.dispatch({type:'DESELECT_ALL_ORG_USERS'})
-    forEach( userIds, (id) => {
+    forEach( userIds, id => {
         deleteData( { endPoint:'user', id : id})
     })
   }
   toggleUserSelection(user){
     let {selectedUsers} = this.props
-    let userSelected = find(selectedUsers,(u) => (u.id === user.id) )
+    let userSelected = find(selectedUsers,u => (u.id === user.id) )
     if(userSelected){
       store.dispatch({type:'DESELECT_ORG_USER', user:user})
     }
@@ -98,7 +98,7 @@ class AdminUsers extends React.Component {
           handleDataUpdate={this.updateOrgUser}/>
         break;
       default:
-        modalContents = ''
+        modalContents = <div></div>
     }
     return modalContents
   }
@@ -114,8 +114,8 @@ class AdminUsers extends React.Component {
         <div className={styles['card-container']}>
           {
             users.map( 
-              (user) => {
-                let selected = find(selectedUsers, (u) => (u.id === user.id) ) ? true : false
+              user => {
+                let selected = find(selectedUsers, u => (u.id === user.id) ) ? true : false
                 let userCard = user.active ? <UserCard key={user.id} selected={selected} user={user} clickFunction={this.toggleUserSelection}/> : ''
                 return(userCard)
               }
@@ -129,8 +129,14 @@ class AdminUsers extends React.Component {
     );
   }
 }
+AdminUsers.propTypes = {
+  users: PropTypes.array,
+  selectedUsers: PropTypes.array,
+  modalMode: PropTypes.string,
+  dispatch: PropTypes.func
+}
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return({
     users:state.organisation.users, 
     selectedUsers:state.organisation.selectedUsers,

@@ -1,8 +1,8 @@
-import React, {PropTypes} from 'react';
-import { Control, Errors, actions } from 'react-redux-form';
+import React from 'react';
+import { Control, Errors } from 'react-redux-form';
 import { required } from 'components/forms/validators';
 
-const UserDetailsFields = props => {
+function UserDetailsFields(){
   return (
     <div>
       <label>First name</label>
@@ -21,7 +21,7 @@ const UserDetailsFields = props => {
           model=".lastName"
           show="touched"
           messages={{
-            required: 'Please provide an last name.',
+            required: 'Please provide an last name.'
           }}
         />
         <label>Last name</label>        
@@ -34,10 +34,6 @@ const UserDetailsFields = props => {
         <Control.text model=".employeeId" />
     </div>
   );
-};
-
-UserDetailsFields.propTypes = {
-  
-};
+}
 
 export default UserDetailsFields;

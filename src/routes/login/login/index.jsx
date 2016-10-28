@@ -1,12 +1,11 @@
-import React from 'react'
+import React,{Component, PropTypes} from 'react'
 import { login } from 'utilities/auth'
-import { getData } from 'utilities/api-interaction'
 import { getUserInfoAndSetUserState } from 'utilities/user'
-import { Link, withRouter } from 'react-router'
+import { Link, withRouter} from 'react-router'
 import { connect } from 'react-redux'
 import styles from './index.css'
 
-class Login extends React.Component {
+class Login extends Component {
   constructor(...args){
     super(...args)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -14,7 +13,7 @@ class Login extends React.Component {
     this.handleLoginFailAnimationEnd = this.handleLoginFailAnimationEnd.bind(this)
     this.state={
       loginFailed:false,
-      playAnimation:false,
+      playAnimation:false
     }
   }
   componentDidMount(){
@@ -23,7 +22,6 @@ class Login extends React.Component {
   }
   handleLoginFailAnimationEnd(){
     this.setState({playAnimation:false})
-    console.log(this.state);
   }
   handleSubmit(e){
     e.preventDefault();
@@ -51,27 +49,29 @@ class Login extends React.Component {
   }
   render(){
 
-    let message = this.state.loginFailed ? 
-      <p>Login unsuccessful, check that your username and password are correct.</p> :
-      <p>Login to Merlin: Plan</p>
+    let message = this.state.loginFailed ? <p>Login unsuccessful, check that your username and password are correct.</p> : <p>Login to Merlin: Plan</p>
     let loginFormClassnames = this.state.playAnimation ? `${styles.loginForm} ${styles.loginFailAnimation}`: styles.loginForm
 
     return(
       <div className={styles.container}>
         {message}
-        <form ref='loginForm'
+        <form ref="loginForm"
           className={loginFormClassnames}
           onSubmit={this.handleSubmit}>
-          <input ref='username' type='text' placeholder="Username"/>
-          <input ref='password' type='password' placeholder="Password"/>
-          <button type='submit'>Login</button>
+          <input ref="username" type="text" placeholder="Username"/>
+          <input ref="password" type="password" placeholder="Password"/>
+          <button type="submit">Login</button>
         </form>
         <Link to={'/login/forgot'}>Forgot password</Link>
       </div>
     )
   }
 }
-
+Login.propTypes = {
+  dispatch:PropTypes.func.isRequired,
+  location:PropTypes.object.isRequired,
+  router:PropTypes.object.isRequired
+}
 export default withRouter(
   connect()(Login)
 )
