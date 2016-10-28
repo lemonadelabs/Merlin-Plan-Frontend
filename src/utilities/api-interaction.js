@@ -98,8 +98,8 @@ function createRequest({headers, method, url, requestBody}){
     method: method,
     headers: headers
   }
-  let contentType = headers.get('Content-Type')
   if(requestBody){
+    let contentType = headers.get('Content-Type')
     requestObject.body = contentType === 'application/json' ? JSON.stringify(requestBody) : requestBody
   }
   let request = new Request(url, requestObject)
