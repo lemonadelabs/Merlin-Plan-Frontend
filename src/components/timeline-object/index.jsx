@@ -148,13 +148,14 @@ class TimelineObject extends Component {
       case 'left':
         startDate = this.findDateFromPosition(x, this.props.stageWidth, this.props.numberOfYears, this.props.timelineStartYear)
         break;
-      default:
+      default:{
         startDate = this.findDateFromPosition(x, this.props.stageWidth, this.props.numberOfYears, this.props.timelineStartYear)
         let monthChange = numberOfMonthsChanged(startDate, oldState.startDate)
         let yearChange = numberOfYearsChanged(startDate, oldState.startDate)
         let oldEndMonth = endDate.getMonth()
         let oldEndYear = endDate.getFullYear()
         endDate = new Date(oldEndYear+yearChange,oldEndMonth+monthChange)
+      }
     }
     if(startDate !== oldState.startDate){
       newState.startDate = startDate
@@ -172,12 +173,13 @@ class TimelineObject extends Component {
       case 'right':
         newState.width = evt.x - oldState.x
         break;
-      case 'left':
+      case 'left':{
         let relPos = this.relativePosition({x: evt.x, y: evt.y}, {x:oldState.x, y:oldState.y})
         newState.width = oldState.width + (relPos.x * -1)
         //draggable doesn't seem update position when we change width, poos :(
         newState.x = oldState.x + relPos.x
         break;
+      }
       default:
         newState.x = this.refs.SliderMotion.refs.rect.attrs.x
     }
