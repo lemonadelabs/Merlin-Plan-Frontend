@@ -33,7 +33,6 @@ class Track extends React.Component {
   constructor(...args){
     super(...args)
     let dummyLineData = _.times(10,() => Math.random() * 100)
-    console.log(dummyLineData);
     this.state={
       dummyLineData:dummyLineData
     }

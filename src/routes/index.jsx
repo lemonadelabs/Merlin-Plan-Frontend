@@ -32,7 +32,7 @@ function requireAuth(nextState, replace) {
     let token = sessionStorage.getItem('token');
     let loginPayload = decodePayload(token)
     getData(`user/${loginPayload.sub}`)
-    .then((userData) => {
+    .then(userData => {
       store.dispatch({type:'SET_USER',"userData":userData})
     })
   }

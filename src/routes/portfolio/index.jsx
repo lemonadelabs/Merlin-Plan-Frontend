@@ -33,7 +33,7 @@ class Portfolio extends React.Component {
   render(){
     return(
       <div>
-        <input type='range' onChange={this.handleRangeChange} min={1} max={10} value={this.state.numberOfYears}/>
+        <input type="range" onChange={this.handleRangeChange} min={1} max={10} value={this.state.numberOfYears}/>
         <Stage width={this.state.windowWidth} height={this.state.windowHeight} >
           <Layer>
             <Timeline

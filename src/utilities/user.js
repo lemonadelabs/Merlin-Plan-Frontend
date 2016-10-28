@@ -3,7 +3,7 @@ import {forEach} from 'lodash'
 
 function getUserInfoAndSetUserState(userId, dispatch){
   return getData(`user/${userId}`)
-  .then((userData) => {
+  .then(userData => {
     dispatch({type:'SET_USER',"userData":userData})
   })
 }
@@ -15,9 +15,8 @@ function checkStoreForUserDetails(store){
 
 /**given an array of groups and an userId it will add the user to the group.id and return an array of promises */
 function addUserToGroups(groups, userId){
-  console.assert(userId, 'No userId supplied')
   let groupPromises = []
-  forEach(groups, (group) => {
+  forEach(groups, group => {
     groupPromises.push(
       putData( `group/${group.id}/adduser`, { users : [ userId ] } )
     )
@@ -27,9 +26,8 @@ function addUserToGroups(groups, userId){
 
 /**given an array of groups and an userId it will remove the user to the group.id and return an array of promises */
 function removeUserFromGroups(groups, userId){
-  console.assert(userId, 'No userId supplied')
   let groupPromises = []
-  forEach(groups, (group) => {
+  forEach(groups, group => {
     groupPromises.push(
       putData( `group/${group.id}/removeuser`, { users : [ userId ] } )
     )

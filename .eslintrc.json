@@ -40,7 +40,7 @@
                 "properties": "never"
             }
         ],
-        "class-methods-use-this": ["error", { "exceptMethods": ["render"] }],
+        "class-methods-use-this": ["warn", { "exceptMethods": ["render"] }],
         "comma-dangle": "error",
         "comma-spacing": "off",
         "comma-style": [

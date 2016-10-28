@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 
 class Confirm extends Component {
   render() {
@@ -8,6 +8,10 @@ class Confirm extends Component {
       </div>
     );
   }
+}
+
+Confirm.propTypes = {
+  children:PropTypes.element.isRequired
 }
 
 export default Confirm;
