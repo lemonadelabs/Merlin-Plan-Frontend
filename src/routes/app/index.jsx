@@ -9,11 +9,11 @@ class App extends Component {
     super()
     this.state={
       'menuItems':[
-        {label:'Portfolio','route':'portfolio'},
-        {label:'Projects','route':'projects'},
-        {label:'Budget','route':'budget'},
-        {label:'Track','route':'track'},
-        {label:'Admin','route':'admin'}
+        {label:'Portfolio','route':'/portfolio'},
+        {label:'Projects','route':'/projects'},
+        {label:'Budget','route':'/budget'},
+        {label:'Track','route':'/track'},
+        {label:'Admin','route':'/admin'}
       ]
     }
   }
