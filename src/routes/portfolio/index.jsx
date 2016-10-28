@@ -22,7 +22,7 @@ class Portfolio extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
   }
-  handleResize(e) {
+  handleResize() {
     this.setState({windowWidth: window.innerWidth,
                    windowHeight: window.innerHeight})
   }
