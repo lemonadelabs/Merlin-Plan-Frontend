@@ -6,7 +6,8 @@
   width: 100%;
   height: 50px;
   padding: 0 1em;
-  background-color: blue;
+  background-color: rgba(72, 40, 137, 1);
+  border-bottom: 1px solid rgba(84, 48, 160, 1);
   display: flex;
   justify-content:space-between;
   align-items: center;
@@ -23,19 +24,22 @@
 
 .userFullName{
   margin: 0;
-  padding-top: 0.7em;
-  padding-bottom: 0.3em;
-  font-weight: 600;
+  padding-top: 0.85em;
+  padding-bottom: 0.15em;
+  font-weight: 700;
   line-height: 0;
+  letter-spacing: 0.015em;
+  font-size: 14px;
 }
 
 .nameAndLogoutContainer{
-  margin-left: 0.8em;
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 .logoutLink{
   line-height: 0.8;
-  font-size: 13px;
+  font-size: 11px;
   color: white;
   text-decoration: none;
 }

@@ -1,5 +1,5 @@
 :global(html) {
-  background-color: rgb(35,35,35);
+  background-color: rgb(37, 28, 51)
 }
 
 :global(input) {
@@ -30,7 +30,7 @@
   left:0;
   width: 100%;
   padding-top: 45px;
-  background-color: rgb(35,35,35);
+  background-color: rgb(37, 28, 51);
   min-height: 100%;
   color: white;
 }
