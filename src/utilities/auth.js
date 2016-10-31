@@ -1,10 +1,9 @@
 import moment from 'moment'
-import { map } from 'lodash';
 import { postData } from 'utilities/api-interaction';
 
 function login(username, password){
   let loginBody = createLoginRequestBody({username, password})
-  return postData('auth/token',loginBody, 'application/x-www-form-urlencoded')
+  return postData('auth/token', loginBody, 'application/x-www-form-urlencoded')
           .then(handleLoginResponse)
 }
 
@@ -35,6 +34,18 @@ function decodePayload(token){
 export {login, logout, loggedIn, decodePayload}//, canAccess}
 
 ////Private Functions////
+
+function createLoginRequestBody({username, password}){
+  let requestBody = {
+    'username': username,
+    'password': password,
+    'grant_type': 'password',
+    'resource': 'http://localhost:5000/',
+    'scope': 'offline_access roles'
+  }
+  return (requestBody)
+}
+
 function handleLoginResponse(response) {
   saveSessionInfo(response)
   let loginSucceed = loginSuccessful(response)
@@ -65,19 +76,3 @@ function splitToken(token){
   return(token.split('.'))
 }
 
-function createLoginRequestBody({username, password}){
-  let requestBody = {
-    'username': username,
-    'password': password,
-    'grant_type': 'password',
-    'resource': 'http://localhost:5000/',
-    'scope': 'offline_access roles'
-  }
-  return toQueryString(requestBody)
-}
-//taken from http://stackoverflow.com/a/26148931
-function toQueryString(obj) {
-  return map(obj,function(v,k){
-    return encodeURIComponent(k) + '=' + encodeURIComponent(v);
-  }).join('&');
-}

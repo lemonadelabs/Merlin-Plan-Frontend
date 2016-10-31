@@ -1,4 +1,4 @@
-import {size, forEach} from 'lodash';
+import {size, forEach, map} from 'lodash';
 
 /**Will make GET request to `/api/${endpoint}` if you pass a query object it will convert the javascript object into a url query
  * @returns a promise*/
@@ -100,8 +100,25 @@ function createRequest({headers, method, url, requestBody}){
   }
   if(requestBody){
     let contentType = headers.get('Content-Type')
-    requestObject.body = contentType === 'application/json' ? JSON.stringify(requestBody) : requestBody
+    switch (contentType) {
+      case 'application/json':
+        requestObject.body = JSON.stringify(requestBody)
+        break;
+      case 'application/x-www-form-urlencoded':
+        requestObject.body = toQueryString(requestBody)
+        break;
+      default:
+        requestObject.body = requestBody
+        break;
+    }
   }
   let request = new Request(url, requestObject)
   return request
+}
+
+//taken from http://stackoverflow.com/a/26148931
+function toQueryString(obj) {
+  return map(obj,function(v,k){
+    return encodeURIComponent(k) + '=' + encodeURIComponent(v);
+  }).join('&');
 }
