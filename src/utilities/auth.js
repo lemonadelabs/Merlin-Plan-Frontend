@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { postData } from 'utilities/api-interaction';
-
+/**Maked a postData call to 'auth/token' to request a token Returns a promise with the parameters of if the login was successful and the payload from the server*/
 function login(username, password){
   let loginBody = createLoginRequestBody({username, password})
   return postData('auth/token', loginBody, 'application/x-www-form-urlencoded')
