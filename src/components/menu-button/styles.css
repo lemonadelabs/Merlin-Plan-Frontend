@@ -1,0 +1,18 @@
+.menuButton{
+  background-color: rgb(45, 17, 83);
+  height:32px;
+  width: 75px;
+  border-radius: 3px;
+  cursor: pointer;
+  color: rgb(158, 134, 213);
+  border: 1px solid rgb(158, 134, 213);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.menuText{
+  user-select: none;
+  line-height: 1em;
+  margin-top: 0.5em; 
+  margin-left: 1.8em;
+}

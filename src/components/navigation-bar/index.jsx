@@ -11,7 +11,7 @@ function NavigationBar({menuItems, applicationTitle, router, user}){
     <div>
       <header className={styles.navigationBar}>
         <MenuButton menuItems={menuItems}/>
-        <p>{applicationTitle}</p>
+        <p className={styles.applicationTitle}>{applicationTitle}</p>
         <div className={styles.userInfo}>
           <ProfilePic
             firstName={user.firstName}

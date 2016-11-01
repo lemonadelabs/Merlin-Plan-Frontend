@@ -1,11 +1,12 @@
 import React, {Component, PropTypes} from 'react'
 import MenuDropDown from 'components/menu-drop-down'
-
+import styles from './styles.css'
 class MenuButton extends Component{
   constructor() {
     super()
     this.handleClick = this.handleClick.bind(this)
     this.hideMenuIfOpen = this.hideMenuIfOpen.bind(this)
+    this.addWindowEventListener = this.addWindowEventListener.bind(this)
     this.state = {
       showMenu:false
     }
@@ -23,8 +24,8 @@ class MenuButton extends Component{
     let showMenu = !this.state.showMenu
     this.setState({showMenu:showMenu})
     if(showMenu){
-      //this feels a bit hacky :|
-      setTimeout(this.addWindowEventListener.bind(this), 1)
+      //this feels a bit hacky :| We need to add a bit of delay so that it doesn't hide the menu immediately after opening it
+      setTimeout(this.addWindowEventListener, 1)
     }
     else{
       this.removeWindowEventListener()
@@ -41,7 +42,14 @@ class MenuButton extends Component{
     if(this.state.showMenu){
       menuDropDown = <MenuDropDown menuItems={this.props.menuItems}/>
     }
-    return(<div><div onClick={this.handleClick}>Menu</div>{menuDropDown}</div>)
+    return(
+      <div>
+        <div className={styles.menuButton} onClick={this.handleClick}>
+          <p className={styles.menuText}>Menu</p>
+        </div>
+        {menuDropDown}
+      </div>
+    )
   }
 }
 

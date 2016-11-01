@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react'
 import { Label, Text, Rect, Group} from 'react-konva';
-import {Motion, spring} from 'react-motion';
 import {calculateYearWidthModePadding, unitsBetween, dateToQuarter, calculateIndicatorWidth, indicatorWidthFromMode, numberOfMonthsChanged, numberOfYearsChanged} from 'utilities/timeline-utilities'
 
 class TimelineObject extends Component {
@@ -181,36 +180,32 @@ class TimelineObject extends Component {
         break;
       }
       default:
-        newState.x = this.refs.SliderMotion.refs.rect.attrs.x
+        newState.x = this.refs.rect.attrs.x
     }
     return newState
   }
 
   render() {
-    let SliderMotionSettings = {stiffness: 90, damping: 12}
+    let {x,y, width, draggable} = this.state
       return (
-        <Motion ref="SliderMotion" style={{x: spring(this.state.x, SliderMotionSettings),width: spring(this.state.width, SliderMotionSettings)}}>
-          {interpolatingStyles =>
-            <Group
-              ref="rect"
-              x={interpolatingStyles.x}
-              y={this.state.y}
-              onMousedown={this.handleMousedown}
-              draggable={this.state.draggable}
-              dragBoundFunc={this.handleDragBound}
-              onDragEnd={this.handleDragEnd}
-              onDragmove={this.handleDragmove}>
+        <Group
+          x={x}
+          y={y}
+          onMousedown={this.handleMousedown}
+          draggable={draggable}
+          dragBoundFunc={this.handleDragBound}
+          onDragEnd={this.handleDragEnd}
+          onDragmove={this.handleDragmove}>
 
-              <Rect
-                width={interpolatingStyles.width} height={23}
-                fill={'green'}
-                cornerRadius={3}
-                shadowBlur={4}
-              />
-              <TimelineLabel text={this.props.name} width={interpolatingStyles.width}/>
-            </Group>
-          }
-        </Motion>
+          <Rect
+            ref="rect"
+            width={width} height={23}
+            fill={'green'}
+            cornerRadius={3}
+            shadowBlur={4}
+          />
+          <TimelineLabel text={this.props.name} width={width}/>
+        </Group>
       );
   }
 }
