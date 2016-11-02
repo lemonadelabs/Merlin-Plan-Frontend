@@ -8,9 +8,25 @@
   background: rgba(255,255,255,0.5);
   padding: 0.3em 0.5em;
 }
+
 :global(input:focus) {
   border: 2px solid rgba(255,255,255,0.9);
   outline: none;
+}
+
+:global(button) {
+  color: rgb(130, 106, 179);
+  border: 1px solid rgb(130, 106, 179);
+  border-radius: 3px;
+  background: rgb(45, 17, 83);
+  padding: 0.3em 0.5em;
+  font-weight:600;
+  font-size: 11pt;
+}
+
+:global(button:hover) {
+  background: rgb(65, 37, 103);
+  cursor:pointer;
 }
 
 :global(label) {
