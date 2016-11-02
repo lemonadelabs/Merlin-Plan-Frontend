@@ -15,13 +15,14 @@ let fallbackUserModal = {
 } 
 
 const UserCard = ({user = fallbackUserModal, clickFunction, selected}) => {
+  let selectedStyling = {border: '1px solid rgb(154, 135, 210)'}
   return (
   <div 
     key={user.id} 
     onClick={
       () => { clickFunction(user) }
     } 
-    style={{outline:selected?'solid 1px rgb(155,155,255)':'none'}}
+    style={selected?selectedStyling:{}}
     className={styles.userCard}>
     <header>
       <ProfilePic
