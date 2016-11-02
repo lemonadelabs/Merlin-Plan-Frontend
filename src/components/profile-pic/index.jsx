@@ -15,8 +15,9 @@ class ProfilePic extends Component {
     this.calculatePaddingForInitials() 
   }
   calculatePaddingForInitials() {
-    let circle = this.refs.profileCircle
-    let width = circle.clientHeight
+    const circle = this.refs.profileCircle
+    const circleHeight = circle.getBoundingClientRect().height
+    const width = circleHeight
     let padding = circle.clientHeight * 0.5
     if (circle.children.length){
       let initalsHeight = circle.firstChild.clientHeight
@@ -28,8 +29,11 @@ class ProfilePic extends Component {
     let {profilePic, firstName, lastName, id} = this.props
     let {width, padding} = this.state
     let initials = firstName && lastName ? firstName[0] + lastName[0] : "??"
-    let userColor = hashbow(firstName+lastName+id,60)
-    let userColorLight = color(userColor).light()
+    let userColor = hashbow(firstName+lastName+id,70)
+    console.log(initials, color(userColor).luminosity());
+    let textColor = color(userColor).luminosity() < 0.1 ? color(userColor).lighten(0.3).rgbString() : userColor
+    let backgroundColor = color(userColor).darken(0.9).alpha(0.5).rgbString()
+    let borderColor = profilePic ? 'white' : userColor
 
     return (
       <div
@@ -40,9 +44,10 @@ class ProfilePic extends Component {
             paddingTop:padding,
             paddingBottom:padding,
             width:width,
+            borderColor,
             backgroundImage:`url(${profilePic})`,
-            backgroundColor:userColor,
-            color:userColorLight?'#333':'white'
+            backgroundColor,
+            color:textColor
           }
         }>
         {profilePic ? '' : <p>{initials}</p>}

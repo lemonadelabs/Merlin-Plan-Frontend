@@ -3,6 +3,7 @@
   height:100%;
   background-size: cover;
   border-radius: 50%;
+  border: solid 2px white;
   flex-shrink: 0;
   font-size: 19px;
 }
