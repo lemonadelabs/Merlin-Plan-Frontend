@@ -1,7 +1,9 @@
+/** Devides the stage width over the number of years */
 function calculateTimelineYearWidthNoPadding(stageWidth, numberOfYears){
   return stageWidth/numberOfYears
 }
 
+/**Given the width of a single year this function will return what mode the timeline should be in, months or quarters */
 function findTimelineMode(yearWidth){
   let mode
   if(yearWidth < 400){
