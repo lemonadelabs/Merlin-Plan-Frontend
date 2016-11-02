@@ -1,6 +1,23 @@
 .actionBar{
+  position: fixed;
+  top:50px;
   height:35px;
   width:100%;
   background-color: rgb(54, 31, 102);
   border-bottom: solid 1px rgb(62, 40, 105);
+}
+
+.actionContainer{
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding-right: 1em;
+  height: 100%;
+}
+
+.action{
+  cursor: pointer;
+  margin: 0 0 0 1em;
+  font-size: 10pt;
 }
