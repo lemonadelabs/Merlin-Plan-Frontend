@@ -14,12 +14,28 @@ class AdminUsers extends Component {
     super()
     this.toggleUserSelection = this.toggleUserSelection.bind(this)
     this.deactivateUsers = this.deactivateUsers.bind(this)
-    this.newUser = this.newUser.bind(this)
-    this.editUsers = this.editUsers.bind(this)
+    // this.editUsers = this.editUsers.bind(this)
     this.updateOrgUser = this.updateOrgUser.bind(this)
   }
   componentDidMount(){
     this.props.dispatch({type:'SET_TITLE',title:'Admin: Users'})
+    this.props.dispatch({
+      type:'SET_ACTIONS',
+      actions:[
+        {
+          title:'Add User',
+         'actionsToDispatch':[ {type:'SET_MODAL_MODE', mode:'NEW'}, {type:"SHOW_MODAL"}]
+        },
+        {
+          title:'Edit User',
+         'actionsToDispatch':[ {type:'SET_MODAL_MODE', mode:'EDIT'}, {type:"SHOW_MODAL"}]
+        },
+        {
+          title:'Deactivate Users',
+         'actionsToDispatch':[ ()=>{ return dispatch => { console.log('foo') } }]
+        }
+      ]
+    })
     let organisationId = store.getState().user.organisationId
     if(organisationId){
       this.getAndDespatchUsersData(organisationId)
@@ -46,15 +62,6 @@ class AdminUsers extends Component {
       store.dispatch({type:'SET_ORG_USERS', users:orgUsers})
     })
   }
-  newUser(){
-    //this should trigger opening the form
-    this.props.dispatch({type:'SET_MODAL_MODE', mode:'NEW'})
-    this.props.dispatch({type:"SHOW_MODAL"})
-  }
-  editUsers(){
-    this.props.dispatch({type:'SET_MODAL_MODE', mode:'EDIT'})
-    this.props.dispatch({type:"SHOW_MODAL"})
-  }
   deactivateUsers(){
     let selectedUsers = this.props.selectedUsers;
     let userIds = selectedUsers.map( user => (user.id) )
@@ -69,7 +76,7 @@ class AdminUsers extends Component {
     store.dispatch({type:'DELETE_ORG_USERS', userIds:userIds})
     store.dispatch({type:'DESELECT_ALL_ORG_USERS'})
     forEach( userIds, id => {
-        deleteData( { endPoint:'user', id : id})
+        deleteData( { endPoint:'user', id : id } )
     })
   }
   toggleUserSelection(user){
@@ -108,9 +115,6 @@ class AdminUsers extends Component {
     let modalContents = this.getModalContents({modalMode,organisationId,modelToLoad:selectedUsers[0]})
     return (
       <div>
-        <button onClick={this.newUser}>Add User</button>
-        <button onClick={this.editUsers}>Edit Users</button>
-        <button onClick={this.deactivateUsers}>Deactivate Users</button>
         <div className={styles['card-container']}>
           {
             users.map( 
@@ -129,6 +133,7 @@ class AdminUsers extends Component {
     );
   }
 }
+
 AdminUsers.propTypes = {
   users: PropTypes.array,
   selectedUsers: PropTypes.array,
