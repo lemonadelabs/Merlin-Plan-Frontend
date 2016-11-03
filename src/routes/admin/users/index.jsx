@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import UserCard from 'components/user-card'
 import styles from './index.css'
 import { connect } from 'react-redux'
-import { getData, deleteData } from 'utilities/api-interaction'
+import { getData } from 'utilities/api-interaction'
 import store from 'store'
 import { find, findIndex, forEach} from 'lodash'
 import NewUserForm from 'components/forms/new-user';
@@ -13,8 +13,7 @@ class AdminUsers extends Component {
   constructor(){
     super()
     this.toggleUserSelection = this.toggleUserSelection.bind(this)
-    this.deactivateUsers = this.deactivateUsers.bind(this)
-    // this.editUsers = this.editUsers.bind(this)
+    // this.deactivateUsers = this.deactivateUsers.bind(this)
     this.updateOrgUser = this.updateOrgUser.bind(this)
   }
   componentDidMount(){
@@ -24,15 +23,15 @@ class AdminUsers extends Component {
       actions:[
         {
           title:'Add User',
-         'actionsToDispatch':[ {type:'SET_MODAL_MODE', mode:'NEW'}, {type:"SHOW_MODAL"}]
+         'actionsToCreatorsToRun':[ {name:'showNewUserModal'}]
         },
         {
           title:'Edit User',
-         'actionsToDispatch':[ {type:'SET_MODAL_MODE', mode:'EDIT'}, {type:"SHOW_MODAL"}]
+         'actionsToCreatorsToRun':[ {name:'showEditUserModal'}]
         },
         {
           title:'Deactivate Users',
-         'actionsToDispatch':[ ()=>{ return dispatch => { console.log('foo') } }]
+         'actionsToCreatorsToRun':[ {name:'deactivateUsers'} ]
         }
       ]
     })
@@ -60,23 +59,6 @@ class AdminUsers extends Component {
     getData(`organisation/${organisationId}/user`)
     .then( orgUsers => {
       store.dispatch({type:'SET_ORG_USERS', users:orgUsers})
-    })
-  }
-  deactivateUsers(){
-    let selectedUsers = this.props.selectedUsers;
-    let userIds = selectedUsers.map( user => (user.id) )
-    let loggedInUserId = store.getState().user.id
-    let loggedInUserIndex = findIndex(userIds, id => ( id === loggedInUserId) )
-
-    if(loggedInUserIndex !== -1){
-      alert("Can't delete yourself")
-      userIds.splice(loggedInUserIndex, 1)
-    }
-
-    store.dispatch({type:'DELETE_ORG_USERS', userIds:userIds})
-    store.dispatch({type:'DESELECT_ALL_ORG_USERS'})
-    forEach( userIds, id => {
-        deleteData( { endPoint:'user', id : id } )
     })
   }
   toggleUserSelection(user){

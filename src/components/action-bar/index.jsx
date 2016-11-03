@@ -1,12 +1,13 @@
 import React, {Component, PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { forEach } from 'lodash';
+import { actionMap } from 'actions'
 import styles from './styles.css'
 
 class ActionBar extends Component {
-  dispatchActions(actionsToDispatch){
+  runActionCreators(actionsToCreatorsToRun){
     let dispatch = this.props.dispatch
-    forEach(actionsToDispatch, action => { dispatch(action) } )
+    forEach(actionsToCreatorsToRun, actionCreatorToRun => { dispatch(actionMap[actionCreatorToRun.name](actionCreatorToRun.props)) } )
       
   }
   render() {
@@ -15,7 +16,7 @@ class ActionBar extends Component {
       <div className={styles.actionBar}>
         <div className={styles.actionContainer}>
           {
-            actions.map( action => ( <p className={styles.action} onClick={ () => { this.dispatchActions(action.actionsToDispatch) } } > {action.title} </p> ) )
+            actions.map( action => ( <p className={styles.action} onClick={ () => { this.runActionCreators(action.actionsToCreatorsToRun) } } > {action.title} </p> ) )
           }
         </div>
       </div>
