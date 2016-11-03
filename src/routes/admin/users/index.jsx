@@ -4,7 +4,7 @@ import styles from './index.css'
 import { connect } from 'react-redux'
 import { getData } from 'utilities/api-interaction'
 import store from 'store'
-import { find, findIndex, forEach} from 'lodash'
+import { find } from 'lodash'
 import NewUserForm from 'components/forms/new-user';
 import UpdateUserForm from 'components/forms/update-user';
 import Modal from 'components/modal'
