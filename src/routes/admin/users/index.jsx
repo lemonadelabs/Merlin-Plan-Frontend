@@ -13,7 +13,6 @@ class AdminUsers extends Component {
   constructor(){
     super()
     this.toggleUserSelection = this.toggleUserSelection.bind(this)
-    // this.deactivateUsers = this.deactivateUsers.bind(this)
     this.updateOrgUser = this.updateOrgUser.bind(this)
   }
   componentDidMount(){
@@ -42,6 +41,9 @@ class AdminUsers extends Component {
     else{
       this.waitForUserData()
     }
+  }
+  componentWillUnmount(){
+    this.props.dispatch({type:"SET_ACTIONS",actions:[]})
   }
   waitForUserData(){
     //TODO: Try and find out if this is the best way to be doing this.
