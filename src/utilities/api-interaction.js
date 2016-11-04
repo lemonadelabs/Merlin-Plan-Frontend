@@ -76,7 +76,7 @@ function fetchRequest(request){
         case 200:
           return response.text()
         default:{
-          console.warn('Bad response from server', response.text());
+          let error = new Error(`${response.status} ${response.statusText}`)
           promise.reject(error)
         }
       }
