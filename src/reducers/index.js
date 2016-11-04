@@ -3,6 +3,7 @@ import { combineForms } from 'react-redux-form';
 import organisation from 'reducers/organisation';
 import user from 'reducers/user'
 import app from 'reducers/app'
+import resources from 'reducers/resources'
 import modal from 'reducers/modal'
 import adminUsers from 'reducers/admin/users'
 
@@ -28,6 +29,7 @@ const merlinApp = combineReducers(
     app,
     user,
     organisation,
+    resources,
     modal,
     adminUsers,
     forms: combineForms(
