@@ -10,7 +10,7 @@ class AdminGroups extends Component {
     this.showNewGroupModal = this.showNewGroupModal.bind(this)
   } 
   componentDidMount(){
-    let organisationId = this.props.organisationId || 1 //this needs to be fixed later!!!
+    let organisationId = this.props.organisationId
     let { dispatch } = this.props
     dispatch({type:'SET_TITLE',title:'Admin: Groups'})
     getData(`organisation/${organisationId}/group`)
@@ -37,7 +37,7 @@ class AdminGroups extends Component {
           })
         }
         <Modal title={"New Group"}>
-          <GroupForm organisationId={this.props.organisationId || 1}/>          
+          <GroupForm organisationId={this.props.organisationId}/>          
         </Modal>
       </div>
     );
