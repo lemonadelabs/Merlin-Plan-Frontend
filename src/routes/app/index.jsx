@@ -13,7 +13,7 @@ class App extends Component {
       'menuItems':[
         {label:'Portfolios','route':'/portfolio'},
         {label:'Projects','route':'/projects'},
-        {label:'Budget','route':'/budget'},
+        {label:'Resources','route':'/resources'},
         {label:'Track','route':'/track'},
         {label:'Admin','route':'/admin'}
       ]

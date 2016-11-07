@@ -5,7 +5,7 @@ import { map, union } from 'lodash'
 import NewResourceScenario from 'components/forms/new-resource-scenario';
 // import PartitionVisualisation from 'components/partition-visualisation';
 
-class Budget extends Component {
+class ResourcesRoot extends Component {
   constructor(...args){
     super(...args)
     this.state = {
@@ -20,7 +20,6 @@ class Budget extends Component {
     getData(`resourcescenario/useraccess/${userId}`)
     .then( scenarios => {
       dispatch({ type:"SET_ACCESSABLE_SCENARIOS", scenarios })
-      // console.log( union( ...map(result, scenarios => (scenarios) ) ) );
     })
   }
   addPartition(){
@@ -35,7 +34,7 @@ class Budget extends Component {
     return(
       <div>
         <NewResourceScenario/>
-        <h1>Budget</h1>
+        <h1>Resources</h1>
         {
           scenariosFiltered.map(
             scenario => {
@@ -67,4 +66,4 @@ function stateToProps(state){
   return { userId: state.user.id, scenarios:state.resources.accessableScenarios}
 }
 
-export default connect(stateToProps)(Budget)
+export default connect(stateToProps)(ResourcesRoot)
