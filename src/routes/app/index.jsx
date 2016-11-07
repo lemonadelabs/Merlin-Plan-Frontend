@@ -1,8 +1,10 @@
 import React,{Component, PropTypes} from 'react'
+import { withRouter } from 'react-router'
 import { loggedIn } from 'utilities/auth'
 import NavigationBar from 'components/navigation-bar'
 import { connect } from 'react-redux';
 import styles from './app.css'
+import { size } from 'lodash';
 
 class App extends Component {
   constructor() {
@@ -17,19 +19,19 @@ class App extends Component {
       ]
     }
   }
-
-  render() {
-    let navbar
-    let {user, title, children} = this.props
-    if (loggedIn()){
-      navbar = <NavigationBar user={user} applicationTitle={title} menuItems={this.state.menuItems}/>
+  get appReady(){
+    let {user} = this.props
+    return (loggedIn() && size(user)>0)
+  }
+  render(){
+    let {user, title, children, location} = this.props
+    if( location.pathname === '/login' ){
+      return (<div className={styles.app}>{children}</div>)
     }
-    return (
-      <div className={styles.app}>
-        {navbar }
-        {children}
-      </div>
-    )
+    if(this.appReady){
+      return(<div className={styles.app}><NavigationBar user={user} applicationTitle={title} menuItems={this.state.menuItems}/> {children}</div>)
+    }
+    return(<div className={styles.app}></div>)
   }
 }
 
@@ -43,4 +45,4 @@ function mapStateToProps(state){
   return({title:state.app.title, user:state.user})
 }
 
-export default connect(mapStateToProps)(App)
+export default withRouter(connect(mapStateToProps)(App))
