@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { map, union } from 'lodash'
-import { getData } from 'utilities/api-interaction';
 import moment from 'moment'
+import Card from 'components/card';
+import { getData } from 'utilities/api-interaction';
 
 class ResourcesList extends Component {
   componentDidMount(){
@@ -22,7 +24,15 @@ class ResourcesList extends Component {
         {
           scenariosFiltered.map(
             scenario => {
-              return ( <div><p>{scenario.name}</p><p>Created by: {`${scenario.creatorDetails.firstName} ${scenario.creatorDetails.lastName}`}</p><p>Created: {moment(scenario.created).calendar()}</p><p>Modified: {moment(scenario.modified).calendar()}</p></div> )
+              return ( 
+                <Card>
+                  <p>{scenario.name}</p>
+                  <p>Created by: {`${scenario.creatorDetails.firstName} ${scenario.creatorDetails.lastName}`}</p>
+                  <p>Created: {moment(scenario.created).calendar()}</p>
+                  <p>Modified: {moment(scenario.modified).calendar()}</p>
+                  <Link to={`resources/view/${scenario.id}`}>View</Link>
+                </Card>
+              )
             }
           )
         }
