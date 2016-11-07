@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux';
-import { getData } from 'utilities/api-interaction';
-import { map, union } from 'lodash'
 import NewResourceScenario from 'components/forms/new-resource-scenario';
 // import PartitionVisualisation from 'components/partition-visualisation';
 
@@ -13,15 +11,7 @@ class ResourcesRoot extends Component {
     }
     this.addPartition = this.addPartition.bind(this)
   }
-  componentDidMount(){
-    let {userId,dispatch} = this.props
-    dispatch({ type:"SET_VISABILITY_FILTER", filter: "ALL" })
-    dispatch({ type:"SET_ACTIONS", actions:[{title:"New Scenario",name:'showNewModal'}] })
-    getData(`resourcescenario/useraccess/${userId}`)
-    .then( scenarios => {
-      dispatch({ type:"SET_ACCESSABLE_SCENARIOS", scenarios })
-    })
-  }
+
   addPartition(){
     let partitions = this.state.partitions
     let random = Math.random()
@@ -29,38 +19,16 @@ class ResourcesRoot extends Component {
   }
 
   render(){
-    let {scenarios} = this.props
-    let scenariosFiltered = filterScenarios(scenarios,"ALL")
     return(
       <div>
         <NewResourceScenario/>
         <h1>Resources</h1>
-        {
-          scenariosFiltered.map(
-            scenario => {
-              return ( <p>{scenario.name}</p> )
-            }
-          )
-        }
+        {this.props.children}
       </div>
     )
   }
 }
 
-function filterScenarios(allScenarios, filterState){
-  let scenariosToReturn
-  switch (filterState) {
-    case 'ALL': {
-      let scenariosFlattened = map(allScenarios, scenarios => (scenarios))
-      scenariosToReturn = union( ...scenariosFlattened )
-      break
-    }
-    default:
-      scenariosToReturn = []
-      break;
-  }
-  return scenariosToReturn
-}
 
 function stateToProps(state){
   return { userId: state.user.id, scenarios:state.resources.accessableScenarios}

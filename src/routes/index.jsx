@@ -10,6 +10,8 @@ import ResetPassword from 'routes/login/reset-password';
 import ForgotPassword from 'routes/login/forgot-password';
 import Home from 'routes/home';
 import ResourcesRoot from 'routes/resources';
+import ResourcesList from 'routes/resources/list';
+import ResourcesView from 'routes/resources/view';
 import Track from 'routes/track';
 import Portfolio from 'routes/portfolio';
 import Confirm from 'routes/confirm'
@@ -62,7 +64,10 @@ export default (
     <Route path="portfolio" component={Portfolio} onEnter={requireAuth}/>
     <Route path="projects" component={Projects} onEnter={requireAuth}/>
     <Route path="track" component={Track} onEnter={requireAuth}/>
-    <Route path="resources" component={ResourcesRoot} onEnter={requireAuth}/>
+    <Route path="resources" component={ResourcesRoot} onEnter={requireAuth}>
+      <IndexRoute component={ResourcesList}/>
+      <Route path="view/:scenarioId" component={ResourcesView}/>
+    </Route>
     <Route path="admin" component={Admin} onEnter={requireAuth}/>
     <Route path="admin/users" component={AdminUsers} onEnter={requireAuth}/>
     <Route path="admin/groups" component={AdminGroups} onEnter={requireAuth}/>
