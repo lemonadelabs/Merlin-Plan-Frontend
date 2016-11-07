@@ -1,7 +1,6 @@
 .userCard{
   transition: filter 300ms;
   cursor: pointer;
-  /*transform: translateZ(0px);*/
   filter: drop-shadow(0px 1px 3px rgb(9, 0, 26));
   flex-shrink: 0;
   flex-basis: calc(90vw/3 - 1em);
@@ -16,7 +15,6 @@
 }
 
 .userCard:hover{
-  /*transform: translateZ(0.25em);*/
   filter: drop-shadow(0px 3px 8px rgb(9, 0, 26));
   border: 1px solid rgb(97, 93, 106);
   background-color: rgb(75, 70, 84);
