@@ -24,6 +24,11 @@ const initialGroupState = {
   'members':[]
 }
 
+const initialResourceScenarioState = {
+  "name": "",
+  'group': 0
+}
+
 const merlinApp = combineReducers(
   {
     app,
@@ -35,7 +40,8 @@ const merlinApp = combineReducers(
     forms: combineForms(
       {
         user: initialUserState,
-        group: initialGroupState
+        group: initialGroupState,
+        resourceScenario: initialResourceScenarioState
       },'forms')
   }
 )
