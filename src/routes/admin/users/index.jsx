@@ -3,7 +3,6 @@ import UserCard from 'components/user-card'
 import styles from './index.css'
 import { connect } from 'react-redux'
 import { getData } from 'utilities/api-interaction'
-import store from 'store'
 import { find } from 'lodash'
 import NewUserForm from 'components/forms/new-user';
 import UpdateUserForm from 'components/forms/update-user';
@@ -34,43 +33,26 @@ class AdminUsers extends Component {
         }
       ]
     })
-    let organisationId = store.getState().user.organisationId
-    if(organisationId){
-      this.getAndDespatchUsersData(organisationId)
-    }
-    else{
-      this.waitForUserData()
-    }
+    this.getAndDespatchUsersData(this.props.organisationId)
   }
   componentWillUnmount(){
     this.props.dispatch({type:"SET_ACTIONS",actions:[]})
   }
-  waitForUserData(){
-    //TODO: Try and find out if this is the best way to be doing this.
-    let unsubscribeFromStore = store.subscribe(
-      () => {
-        let organisationId = store.getState().user.organisationId
-        if(organisationId){
-          this.getAndDespatchUsersData(organisationId)
-          unsubscribeFromStore()
-        }
-      }
-    )
-  }
   getAndDespatchUsersData(organisationId){
+
     getData(`organisation/${organisationId}/user`)
     .then( orgUsers => {
-      store.dispatch({type:'SET_ORG_USERS', users:orgUsers})
+      this.props.dispatch({type:'SET_ORG_USERS', users:orgUsers})
     })
   }
   toggleUserSelection(user){
     let {selectedUsers} = this.props
     let userSelected = find(selectedUsers,u => (u.id === user.id) )
     if(userSelected){
-      store.dispatch({type:'DESELECT_ORG_USER', user:user})
+      this.props.dispatch({type:'DESELECT_ORG_USER', user:user})
     }
     else{
-      store.dispatch({type:'SELECT_ORG_USER', user:user})
+      this.props.dispatch({type:'SELECT_ORG_USER', user:user})
     }
   }
   updateOrgUser(user){
@@ -94,8 +76,7 @@ class AdminUsers extends Component {
     return modalContents
   }
   render() {
-    let {selectedUsers, modalMode, users} = this.props
-    let organisationId = store.getState().user.organisationId
+    let {selectedUsers, modalMode, users,organisationId} = this.props
     let modalContents = this.getModalContents({modalMode,organisationId,modelToLoad:selectedUsers[0]})
     return (
       <div>
@@ -120,6 +101,7 @@ class AdminUsers extends Component {
 
 AdminUsers.propTypes = {
   users: PropTypes.array,
+  organisationId: PropTypes.number.isRequired,
   selectedUsers: PropTypes.array,
   modalMode: PropTypes.string,
   dispatch: PropTypes.func
@@ -129,6 +111,7 @@ const mapStateToProps = state => {
   return({
     users:state.organisation.users, 
     selectedUsers:state.organisation.selectedUsers,
+    organisationId:state.user.organisationId,
     modalMode:state.adminUsers.modalMode
   })
 }
