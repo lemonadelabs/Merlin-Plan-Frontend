@@ -2,14 +2,21 @@ import { findIndex, forEach } from 'lodash';
 import * as api from 'utilities/api-interaction'
 
 function showNewUserModal(){
-  return dispatch =>{
+  return dispatch => {
+    dispatch({type:'SET_MODAL_MODE', mode:'NEW'})
+    dispatch({type:"SHOW_MODAL"})
+  }
+}
+
+function showNewModal(){
+  return dispatch => {
     dispatch({type:'SET_MODAL_MODE', mode:'NEW'})
     dispatch({type:"SHOW_MODAL"})
   }
 }
 
 function showEditUserModal(){
-  return dispatch =>{
+  return dispatch => {
     dispatch({type:'SET_MODAL_MODE', mode:'EDIT'})
     dispatch({type:"SHOW_MODAL"})
   }
@@ -38,6 +45,7 @@ function deactivateUsers(){
 const actionMap = {
   deactivateUsers,
   showNewUserModal,
+  showNewModal,
   showEditUserModal
 }
 export {actionMap}
