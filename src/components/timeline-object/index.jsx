@@ -128,7 +128,7 @@ class TimelineObject extends Component {
   handleDragmove(e){
     let newDisplayState = this.calculateNewWidthAndX(e.evt, this.state)
     let width = newDisplayState.width || this.state.width
-    let x =  this.state.scaleDirection === "right" ? this.state.x : e.target.attrs.x;
+    let x =  this.state.scaleDirection === "right" ? this.state.x : e.target.parent.attrs.x;
     let newDateState = this.getNewDateState(width, x, this.state)
     let newState = Object.assign({}, newDisplayState, newDateState)
 
@@ -142,13 +142,13 @@ class TimelineObject extends Component {
 
     switch (scaleDirection) {
       case 'right':
-        endDate = this.findDateFromPosition(x + width, this.props.stageWidth, this.props.numberOfYears, this.props.timelineStartYear)
+        endDate = this.findDateFromPosition(x + width, this.props.timelineStartYear)
         break;
       case 'left':
-        startDate = this.findDateFromPosition(x, this.props.stageWidth, this.props.numberOfYears, this.props.timelineStartYear)
+        startDate = this.findDateFromPosition(x, this.props.timelineStartYear)
         break;
       default:{
-        startDate = this.findDateFromPosition(x, this.props.stageWidth, this.props.numberOfYears, this.props.timelineStartYear)
+        startDate = this.findDateFromPosition(x, this.props.timelineStartYear)
         let monthChange = numberOfMonthsChanged(startDate, oldState.startDate)
         let yearChange = numberOfYearsChanged(startDate, oldState.startDate)
         let oldEndMonth = endDate.getMonth()
@@ -168,19 +168,20 @@ class TimelineObject extends Component {
   calculateNewWidthAndX(evt,oldState){
     const minWidth = 30
     let newState = {}
+    let relPos = this.relativePosition({x: evt.x, y: evt.y}, {x:oldState.x, y:oldState.y})
     switch (oldState.scaleDirection) {
       case 'right':
         newState.width = evt.x - oldState.x
         break;
       case 'left':{
-        let relPos = this.relativePosition({x: evt.x, y: evt.y}, {x:oldState.x, y:oldState.y})
         newState.width = oldState.width + (relPos.x * -1)
         //draggable doesn't seem update position when we change width, poos :(
         newState.x = oldState.x + relPos.x
         break;
       }
-      default:
-        newState.x = this.refs.rect.attrs.x
+      default:{
+        newState.x = oldState.x + relPos.x
+      }
     }
     return newState
   }
@@ -188,19 +189,16 @@ class TimelineObject extends Component {
   render() {
     let {x,y, width, draggable} = this.state
       return (
-        <Group
-          x={x}
-          y={y}
-          onMousedown={this.handleMousedown}
-          draggable={draggable}
-          dragBoundFunc={this.handleDragBound}
-          onDragEnd={this.handleDragEnd}
-          onDragmove={this.handleDragmove}>
-
+        <Group x={x} y={y}>
           <Rect
             ref="rect"
             width={width} height={23}
             fill={'green'}
+            onMousedown={this.handleMousedown}
+            dragBoundFunc={this.handleDragBound}
+            onDragmove={this.handleDragmove}
+            onDragEnd={this.handleDragEnd}
+            draggable={draggable}            
             cornerRadius={3}
             shadowBlur={4}
           />
