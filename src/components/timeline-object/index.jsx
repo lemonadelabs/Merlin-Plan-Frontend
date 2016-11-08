@@ -17,6 +17,7 @@ class TimelineObject extends Component {
     this.state = {
       x: x,
       y: 50,
+      offsetX: 0,
       width: width,
       draggable:true,
       scaleDirection: '',
@@ -98,6 +99,7 @@ class TimelineObject extends Component {
     let myPos = {x:this.state.x, y:this.state.y}
     let clickPos = {x: e.evt.x, y: e.evt.y}
     let relPos = this.relativePosition(clickPos, myPos)
+    this.setState({offsetX:relPos.x})
     if(relPos.x > this.state.width-20){
       this.setState({
         scaleDirection : 'right'
@@ -131,7 +133,6 @@ class TimelineObject extends Component {
     let x =  this.state.scaleDirection === "right" ? this.state.x : e.target.parent.attrs.x;
     let newDateState = this.getNewDateState(width, x, this.state)
     let newState = Object.assign({}, newDisplayState, newDateState)
-
     this.setState(newState)
   }
   getNewDateState(width, x, oldState){
@@ -180,7 +181,8 @@ class TimelineObject extends Component {
         break;
       }
       default:{
-        newState.x = oldState.x + relPos.x
+        let offset = evt.x - this.state.offsetX - oldState.x
+        newState.x = oldState.x + offset
       }
     }
     return newState
