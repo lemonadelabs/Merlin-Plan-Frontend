@@ -202,7 +202,7 @@ class TimelineObject extends Component {
             cornerRadius={3}
             shadowBlur={4}
           />
-          <TimelineLabel text={this.props.name} width={width}/>
+          <TimelineLabel  text={this.props.name} width={width}/>
         </Group>
       );
   }
@@ -219,8 +219,9 @@ TimelineObject.propTypes = {
 
 function TimelineLabel({text,width}){
   return (
-    <Label x={10} y={6}>
+    <Label listening={false} x={10} y={6}>
       <Text
+        listening={false}
         ref="text"
         fontSize={12}
         weight={'bold'}
