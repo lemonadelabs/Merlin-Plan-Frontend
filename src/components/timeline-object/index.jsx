@@ -224,7 +224,6 @@ function TimelineLabel({text,width}){
     <Label listening={false} x={10} y={6}>
       <Text
         listening={false}
-        ref="text"
         fontSize={12}
         weight={'bold'}
         fill={'white'}
