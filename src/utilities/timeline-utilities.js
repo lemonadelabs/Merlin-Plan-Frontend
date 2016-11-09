@@ -61,6 +61,10 @@ function indicatorWidthFromMode(mode,padding,yearWidth){
   return indicatorWidth
 }
 
+function amountOfYearsFromTimelineStartYear(date, timelineStartYear){
+  let year = date.getFullYear()
+  return(year - timelineStartYear)
+}
 
 function numberOfMonthsChanged(date1,date2){
   let month1 = date1.getMonth()
@@ -103,5 +107,6 @@ export {calculateYearWidthModePadding,
         calculateIndicatorWidth,
         indicatorWidthFromMode,
         numberOfMonthsChanged,
-        numberOfYearsChanged
+        numberOfYearsChanged,
+        amountOfYearsFromTimelineStartYear
         }

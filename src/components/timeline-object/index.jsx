@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import { Label, Text, Rect, Group} from 'react-konva';
-import {calculateYearWidthModePadding, unitsBetween, dateToQuarter, indicatorWidthFromMode, numberOfMonthsChanged, numberOfYearsChanged} from 'utilities/timeline-utilities'
+import {calculateYearWidthModePadding, unitsBetween,amountOfYearsFromTimelineStartYear, dateToQuarter, indicatorWidthFromMode, numberOfMonthsChanged, numberOfYearsChanged} from 'utilities/timeline-utilities'
 
 class TimelineObject extends Component {
   constructor(...args) {
@@ -42,7 +42,7 @@ class TimelineObject extends Component {
   findStartPositionFromDate(startDate){
     let {stageWidth, numberOfYears, timelineStartYear} = this.props
     let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
-    let yearsFromStartYear = this.amountOfYearsFromTimelineStartYear(startDate, timelineStartYear)
+    let yearsFromStartYear = amountOfYearsFromTimelineStartYear(startDate, timelineStartYear)
     let yearOffset = (yearWidth * yearsFromStartYear) + (padding * yearsFromStartYear)
     let indicatorWidth = indicatorWidthFromMode(mode,padding,yearWidth)
     let time = mode === 'Months' ? startDate.getMonth() : dateToQuarter(startDate) - 1
@@ -57,8 +57,6 @@ class TimelineObject extends Component {
     let yearOffset = (yearWidth + padding) * numberOfYearsFromStart
     let indicatorWidth = indicatorWidthFromMode(mode,padding,yearWidth)
     let monthPosition = x - yearOffset
-
-
     let year = timelineStartYear + numberOfYearsFromStart
     let month = Math.floor(monthPosition / (indicatorWidth + padding))
     let date = new Date(year, month)
@@ -73,10 +71,6 @@ class TimelineObject extends Component {
     let monthPadding = padding * timeUnits - padding
     let width = (indicatorWidth * timeUnits) + (monthPadding)
     return width
-  }
-  amountOfYearsFromTimelineStartYear(date, timelineStartYear){
-    let year = date.getFullYear()
-    return(year - timelineStartYear)
   }
   relativePosition(pos, myPos){
     return {x: pos.x - myPos.x, y: pos.y - myPos.y}
