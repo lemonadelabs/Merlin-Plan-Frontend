@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
 
 module.exports = {
   entry: [
@@ -13,6 +15,7 @@ module.exports = {
     path: './dist/',
     filename: 'index.js'
   },
+  plugins: [new HtmlWebpackPlugin({template:'./src/index.html'})],
   debug: true,
   devtool: 'source-map',
   devServer:{
