@@ -14,7 +14,7 @@ function findTimelineMode(yearWidth){
   }
   return mode
 }
-
+/**based on the timeline mode and width of the year blocks it will return the padding amount*/
 function calculateTimelinePadding(yearWidth, mode){
   let divider = mode === "Quarters" ? 40 : 100
   return yearWidth / divider
@@ -32,11 +32,13 @@ function calculateYearWidthModePadding(stageWidth, numberOfYears){
   let yearWidth = yearWidthNoPadding - (totalPadding / numberOfYears)
   return ({yearWidth, mode, padding})
 }
+
 function yearsBetween(start, end){
   let startYear = start.getFullYear()
   let endYear = end.getFullYear()
   return(endYear - startYear)
 }
+
 function dateToQuarter(date){
   let month = date.getMonth() + 1
   let quarterPreCeil = month / 3
