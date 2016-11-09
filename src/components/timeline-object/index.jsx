@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import { Label, Text, Rect, Group} from 'react-konva';
-import {calculateYearWidthModePadding, unitsBetween, dateToQuarter, calculateIndicatorWidth, indicatorWidthFromMode, numberOfMonthsChanged, numberOfYearsChanged} from 'utilities/timeline-utilities'
+import {calculateYearWidthModePadding, unitsBetween, dateToQuarter, indicatorWidthFromMode, numberOfMonthsChanged, numberOfYearsChanged} from 'utilities/timeline-utilities'
 
 class TimelineObject extends Component {
   constructor(...args) {
@@ -44,22 +44,8 @@ class TimelineObject extends Component {
     let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
     let yearsFromStartYear = this.amountOfYearsFromTimelineStartYear(startDate, timelineStartYear)
     let yearOffset = (yearWidth * yearsFromStartYear) + (padding * yearsFromStartYear)
-    let indicatorWidth
-    let time
-
-    switch (mode) {
-      case "Months":
-        time = startDate.getMonth()
-        indicatorWidth = calculateIndicatorWidth(12, padding, yearWidth)
-        break;
-      case "Quarters":
-        time = dateToQuarter(startDate) - 1
-        indicatorWidth = calculateIndicatorWidth(4, padding, yearWidth)
-        break;
-      default:
-        console.error(`Incorrect mode: ${mode} not defined`)
-    }
-
+    let indicatorWidth = indicatorWidthFromMode(mode,padding,yearWidth)
+    let time = mode === 'Months' ? startDate.getMonth() : dateToQuarter(startDate) - 1
     let indicatorOffset = (indicatorWidth * time) + (padding * time)
     let x = yearOffset + indicatorOffset
     return x;
