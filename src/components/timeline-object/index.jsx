@@ -25,7 +25,7 @@ class TimelineObject extends Component {
       endDate:endDate
     }
   }
-  componentWillReceiveProps(nextProps){
+  componentWillUpdate(nextProps){
     this.updateWidthAndX(nextProps)
   }
   updateWidthAndX(props) {
