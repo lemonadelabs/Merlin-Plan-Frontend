@@ -98,6 +98,68 @@ export function unitsBetween(startDate, endDate, mode){
   }
   return totalTimeUnits
 }
+
+function findXFromStartDate({startDate, stageWidth, numberOfYears, timelineStartYear}){
+  let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
+  let yearsFromStartYear = amountOfYearsFromTimelineStartYear(startDate, timelineStartYear)
+  let yearOffset = (yearWidth * yearsFromStartYear) + (padding * yearsFromStartYear)
+  let indicatorWidth = indicatorWidthFromMode(mode,padding,yearWidth)
+  let time = mode === 'Months' ? startDate.getMonth() : dateToQuarter(startDate) - 1
+  let indicatorOffset = (indicatorWidth * time) + (padding * time)
+  let x = yearOffset + indicatorOffset
+  return x;
+}
+
+function findNumberClosestInidactorForYear(x, stageWidth, numberOfYears){
+  let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
+  let indicatorWidth = indicatorWidthFromMode(mode,padding,yearWidth)    
+  let numberOfYearsFromStart = Math.floor(x / yearWidth)
+  let yearOffset = (yearWidth + padding) * numberOfYearsFromStart
+  let indicatorPosition = x - yearOffset
+  return(Math.floor(indicatorPosition / (indicatorWidth + padding)))
+}
+
+function calculateWidth({startDate, endDate, stageWidth, numberOfYears}){
+  let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
+  let timeUnits = unitsBetween(startDate, endDate, mode)
+  let indicatorWidth = indicatorWidthFromMode(mode,padding,yearWidth)
+  let monthPadding = padding * timeUnits - padding
+  let width = (indicatorWidth * timeUnits) + (monthPadding)
+  return width
+}
+
+function calculateWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear}){
+  let x = findXFromStartDate({startDate, stageWidth, numberOfYears, timelineStartYear})
+  let width = calculateWidth({startDate, endDate, stageWidth, numberOfYears})
+  return {x, width}
+}
+
+function calculateMonthOffset(startingMonthOfQuarter, date){
+  let month = date.getMonth()
+  let monthOffset = month - startingMonthOfQuarter
+  return monthOffset
+}
+
+function calculateQuarterStartingMonth(quarter){
+  return ((quarter * 3)-3)
+}
+
+function findDateFromPosition({x, timelineStartYear, oldDate, stageWidth, numberOfYears}){
+  let {yearWidth, mode} = calculateYearWidthModePadding(stageWidth, numberOfYears)
+  let closestIndicator = findNumberClosestInidactorForYear(x, stageWidth, numberOfYears)
+  let numberOfYearsFromStart = Math.floor(x / yearWidth)
+  let year = timelineStartYear + numberOfYearsFromStart
+  if(mode === "Months"){
+    let month = closestIndicator
+    return (new Date(year, month))
+  }
+  let oldQuarter = dateToQuarter(oldDate)    
+  let startingMonthOfOldQuarter = calculateQuarterStartingMonth(oldQuarter)
+  let monthOffset = calculateMonthOffset(startingMonthOfOldQuarter,oldDate)
+  let startingMonthOfNewQuarter =  calculateQuarterStartingMonth(closestIndicator+1)
+  return (new Date(year, startingMonthOfNewQuarter + monthOffset))
+}
+
 export {calculateYearWidthModePadding,
         calculateTimelineYearWidthNoPadding,
         findTimelineMode,
@@ -108,5 +170,12 @@ export {calculateYearWidthModePadding,
         indicatorWidthFromMode,
         numberOfMonthsChanged,
         numberOfYearsChanged,
-        amountOfYearsFromTimelineStartYear
+        amountOfYearsFromTimelineStartYear,
+        findXFromStartDate,
+        calculateWidth,
+        findNumberClosestInidactorForYear,
+        calculateWidthAndX,
+        calculateMonthOffset,
+        calculateQuarterStartingMonth,
+        findDateFromPosition
         }
