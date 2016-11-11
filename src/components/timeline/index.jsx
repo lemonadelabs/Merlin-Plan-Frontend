@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
-import {TimelineYear} from 'components/timeline-year'
 import {Group} from 'react-konva'
-import {calculateYearWidthModePadding} from 'utilities/timeline-utilities'
 import {times} from 'lodash'
+import {TimelineYear} from 'components/timeline-year'
+import {calculateYearWidthModePadding} from 'utilities/timeline-utilities'
 
 function Timeline ({numberOfYears, startYear, width}){
   let years = buildTimeline(numberOfYears, startYear, width)
