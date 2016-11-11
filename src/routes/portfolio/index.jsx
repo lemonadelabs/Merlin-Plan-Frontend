@@ -2,7 +2,7 @@ import React from 'react'
 import {Stage, Layer} from 'react-konva'
 import {TimelineObject} from 'components/timeline-object'
 import {Timeline} from 'components/timeline'
-import debounce from 'lodash/debounce'
+import throttle from 'lodash/throttle'
 
 class Portfolio extends React.Component {
   constructor(...args) {
@@ -13,7 +13,7 @@ class Portfolio extends React.Component {
       numberOfYears: 3,
       timelineStartYear: 2016
     }
-    this.handleResize = debounce(this.handleResize.bind(this),50)
+    this.handleResize = throttle(this.handleResize.bind(this),100)
     this.handleRangeChange = this.handleRangeChange.bind(this)
   }
   componentDidMount() {
@@ -41,17 +41,17 @@ class Portfolio extends React.Component {
               height={this.state.windowHeight}
               startYear={this.state.timelineStartYear}
               numberOfYears={this.state.numberOfYears}/>
-            </Layer>
-            <Layer>
+          </Layer>
+          <Layer>
             <TimelineObject
               name={"Demo demo demo"}
-              startDate={"12/1/2016"}
+              startDate={"11/1/2016"}
               endDate={"1/1/2018"}
               stageWidth={this.state.windowWidth}
               stageHeight={this.state.windowHeight}
               timelineStartYear={this.state.timelineStartYear}
               numberOfYears={this.state.numberOfYears}/>
-            </Layer>
+          </Layer>
         </Stage>
       </div>
     )
