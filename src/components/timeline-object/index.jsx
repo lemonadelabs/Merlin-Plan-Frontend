@@ -41,7 +41,6 @@ class TimelineObject extends Component {
     this.setState({width: width, x: x})
   }
   calculateWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear}){
-    console.log(startDate, endDate, stageWidth, numberOfYears, timelineStartYear);
     let x = this.findXFromStartDate({startDate, stageWidth, numberOfYears, timelineStartYear})
     let width = this.calculateWidth({startDate, endDate, stageWidth, numberOfYears})
     return {x, width}
