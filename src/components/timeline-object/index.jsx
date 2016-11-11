@@ -12,7 +12,8 @@ class TimelineObject extends Component {
 
     let startDate = new Date(this.props.startDate)
     let endDate = new Date(this.props.endDate)
-    let {x,width} = this.calculateWidthAndX(startDate, endDate)
+    let {stageWidth, numberOfYears, timelineStartYear} = this.props
+    let {x,width} = this.calculateWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear})
 
     this.state = {
       x: x,
@@ -25,22 +26,27 @@ class TimelineObject extends Component {
       endDate:endDate
     }
   }
-  componentWillUpdate(nextProps){
-    this.updateWidthAndX(nextProps)
+  componentWillReceiveProps(nextProps){
+    let oldStageWidth = this.props.stageWidth
+    let newStageWidth = nextProps.stageWidth
+    let oldNumberOfYears = this.props.numberOfYears
+    let newNumberOfYears = nextProps.numberOfYears
+    if(oldStageWidth !== newStageWidth || oldNumberOfYears !== newNumberOfYears){
+      this.updateWidthAndX(nextProps)
+    }
   }
-  updateWidthAndX(props) {
-    let {stageWidth, numberOfYears, timelineStartYear} = props
-    let {x, width} = this.calculateWidthAndX(this.state.startDate, this.state.endDate, stageWidth, numberOfYears, timelineStartYear)
-
+  updateWidthAndX({stageWidth, numberOfYears, timelineStartYear}) {
+    let {startDate, endDate} = this.state
+    let {x, width} = this.calculateWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear})
     this.setState({width: width, x: x})
   }
-  calculateWidthAndX(startDate, endDate){
-    let x = this.findStartPositionFromDate(startDate)
-    let width = this.calculateWidth(startDate, endDate)
+  calculateWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear}){
+    console.log(startDate, endDate, stageWidth, numberOfYears, timelineStartYear);
+    let x = this.findXFromStartDate({startDate, stageWidth, numberOfYears, timelineStartYear})
+    let width = this.calculateWidth({startDate, endDate, stageWidth, numberOfYears})
     return {x, width}
   }
-  findStartPositionFromDate(startDate){
-    let {stageWidth, numberOfYears, timelineStartYear} = this.props
+  findXFromStartDate({startDate, stageWidth, numberOfYears, timelineStartYear}){
     let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
     let yearsFromStartYear = amountOfYearsFromTimelineStartYear(startDate, timelineStartYear)
     let yearOffset = (yearWidth * yearsFromStartYear) + (padding * yearsFromStartYear)
@@ -50,8 +56,15 @@ class TimelineObject extends Component {
     let x = yearOffset + indicatorOffset
     return x;
   }
-  findDateFromPosition(x, timelineStartYear, oldDate){
-    let {stageWidth, numberOfYears} = this.props
+  calculateWidth({startDate, endDate, stageWidth, numberOfYears}){
+    let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
+    let timeUnits = unitsBetween(startDate, endDate, mode)
+    let indicatorWidth = indicatorWidthFromMode(mode,padding,yearWidth)
+    let monthPadding = padding * timeUnits - padding
+    let width = (indicatorWidth * timeUnits) + (monthPadding)
+    return width
+  }
+  findDateFromPosition({x, timelineStartYear, oldDate, stageWidth, numberOfYears}){
     let {yearWidth, mode} = calculateYearWidthModePadding(stageWidth, numberOfYears)
     let closestIndicator = this.findNumberClosestInidactorForYear(x, stageWidth, numberOfYears)
     let numberOfYearsFromStart = Math.floor(x / yearWidth)
@@ -81,15 +94,6 @@ class TimelineObject extends Component {
     let yearOffset = (yearWidth + padding) * numberOfYearsFromStart
     let indicatorPosition = x - yearOffset
     return(Math.floor(indicatorPosition / (indicatorWidth + padding)))
-  }
-  calculateWidth(startDate, endDate){
-    let {stageWidth, numberOfYears} = this.props
-    let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
-    let timeUnits = unitsBetween(startDate, endDate, mode)
-    let indicatorWidth = indicatorWidthFromMode(mode,padding,yearWidth)
-    let monthPadding = padding * timeUnits - padding
-    let width = (indicatorWidth * timeUnits) + (monthPadding)
-    return width
   }
   relativePosition(pos, myPos){
     return {x: pos.x - myPos.x, y: pos.y - myPos.y}
@@ -139,16 +143,16 @@ class TimelineObject extends Component {
     let scaleDirection =  oldState.scaleDirection
     let endDate = oldState.endDate
     let startDate = oldState.startDate
-
+    let {timelineStartYear, stageWidth, numberOfYears} = this.props
     switch (scaleDirection) {
       case 'right':
-        endDate = this.findDateFromPosition(x + width, this.props.timelineStartYear, endDate)
+        endDate = this.findDateFromPosition({x: x + width, timelineStartYear, endDate, stageWidth, numberOfYears})
         break; 
       case 'left':
-        startDate = this.findDateFromPosition(x, this.props.timelineStartYear, startDate)
+        startDate = this.findDateFromPosition({x, timelineStartYear, startDate, stageWidth, numberOfYears})
         break;
       default:{
-        startDate = this.findDateFromPosition(x, this.props.timelineStartYear, startDate)
+        startDate = this.findDateFromPosition({x, timelineStartYear, startDate, stageWidth, numberOfYears})
         let monthChange = numberOfMonthsChanged(startDate, oldState.startDate)
         let yearChange = numberOfYearsChanged(startDate, oldState.startDate)
         let oldEndMonth = endDate.getMonth()
