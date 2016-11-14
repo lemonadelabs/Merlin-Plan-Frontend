@@ -1,6 +1,6 @@
 /** Devides the stage width over the number of years */
 function calculateTimelineYearWidthNoPadding(stageWidth, numberOfYears){
-  return stageWidth/numberOfYears
+  return stageWidth / numberOfYears
 }
 
 /**Given the width of a single year this function will return what mode the timeline should be in, months or quarters */
@@ -40,8 +40,9 @@ function yearsBetween(start, end){
 }
 
 function dateToQuarter(date){
+  const monthsPerQuarter = 3
   let month = date.getMonth() + 1
-  let quarterPreCeil = month / 3
+  let quarterPreCeil = month / monthsPerQuarter
   let quarter = Math.ceil(quarterPreCeil)
   return (quarter);
 }
@@ -119,7 +120,7 @@ function findNumberClosestInidactorForYear(x, stageWidth, numberOfYears){
   return(Math.floor(indicatorPosition / (indicatorWidth + padding)))
 }
 
-function calculateWidth({startDate, endDate, stageWidth, numberOfYears}){
+function calculateTimelineObjectWidth({startDate, endDate, stageWidth, numberOfYears}){
   let {yearWidth, mode, padding} = calculateYearWidthModePadding(stageWidth, numberOfYears)
   let timeUnits = unitsBetween(startDate, endDate, mode)
   let indicatorWidth = indicatorWidthFromMode(mode,padding,yearWidth)
@@ -128,9 +129,9 @@ function calculateWidth({startDate, endDate, stageWidth, numberOfYears}){
   return width
 }
 
-function calculateWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear}){
+function calculateTimelineObjectWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear}){
   let x = findXFromStartDate({startDate, stageWidth, numberOfYears, timelineStartYear})
-  let width = calculateWidth({startDate, endDate, stageWidth, numberOfYears})
+  let width = calculateTimelineObjectWidth({startDate, endDate, stageWidth, numberOfYears})
   return {x, width}
 }
 
@@ -141,7 +142,8 @@ function calculateMonthOffset(startingMonthOfQuarter, date){
 }
 
 function calculateQuarterStartingMonth(quarter){
-  return ((quarter * 3)-3)
+  const monthsPerQuarter = 3
+  return ((quarter * monthsPerQuarter) - monthsPerQuarter)
 }
 
 function findDateFromPosition({x, timelineStartYear, oldDate, stageWidth, numberOfYears}){
@@ -164,7 +166,7 @@ function relativePosition(pos, myPos){
   return {x: pos.x - myPos.x, y: pos.y - myPos.y}
 }
 
-function calculateNewDisplayState(evt,oldState){
+function calculateNewDisplayState(evt, oldState){
   const minWidth = 30
   let newState = {}
   let relPos = relativePosition({x: evt.x, y: evt.y}, {x:oldState.x, y:oldState.y})
@@ -188,9 +190,8 @@ function calculateNewDisplayState(evt,oldState){
 
 function getNewDateState({width, x, oldState, timelineStartYear, stageWidth, numberOfYears}){
   let newState = {}
-  let scaleDirection =  oldState.scaleDirection
-  let endDate = oldState.endDate
-  let startDate = oldState.startDate
+  let {scaleDirection, endDate, startDate} =  oldState
+
   switch (scaleDirection) {
     case 'right':
       endDate = findDateFromPosition({x: x + width, timelineStartYear, oldDate: endDate, stageWidth, numberOfYears})
@@ -200,11 +201,7 @@ function getNewDateState({width, x, oldState, timelineStartYear, stageWidth, num
       break;
     default:{
       startDate = findDateFromPosition({x, timelineStartYear, oldDate:startDate, stageWidth, numberOfYears})
-      let monthChange = numberOfMonthsChanged(startDate, oldState.startDate)
-      let yearChange = numberOfYearsChanged(startDate, oldState.startDate)
-      let oldEndMonth = endDate.getMonth()
-      let oldEndYear = endDate.getFullYear()
-      endDate = new Date(oldEndYear+yearChange,oldEndMonth+monthChange)
+      endDate = endDateFromChangeInStartDate(startDate, oldState.startDate, endDate)
     }
   }
   if(startDate !== oldState.startDate){
@@ -214,6 +211,16 @@ function getNewDateState({width, x, oldState, timelineStartYear, stageWidth, num
     newState.endDate = endDate
   }
   return newState
+}
+
+function endDateFromChangeInStartDate(newStartDate,oldStartDate,oldEndDate){
+  let monthChange = numberOfMonthsChanged(newStartDate, oldStartDate)
+  let yearChange = numberOfYearsChanged(newStartDate, oldStartDate)
+  let oldEndMonth = oldEndDate.getMonth()
+  let oldEndYear = oldEndDate.getFullYear()
+  let newEndYear = oldEndYear+yearChange
+  let newEndMonth = oldEndMonth+monthChange
+  return(new Date(newEndYear, newEndMonth))
 }
 
 export {
@@ -229,9 +236,9 @@ export {
   numberOfYearsChanged,
   amountOfYearsFromTimelineStartYear,
   findXFromStartDate,
-  calculateWidth,
+  calculateTimelineObjectWidth,
   findNumberClosestInidactorForYear,
-  calculateWidthAndX,
+  calculateTimelineObjectWidthAndX,
   calculateMonthOffset,
   calculateQuarterStartingMonth,
   findDateFromPosition,

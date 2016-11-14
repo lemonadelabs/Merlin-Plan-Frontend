@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import { Label, Text, Rect, Group} from 'react-konva';
-import {getNewDateState, calculateNewDisplayState, relativePosition, calculateWidthAndX} from 'utilities/timeline-utilities'
+import {getNewDateState, calculateNewDisplayState, relativePosition, calculateTimelineObjectWidthAndX} from 'utilities/timeline-utilities'
 
 class TimelineObject extends Component {
   constructor(...args) {
@@ -13,7 +13,7 @@ class TimelineObject extends Component {
     let startDate = new Date(this.props.startDate)
     let endDate = new Date(this.props.endDate)
     let {stageWidth, numberOfYears, timelineStartYear} = this.props
-    let {x,width} = calculateWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear})
+    let {x,width} = calculateTimelineObjectWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear})
 
     this.state = {
       x: x,
@@ -37,7 +37,7 @@ class TimelineObject extends Component {
   }
   updateWidthAndX({stageWidth, numberOfYears, timelineStartYear}) {
     let {startDate, endDate} = this.state
-    let {x, width} = calculateWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear})
+    let {x, width} = calculateTimelineObjectWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear})
     this.setState({width: width, x: x})
   }
   handleMousedown(e) {
