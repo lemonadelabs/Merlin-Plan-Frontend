@@ -160,22 +160,82 @@ function findDateFromPosition({x, timelineStartYear, oldDate, stageWidth, number
   return (new Date(year, startingMonthOfNewQuarter + monthOffset))
 }
 
-export {calculateYearWidthModePadding,
-        calculateTimelineYearWidthNoPadding,
-        findTimelineMode,
-        calculateTimelinePadding,
-        yearsBetween,
-        dateToQuarter,
-        calculateIndicatorWidth,
-        indicatorWidthFromMode,
-        numberOfMonthsChanged,
-        numberOfYearsChanged,
-        amountOfYearsFromTimelineStartYear,
-        findXFromStartDate,
-        calculateWidth,
-        findNumberClosestInidactorForYear,
-        calculateWidthAndX,
-        calculateMonthOffset,
-        calculateQuarterStartingMonth,
-        findDateFromPosition
-        }
+function relativePosition(pos, myPos){
+  return {x: pos.x - myPos.x, y: pos.y - myPos.y}
+}
+
+function calculateNewDisplayState(evt,oldState){
+  const minWidth = 30
+  let newState = {}
+  let relPos = relativePosition({x: evt.x, y: evt.y}, {x:oldState.x, y:oldState.y})
+  switch (oldState.scaleDirection) {
+    case 'right':
+      newState.width = evt.x - oldState.x
+      break;
+    case 'left':{
+      newState.width = oldState.width + (relPos.x * -1)
+      //draggable doesn't seem update position when we change width, poos :(
+      newState.x = oldState.x + relPos.x
+      break;
+    }
+    default:{
+      let offset = evt.x - oldState.offsetX - oldState.x
+      newState.x = oldState.x + offset
+    }
+  }
+  return newState
+}
+
+function getNewDateState({width, x, oldState, timelineStartYear, stageWidth, numberOfYears}){
+  let newState = {}
+  let scaleDirection =  oldState.scaleDirection
+  let endDate = oldState.endDate
+  let startDate = oldState.startDate
+  switch (scaleDirection) {
+    case 'right':
+      endDate = findDateFromPosition({x: x + width, timelineStartYear, oldDate: endDate, stageWidth, numberOfYears})
+      break; 
+    case 'left':
+      startDate = findDateFromPosition({x, timelineStartYear, oldDate:startDate, stageWidth, numberOfYears})
+      break;
+    default:{
+      startDate = findDateFromPosition({x, timelineStartYear, oldDate:startDate, stageWidth, numberOfYears})
+      let monthChange = numberOfMonthsChanged(startDate, oldState.startDate)
+      let yearChange = numberOfYearsChanged(startDate, oldState.startDate)
+      let oldEndMonth = endDate.getMonth()
+      let oldEndYear = endDate.getFullYear()
+      endDate = new Date(oldEndYear+yearChange,oldEndMonth+monthChange)
+    }
+  }
+  if(startDate !== oldState.startDate){
+    newState.startDate = startDate
+  }
+  if(endDate !== oldState.endDate){
+    newState.endDate = endDate
+  }
+  return newState
+}
+
+export {
+  calculateYearWidthModePadding,
+  calculateTimelineYearWidthNoPadding,
+  findTimelineMode,
+  calculateTimelinePadding,
+  yearsBetween,
+  dateToQuarter,
+  calculateIndicatorWidth,
+  indicatorWidthFromMode,
+  numberOfMonthsChanged,
+  numberOfYearsChanged,
+  amountOfYearsFromTimelineStartYear,
+  findXFromStartDate,
+  calculateWidth,
+  findNumberClosestInidactorForYear,
+  calculateWidthAndX,
+  calculateMonthOffset,
+  calculateQuarterStartingMonth,
+  findDateFromPosition,
+  relativePosition,
+  calculateNewDisplayState,
+  getNewDateState
+}
