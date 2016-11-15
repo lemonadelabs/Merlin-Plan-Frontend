@@ -12,12 +12,12 @@ class TimelineObject extends Component {
 
     let startDate = new Date(this.props.startDate)
     let endDate = new Date(this.props.endDate)
-    let {stageWidth, numberOfYears, timelineStartYear} = this.props
+    let {stageWidth, numberOfYears, timelineStartYear, verticalPosition} = this.props
     let {x,width} = calculateTimelineObjectWidthAndX({startDate, endDate, stageWidth, numberOfYears, timelineStartYear})
-
+    let y = 50 + (30 * verticalPosition)
     this.state = {
       x: x,
-      y: 50,
+      y: y,
       offsetX: 0,
       width: width,
       draggable:true,

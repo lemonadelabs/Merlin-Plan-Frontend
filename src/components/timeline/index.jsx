@@ -26,14 +26,15 @@ class Timeline extends Component {
   addRenderPropsToChildren(children){
     let childrenToProcess = Array.isArray(children) ? children : castArray(children)
     let childrenWithProps = childrenToProcess.map( 
-      child => ( 
+      (child, index) => ( 
         React.cloneElement(
           child,
           {
             stageWidth : this.state.windowWidth,
             stageHeight : this.state.windowHeight,
             timelineStartYear : this.props.timelineStartYear,
-            numberOfYears : this.props.numberOfYears
+            numberOfYears : this.props.numberOfYears,
+            verticalPosition: index
           }
         ) 
       ) 
