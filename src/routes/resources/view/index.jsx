@@ -11,6 +11,11 @@ class ResourcesView extends Component {
       financialResources:[]
     }
   }
+  componentDidMount() {
+    let {scenarioId} = this.props.params
+    getData(`resourcescenario/${scenarioId}/resources`)
+    .then( resourcesData => { this.setState({financialResources:resourcesData.financialResources}) } )
+  }
   handleResourceDragEnd(props,state){
     let {name,id,resourceScenarioId,recurring} = props
     let {startDate,endDate} = state
@@ -23,11 +28,6 @@ class ResourcesView extends Component {
       recurring
     }
     putData('financialresource',updateFinancialResourcePayload)
-  }
-  componentDidMount() {
-    let {scenarioId} = this.props.params
-    getData(`resourcescenario/${scenarioId}/resources`)
-    .then( resourcesData => {this.setState({financialResources:resourcesData.financialResources})} )
   }
   timelineObjectsForFinancialResources(financialResources){
     let timelineObjects = []
