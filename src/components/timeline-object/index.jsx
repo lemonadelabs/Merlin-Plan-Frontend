@@ -63,6 +63,9 @@ class TimelineObject extends Component {
   }
   handleDragEnd() {
     this.updateWidthAndX(this.props)
+    if (this.props.dragEndFunction){
+      this.props.dragEndFunction(this.props,this.state)
+    }
   }
   handleDragBound(pos){
     let scaleDirection = this.scaleDirection
