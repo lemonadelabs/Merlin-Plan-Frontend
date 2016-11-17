@@ -16,19 +16,10 @@ class Portfolio extends React.Component {
     this.setState({'numberOfYears':newYearAmount})
   }
   render(){
-
     return(
       <div>
         <input type="range" onChange={this.handleRangeChange} min={1} max={10} value={this.state.numberOfYears}/>
         <Timeline timelineStartYear={this.state.timelineStartYear} numberOfYears={this.state.numberOfYears}>
-          <TimelineObject
-          name={"Demo demo demo"}
-          startDate={"11/1/2016"}
-          endDate={"1/1/2018"}/>
-          <TimelineObject
-          name={"Demo demo demo"}
-          startDate={"11/1/2016"}
-          endDate={"1/1/2018"}/>
           <TimelineObject
           name={"Demo demo demo"}
           startDate={"11/1/2016"}

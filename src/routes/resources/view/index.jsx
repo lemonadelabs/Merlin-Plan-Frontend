@@ -3,7 +3,7 @@ import { getData,putData } from 'utilities/api-interaction'
 import {TimelineObject} from 'components/timeline-object'
 import Timeline from 'components/timeline'
 import {unitsBetween} from 'utilities/timeline-utilities'
-import { times,fill } from 'lodash';
+import { fill } from 'lodash';
 
 class ResourcesView extends Component {
   constructor(props, context) {
@@ -37,7 +37,6 @@ class ResourcesView extends Component {
     let resourceInfo = {}
     let datasets = []
     let scenarioLength = unitsBetween(scenarioStartDate,scenarioEndDate,'Months')
-    // console.log(arrayLength);
     financialResources.forEach( resource => {
       const ArrayIndexOffset = 1
       let resourceStartDate = new Date(resource.startDate)
