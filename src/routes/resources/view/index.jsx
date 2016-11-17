@@ -1,25 +1,26 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
+import { fill,times } from 'lodash';
 import { getData,putData } from 'utilities/api-interaction'
 import {TimelineObject} from 'components/timeline-object'
 import Timeline from 'components/timeline'
 import {unitsBetween,yearsBetween,dateMonthToString} from 'utilities/timeline-utilities'
 import {Bar} from 'react-chartjs-2';
-import { fill,times } from 'lodash';
 
 class ResourcesView extends Component {
   constructor(props, context) {
     super(props, context);
     this.handleResourceDragEnd = this.handleResourceDragEnd.bind(this)
     this.state = {
-      financialResources:[],
       data:{labels:[],datasets:[]}
     }
   }
   componentDidMount() {
     let {scenarioId} = this.props.params
+    let {dispatch} = this.props
     getData(`resourcescenario/${scenarioId}/resources`)
-    .then( resourcesData => { 
-      this.setState({financialResources:resourcesData.financialResources}) 
+    .then( resourcesData => {
+      dispatch({type:'ADD_SCENARIO_DATA', id:scenarioId, data:resourcesData})
       let financialPartitionPromises = this.getFinancialResourcePartitions(resourcesData.financialResources)
       Promise.all(financialPartitionPromises)
       .then( financialPartitions => { this.processFinancialPartitions(resourcesData.financialResources,financialPartitions); } )
@@ -65,7 +66,7 @@ class ResourcesView extends Component {
   createDataArray(scenarioLength, value, resourceInfo){
     let data = fill( Array(scenarioLength), null )
     let unitAmount = value / resourceInfo.resourceUnitLength
-    fill(data, unitAmount, resourceInfo.resourceOffsetFromScenarioStart, resourceInfo.resourceUnitLength)
+    fill(data, unitAmount, resourceInfo.resourceOffsetFromScenarioStart, resourceInfo.resourceUnitLength + resourceInfo.resourceOffsetFromScenarioStart)
     return data
   }
   calculateResourceInfo(financialResources,scenarioStartDate){
@@ -114,7 +115,7 @@ class ResourcesView extends Component {
     return timelineObjects
   }
   render() {
-    let financialResourceTimelineObjects = this.timelineObjectsForFinancialResources(this.state.financialResources)
+    let financialResourceTimelineObjects = this.timelineObjectsForFinancialResources(this.props.financialResources)
     return(
       <div>
         <Timeline timelineStartYear={2016} numberOfYears={4}>
@@ -143,5 +144,11 @@ class ResourcesView extends Component {
     )
   }
 }
-
-export default ResourcesView;
+function mapStateToProps(state,props){
+  let scenarioId = props.params.scenarioId
+  let scenarioData = state.resources.scenarioData[scenarioId] || {financialResources:[]}
+  return({
+    financialResources: scenarioData.financialResources
+  })
+}
+export default connect(mapStateToProps)(ResourcesView);
