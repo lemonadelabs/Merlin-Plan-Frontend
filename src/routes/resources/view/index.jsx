@@ -44,8 +44,8 @@ class ResourcesView extends Component {
       partition.forEach(
         paritionInfo => {
           let data = this.createDataArray(scenarioLength, paritionInfo.value, resourceInfo[paritionInfo.financialResourceId])
-          let dataset = {data,name:''}
-          paritionInfo.categories.forEach( (category,i) => { dataset.name += `${i >= 1 ? ' & ' : ''}${category}` })
+          let dataset = {data,label:''}
+          paritionInfo.categories.forEach( (category,i) => { dataset.label += `${i >= 1 ? ' & ' : ''}${category}` })
           datasets.push(dataset)
         }
       )
