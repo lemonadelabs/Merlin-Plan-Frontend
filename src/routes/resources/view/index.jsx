@@ -2,15 +2,17 @@ import React, {Component} from 'react';
 import { getData,putData } from 'utilities/api-interaction'
 import {TimelineObject} from 'components/timeline-object'
 import Timeline from 'components/timeline'
-import {unitsBetween} from 'utilities/timeline-utilities'
-import { fill } from 'lodash';
+import {unitsBetween,yearsBetween,dateMonthToString} from 'utilities/timeline-utilities'
+import {Bar} from 'react-chartjs-2';
+import { fill,times } from 'lodash';
 
 class ResourcesView extends Component {
   constructor(props, context) {
     super(props, context);
     this.handleResourceDragEnd = this.handleResourceDragEnd.bind(this)
     this.state = {
-      financialResources:[]
+      financialResources:[],
+      data:{labels:[],datasets:[]}
     }
   }
   componentDidMount() {
@@ -34,9 +36,40 @@ class ResourcesView extends Component {
   processFinancialPartitions(financialResources,financialPartitions){
     let scenarioStartDate = new Date('2016-1-1')
     let scenarioEndDate = new Date('2019-12-31')
-    let resourceInfo = {}
+    let labels = this.generateTimelineLabels(scenarioStartDate,scenarioEndDate)
     let datasets = []
     let scenarioLength = unitsBetween(scenarioStartDate,scenarioEndDate,'Months')
+    let resourceInfo = this.calculateResourceInfo(financialResources, scenarioStartDate)
+    financialPartitions.forEach( partition => {
+      partition.forEach(
+        paritionInfo => {
+          let data = this.createDataArray(scenarioLength, paritionInfo.value, resourceInfo[paritionInfo.financialResourceId])
+          let dataset = {data,name:''}
+          paritionInfo.categories.forEach( (category,i) => { dataset.name += `${i >= 1 ? ' & ' : ''}${category}` })
+          datasets.push(dataset)
+        }
+      )
+    })
+    this.setState({data:{datasets,labels}});
+  }
+  generateTimelineLabels(startDate,endDate, mode="Months"){
+    let labels = []
+    times(yearsBetween(startDate,endDate,mode)+1, yearOffset => {
+      let year = startDate.getFullYear() + yearOffset
+      times(12, monthOffset =>{
+        labels.push(`${dateMonthToString(monthOffset)} - ${year}`)
+      })
+    })
+    return labels;
+  }
+  createDataArray(scenarioLength, value, resourceInfo){
+    let data = fill( Array(scenarioLength), null )
+    let unitAmount = value / resourceInfo.resourceUnitLength
+    fill(data, unitAmount, resourceInfo.resourceOffsetFromScenarioStart, resourceInfo.resourceUnitLength)
+    return data
+  }
+  calculateResourceInfo(financialResources,scenarioStartDate){
+    let resourceInfo = {}
     financialResources.forEach( resource => {
       const ArrayIndexOffset = 1
       let resourceStartDate = new Date(resource.startDate)
@@ -45,19 +78,7 @@ class ResourcesView extends Component {
       let resourceOffsetFromScenarioStart = unitsBetween(scenarioStartDate, resourceStartDate, 'Months') - ArrayIndexOffset
       resourceInfo[resource.id] = {resourceUnitLength, resourceOffsetFromScenarioStart}
     })
-    financialPartitions.forEach( partition => {
-      partition.forEach(
-        paritionInfo => {
-          let dataset = {data:fill(Array(scenarioLength), null),name:''}
-          let unitLength = resourceInfo[paritionInfo.financialResourceId].resourceUnitLength
-          let unitAmount = paritionInfo.value / unitLength
-          let offset = resourceInfo[paritionInfo.financialResourceId].resourceOffsetFromScenarioStart      
-          fill(dataset.data, unitAmount, offset, unitLength)
-          paritionInfo.categories.forEach( (category,i) => { dataset.name += `${i >= 1 ? ' & ' : ''}${category}` })
-          datasets.push(dataset)
-        }
-      )
-    })
+    return resourceInfo
   }
   handleResourceDragEnd(props,state){
     let {name,id,resourceScenarioId,recurring} = props
@@ -99,6 +120,7 @@ class ResourcesView extends Component {
         <Timeline timelineStartYear={2016} numberOfYears={4}>
           {financialResourceTimelineObjects}
         </Timeline>
+        <Bar data={this.state.data} redraw={true}/>
       </div>
     )
   }

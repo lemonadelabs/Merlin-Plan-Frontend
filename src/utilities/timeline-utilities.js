@@ -223,6 +223,11 @@ function endDateFromChangeInStartDate(newStartDate,oldStartDate,oldEndDate){
   return(new Date(newEndYear, newEndMonth))
 }
 
+function dateMonthToString(index){
+  let months = ['January','Febuary','March','April','May','June','July','August','September','October','November','December']
+  return months[index]
+}
+
 export {
   calculateYearWidthModePadding,
   calculateTimelineYearWidthNoPadding,
@@ -244,5 +249,6 @@ export {
   findDateFromPosition,
   relativePosition,
   calculateNewDisplayState,
+  dateMonthToString,
   getNewDateState
 }
