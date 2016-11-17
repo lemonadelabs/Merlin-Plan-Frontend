@@ -120,7 +120,25 @@ class ResourcesView extends Component {
         <Timeline timelineStartYear={2016} numberOfYears={4}>
           {financialResourceTimelineObjects}
         </Timeline>
-        <Bar data={this.state.data} redraw={true}/>
+        <Bar 
+          data={this.state.data} 
+          options={
+            {
+              scales:{
+                xAxes:[
+                  {
+                    stacked:true
+                  }
+                ],
+                yAxes:[
+                  {
+                    stacked:true
+                  }
+                ]
+              }
+            }
+          } 
+        redraw={true}/>
       </div>
     )
   }
