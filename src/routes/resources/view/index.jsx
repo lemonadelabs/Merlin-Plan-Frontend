@@ -4,16 +4,13 @@ import { fill,times } from 'lodash';
 import { getData,putData } from 'utilities/api-interaction'
 import {TimelineObject} from 'components/timeline-object'
 import Timeline from 'components/timeline'
-import {unitsBetween,yearsBetween,dateMonthToString} from 'utilities/timeline-utilities'
+import {unitsBetween, yearsBetween, dateMonthToString} from 'utilities/timeline-utilities'
 import {Bar} from 'react-chartjs-2';
 
 class ResourcesView extends Component {
   constructor(props, context) {
     super(props, context);
     this.handleResourceDragEnd = this.handleResourceDragEnd.bind(this)
-    this.state = {
-      data:{labels:[],datasets:[]}
-    }
   }
   componentDidMount() {
     let {scenarioId} = this.props.params
@@ -23,7 +20,10 @@ class ResourcesView extends Component {
       dispatch({type:'ADD_SCENARIO_DATA', id:scenarioId, data:resourcesData})
       let financialPartitionPromises = this.getFinancialResourcePartitions(resourcesData.financialResources)
       Promise.all(financialPartitionPromises)
-      .then( financialPartitions => { this.processFinancialPartitions(resourcesData.financialResources,financialPartitions); } )
+      .then( financialPartitions => { 
+       let chartData = this.processFinancialScenarioChartData(resourcesData.financialResources,financialPartitions);
+       dispatch({type:'SET_FINANCIAL_SCENARIO_CHART_DATA', id:scenarioId, data:chartData})
+      } )
     } )
   }
   getFinancialResourcePartitions(financialResources){
@@ -34,7 +34,7 @@ class ResourcesView extends Component {
     )
     return partitionPromises
   }
-  processFinancialPartitions(financialResources,financialPartitions){
+  processFinancialScenarioChartData(financialResources,financialPartitions){
     let scenarioStartDate = new Date('2016-1-1')
     let scenarioEndDate = new Date('2019-12-31')
     let labels = this.generateTimelineLabels(scenarioStartDate,scenarioEndDate)
@@ -51,7 +51,7 @@ class ResourcesView extends Component {
         }
       )
     })
-    this.setState({data:{datasets,labels}});
+    return ({datasets,labels})
   }
   generateTimelineLabels(startDate,endDate, mode="Months"){
     let labels = []
@@ -122,7 +122,7 @@ class ResourcesView extends Component {
           {financialResourceTimelineObjects}
         </Timeline>
         <Bar 
-          data={this.state.data} 
+          data={this.props.chartData} 
           options={
             {
               scales:{
@@ -147,8 +147,10 @@ class ResourcesView extends Component {
 function mapStateToProps(state,props){
   let scenarioId = props.params.scenarioId
   let scenarioData = state.resources.scenarioData[scenarioId] || {financialResources:[]}
+  let chartData = state.resources.chartData[scenarioId] || {labels:[],datasets:[]}
   return({
-    financialResources: scenarioData.financialResources
+    financialResources: scenarioData.financialResources,
+    chartData
   })
 }
 export default connect(mapStateToProps)(ResourcesView);
