@@ -38,9 +38,13 @@ class ResourcesView extends Component {
     let scenarioStartDate = new Date('2016-1-1')
     let scenarioEndDate = new Date('2019-12-31')
     let labels = this.generateTimelineLabels(scenarioStartDate,scenarioEndDate)
-    let datasets = []
     let scenarioLength = unitsBetween(scenarioStartDate,scenarioEndDate,'Months')
     let resourceInfo = this.calculateResourceInfo(financialResources, scenarioStartDate)
+    let datasets = this.datasetsFromPartitions(financialPartitions, scenarioLength, resourceInfo)
+    return ({datasets,labels})
+  }
+  datasetsFromPartitions(financialPartitions,scenarioLength,resourceInfo){
+    let datasets = []
     financialPartitions.forEach( partition => {
       partition.forEach(
         paritionInfo => {
@@ -51,7 +55,7 @@ class ResourcesView extends Component {
         }
       )
     })
-    return ({datasets,labels})
+    return datasets
   }
   generateTimelineLabels(startDate,endDate, mode="Months"){
     let labels = []
@@ -92,6 +96,7 @@ class ResourcesView extends Component {
       endDate,
       recurring
     }
+    this.props.dispatch({type:'UPDATE_FINANCIAL_RESOURCE',resourceScenarioId,id,updatedFinancialResource:updateFinancialResourcePayload})
     putData('financialresource',updateFinancialResourcePayload)
   }
   timelineObjectsForFinancialResources(financialResources){
