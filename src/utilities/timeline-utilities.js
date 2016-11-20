@@ -1,3 +1,6 @@
+/** @module Timeline Utilities */
+/** Helper functions for components for the timeline */
+
 /** Devides the stage width over the number of years */
 function calculateTimelineYearWidthNoPadding(stageWidth, numberOfYears){
   return stageWidth / numberOfYears
