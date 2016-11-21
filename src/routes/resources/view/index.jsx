@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { fill,times } from 'lodash';
+import { fill, times, isEqual } from 'lodash';
 import { getData,putData } from 'utilities/api-interaction'
 import {TimelineObject} from 'components/timeline-object'
 import Timeline from 'components/timeline'
@@ -21,10 +21,15 @@ class ResourcesView extends Component {
       let financialPartitionPromises = this.getFinancialResourcePartitions(resourcesData.financialResources)
       Promise.all(financialPartitionPromises)
       .then( financialPartitions => { 
-       let chartData = this.processFinancialScenarioChartData(resourcesData.financialResources,financialPartitions);
-       dispatch({type:'SET_FINANCIAL_SCENARIO_CHART_DATA', id:scenarioId, data:chartData})
+        dispatch({type:'SET_FINANCIAL_PARTITIONS',scenarioId, financialPartitions}) 
       } )
     } )
+  }
+  componentWillReceiveProps(nextProps) {
+    if(!isEqual(this.props.financialPartitions, nextProps.financialPartitions) || !isEqual(this.props.financialResources, nextProps.financialResources)){
+      const chartData = this.processFinancialScenarioChartData(nextProps.financialResources, nextProps.financialPartitions);
+      this.props.dispatch({type:'SET_FINANCIAL_SCENARIO_CHART_DATA', id:this.props.params.scenarioId, data:chartData})
+    }
   }
   getFinancialResourcePartitions(financialResources){
     let partitionPromises = financialResources.map(
@@ -126,25 +131,29 @@ class ResourcesView extends Component {
         <Timeline timelineStartYear={2016} numberOfYears={4}>
           {financialResourceTimelineObjects}
         </Timeline>
-        <Bar 
-          data={this.props.chartData} 
-          options={
-            {
-              scales:{
-                xAxes:[
-                  {
-                    stacked:true
-                  }
-                ],
-                yAxes:[
-                  {
-                    stacked:true
-                  }
-                ]
+        <div style={{position:'fixed',bottom:0,width:'100%',height:'250px'}}>
+          <Bar
+            style={{height:'100%'}}
+            data={this.props.chartData} 
+            options={
+              {
+                maintainAspectRatio:false,
+                scales:{
+                  xAxes:[
+                    {
+                      stacked:true
+                    }
+                  ],
+                  yAxes:[
+                    {
+                      stacked:true
+                    }
+                  ]
+                }
               }
-            }
-          } 
-        redraw={true}/>
+            } 
+          redraw={true}/>
+        </div>
       </div>
     )
   }
@@ -152,9 +161,11 @@ class ResourcesView extends Component {
 function mapStateToProps(state,props){
   let scenarioId = props.params.scenarioId
   let scenarioData = state.resources.scenarioData[scenarioId] || {financialResources:[]}
+  let financialPartitions = state.resources.financialPartitions[scenarioId] || []
   let chartData = state.resources.chartData[scenarioId] || {labels:[],datasets:[]}
   return({
     financialResources: scenarioData.financialResources,
+    financialPartitions,
     chartData
   })
 }

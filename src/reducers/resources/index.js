@@ -1,6 +1,6 @@
 import {findIndex, forEach, cloneDeep} from 'lodash';
 
-export default function resources(state = { accessableScenarios:[],scenarioData:{},chartData:{}}, action) {
+export default function resources(state = { accessableScenarios:[], financialPartitions:{}, scenarioData:{}, chartData:{} }, action) {
   switch (action.type) {
     case 'SET_ACCESSABLE_SCENARIOS':
       return Object.assign({},state,{accessableScenarios:action.scenarios})
@@ -28,6 +28,14 @@ export default function resources(state = { accessableScenarios:[],scenarioData:
       updatedScenarioData[action.resourceScenarioId] = Object.assign({}, state.scenarioData[action.resourceScenarioId], {financialResources:updatedFinancialResources})
       let updatedScenarioDataList = Object.assign({}, state.scenarioData, updatedScenarioData)
       return Object.assign({},state,{scenarioData:updatedScenarioDataList})
+    }
+    case 'SET_FINANCIAL_PARTITIONS': {
+    let newPartionsObject = {
+        financialPartitions:{
+        }
+      }
+      newPartionsObject.financialPartitions[action.scenarioId] = action.financialPartitions
+      return Object.assign({},state,newPartionsObject)
     }
     default:
       return state;
