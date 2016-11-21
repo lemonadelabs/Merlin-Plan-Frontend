@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { fill, times, isEqual } from 'lodash';
-import { getData,putData } from 'utilities/api-interaction'
+import { isEqual } from 'lodash';
+import { getData, putData } from 'utilities/api-interaction'
 import {TimelineObject} from 'components/timeline-object'
 import Timeline from 'components/timeline'
-import {unitsBetween} from 'utilities/timeline-utilities'
-import {generateTimeseriesLabels} from 'utilities/charts'
 import {Bar} from 'react-chartjs-2';
+import { processFinancialScenarioChartData } from 'actions/resource-chart-data';
 
 class ResourcesView extends Component {
   constructor(props, context) {
@@ -28,8 +27,7 @@ class ResourcesView extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if(!isEqual(this.props.financialPartitions, nextProps.financialPartitions) || !isEqual(this.props.financialResources, nextProps.financialResources)){
-      const chartData = this.processFinancialScenarioChartData(nextProps.financialResources, nextProps.financialPartitions);
-      this.props.dispatch({type:'SET_FINANCIAL_SCENARIO_CHART_DATA', id:this.props.params.scenarioId, data:chartData})
+      this.props.dispatch(processFinancialScenarioChartData(this.props.params.scenarioId, nextProps.financialResources, nextProps.financialPartitions))
     }
   }
   getFinancialResourcePartitions(financialResources){
@@ -39,48 +37,6 @@ class ResourcesView extends Component {
       }
     )
     return partitionPromises
-  }
-  processFinancialScenarioChartData(financialResources,financialPartitions){
-    let scenarioStartDate = new Date('2016-1-1')
-    let scenarioEndDate = new Date('2019-12-31')
-    let labels = generateTimeseriesLabels(scenarioStartDate,scenarioEndDate)
-    let scenarioLength = unitsBetween(scenarioStartDate,scenarioEndDate,'Months')
-    let resourceInfo = this.calculateResourceInfo(financialResources, scenarioStartDate)
-    let datasets = this.datasetsFromPartitions(financialPartitions, scenarioLength, resourceInfo)
-    return ({datasets,labels})
-  }
-  datasetsFromPartitions(financialPartitions,scenarioLength,resourceInfo){
-    let datasets = []
-    financialPartitions.forEach( partition => {
-      partition.forEach(
-        paritionInfo => {
-          let data = this.createDataArray(scenarioLength, paritionInfo.value, resourceInfo[paritionInfo.financialResourceId])
-          let dataset = {data,label:''}
-          paritionInfo.categories.forEach( (category,i) => { dataset.label += `${i >= 1 ? ' & ' : ''}${category}` })
-          datasets.push(dataset)
-        }
-      )
-    })
-    return datasets
-  }
-
-  createDataArray(scenarioLength, value, resourceInfo){
-    let data = fill( Array(scenarioLength), null )
-    let unitAmount = value / resourceInfo.resourceUnitLength
-    fill(data, unitAmount, resourceInfo.resourceOffsetFromScenarioStart, resourceInfo.resourceUnitLength + resourceInfo.resourceOffsetFromScenarioStart)
-    return data
-  }
-  calculateResourceInfo(financialResources,scenarioStartDate){
-    let resourceInfo = {}
-    financialResources.forEach( resource => {
-      const ArrayIndexOffset = 1
-      let resourceStartDate = new Date(resource.startDate)
-      let resourceEndDate = new Date(resource.endDate)
-      let resourceUnitLength = unitsBetween(resourceStartDate,resourceEndDate,'Months')
-      let resourceOffsetFromScenarioStart = unitsBetween(scenarioStartDate, resourceStartDate, 'Months') - ArrayIndexOffset
-      resourceInfo[resource.id] = {resourceUnitLength, resourceOffsetFromScenarioStart}
-    })
-    return resourceInfo
   }
   handleResourceDragEnd(props,state){
     let {name,id,resourceScenarioId,recurring} = props
