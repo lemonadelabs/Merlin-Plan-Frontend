@@ -4,7 +4,8 @@ import { fill, times, isEqual } from 'lodash';
 import { getData,putData } from 'utilities/api-interaction'
 import {TimelineObject} from 'components/timeline-object'
 import Timeline from 'components/timeline'
-import {unitsBetween, yearsBetween, dateMonthToString} from 'utilities/timeline-utilities'
+import {unitsBetween} from 'utilities/timeline-utilities'
+import {generateTimeseriesLabels} from 'utilities/charts'
 import {Bar} from 'react-chartjs-2';
 
 class ResourcesView extends Component {
@@ -42,7 +43,7 @@ class ResourcesView extends Component {
   processFinancialScenarioChartData(financialResources,financialPartitions){
     let scenarioStartDate = new Date('2016-1-1')
     let scenarioEndDate = new Date('2019-12-31')
-    let labels = this.generateTimelineLabels(scenarioStartDate,scenarioEndDate)
+    let labels = generateTimeseriesLabels(scenarioStartDate,scenarioEndDate)
     let scenarioLength = unitsBetween(scenarioStartDate,scenarioEndDate,'Months')
     let resourceInfo = this.calculateResourceInfo(financialResources, scenarioStartDate)
     let datasets = this.datasetsFromPartitions(financialPartitions, scenarioLength, resourceInfo)
@@ -62,16 +63,7 @@ class ResourcesView extends Component {
     })
     return datasets
   }
-  generateTimelineLabels(startDate,endDate, mode="Months"){
-    let labels = []
-    times(yearsBetween(startDate,endDate,mode)+1, yearOffset => {
-      let year = startDate.getFullYear() + yearOffset
-      times(12, monthOffset =>{
-        labels.push(`${dateMonthToString(monthOffset)} - ${year}`)
-      })
-    })
-    return labels;
-  }
+
   createDataArray(scenarioLength, value, resourceInfo){
     let data = fill( Array(scenarioLength), null )
     let unitAmount = value / resourceInfo.resourceUnitLength
