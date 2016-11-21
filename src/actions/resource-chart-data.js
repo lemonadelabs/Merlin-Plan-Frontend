@@ -1,4 +1,4 @@
-import { fill } from 'lodash';
+import { fill, forEach, findIndex, isNil } from 'lodash';
 import {unitsBetween} from 'utilities/timeline-utilities'
 import {generateTimeseriesLabels,createBaseDataset} from 'utilities/charts'
 
@@ -9,8 +9,8 @@ export function processFinancialScenarioChartData(scenarioId, financialResources
   let scenarioLength = unitsBetween(scenarioStartDate,scenarioEndDate,'Months')
   let resourceInfo = calculateResourceInfo(financialResources, scenarioStartDate)
   let datasets = datasetsFromPartitions(financialPartitions, scenarioLength, resourceInfo)
-
-  return ({type:'SET_FINANCIAL_SCENARIO_CHART_DATA', id:scenarioId, data:{datasets,labels}})
+  let mergedDatasets = mergeDuplicateDatasets(datasets)
+  return ({type:'SET_FINANCIAL_SCENARIO_CHART_DATA', id:scenarioId, data:{datasets:mergedDatasets,labels}})
 }
 
 function calculateResourceInfo(financialResources,scenarioStartDate){
@@ -42,6 +42,24 @@ function datasetsFromPartitions(financialPartitions, scenarioLength, resourceInf
     )
   })
   return datasets
+}
+
+function mergeDuplicateDatasets(datasets){
+  let mergedDatasets = []
+  forEach(datasets,  dataset => { 
+    let mergedDatasetIndex = findIndex(mergedDatasets, mergedDataset => ( mergedDataset.label === dataset.label ))
+    if(mergedDatasetIndex>=0){
+      forEach(mergedDatasets[mergedDatasetIndex].data, ( dataToMerge, i ) => {
+        if( !isNil(dataset.data[i]) && !isNil(dataToMerge) ){
+          mergedDatasets[mergedDatasetIndex].data[i] += dataset.data[i]
+        }
+      })
+    }
+    else{
+      mergedDatasets.push(dataset)
+    }
+  })
+  return mergedDatasets
 }
 
 function createResourceDataArray(scenarioLength, value, resourceInfo){
