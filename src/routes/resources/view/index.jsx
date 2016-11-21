@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash';
-import { getData, putData } from 'utilities/api-interaction'
+import { getData, putData, postData } from 'utilities/api-interaction'
 import {TimelineObject} from 'components/timeline-object'
 import Timeline from 'components/timeline'
 import {Bar} from 'react-chartjs-2';
@@ -74,8 +74,14 @@ class ResourcesView extends Component {
   }
   render() {
     let financialResourceTimelineObjects = this.timelineObjectsForFinancialResources(this.props.financialResources)
+    const dummyFinancialData = {
+        "name" : "New Financial Resource",
+        "startDate" : "2016-01-01",
+        "endDate" : "2020-01-01"
+      }
     return(
       <div>
+        <button onClick={() => { postData(`resourcescenario/${this.props.params.scenarioId}/financialresource`, dummyFinancialData) }}>Add Financial Resource</button>
         <Timeline timelineStartYear={2016} numberOfYears={4}>
           {financialResourceTimelineObjects}
         </Timeline>
