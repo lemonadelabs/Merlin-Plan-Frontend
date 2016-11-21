@@ -9,7 +9,7 @@ export default function resources(state = { accessableScenarios:[], financialPar
         scenarioData:{
         }
       }
-      newDataObject.scenarioData[action.id] = action.data
+      newDataObject.scenarioData[action.id] = Object.assign({}, action.data) 
       return Object.assign({},state,newDataObject)
     }
     case 'SET_FINANCIAL_SCENARIO_CHART_DATA': {
@@ -17,7 +17,7 @@ export default function resources(state = { accessableScenarios:[], financialPar
         chartData:{
         }
       }
-      newDataChartObject.chartData[action.id] = action.data
+      newDataChartObject.chartData[action.id] = Object.assign({}, action.data) 
       return Object.assign({},state,newDataChartObject)
     }
     case 'UPDATE_FINANCIAL_RESOURCE': {
