@@ -34,6 +34,9 @@ function datasetsFromPartitions(financialPartitions, scenarioLength, resourceInf
         let data = createResourceDataArray(scenarioLength, paritionInfo.value, resourceInfo[paritionInfo.financialResourceId])
         let dataset = {data,label:''}
         paritionInfo.categories.forEach( (category,i) => { dataset.label += `${i >= 1 ? ' & ' : ''}${category}` })
+        if(dataset.label === ''){
+          dataset.label = 'Unallocated'
+        }
         datasets.push(dataset)
       }
     )
