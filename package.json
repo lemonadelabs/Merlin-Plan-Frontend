@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha tests/.setup.js tests/**/*-test.js",
     "start": "webpack-dev-server --hot -d --content-base dist/",
     "build": "webpack"
   },
@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.4.1",
+    "babel-register": "^6.18.0",
     "chai": "^3.5.0",
     "css-loader": "^0.25.0",
     "enzyme": "^2.6.0",
@@ -44,6 +45,7 @@
     "eslint-plugin-react": "^6.4.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.24.1",
+    "jsdom": "^9.8.3",
     "mocha": "^3.1.2",
     "postcss-loader": "^0.10.1",
     "precss": "^1.4.0",
