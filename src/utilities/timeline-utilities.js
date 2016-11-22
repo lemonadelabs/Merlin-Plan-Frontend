@@ -17,6 +17,7 @@ function findTimelineMode(yearWidth){
   }
   return mode
 }
+
 /**based on the timeline mode and width of the year blocks it will return the padding amount*/
 function calculateTimelinePadding(yearWidth, mode){
   let divider = mode === "Quarters" ? 40 : 100
