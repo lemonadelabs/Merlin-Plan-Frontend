@@ -1,7 +1,6 @@
 import * as TimelineUtilities from '../../src/utilities/timeline-utilities';
 import { expect } from 'chai';
 
-
 describe('Timeline Utilities', function () {
   
   describe('calculateTimelineYearWidthNoPadding:', function () {
