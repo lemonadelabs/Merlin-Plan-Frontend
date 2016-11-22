@@ -64,7 +64,7 @@ describe('Timeline Utilities', function () {
       expect(TimelineUtilities.yearsBetween(janFirst2016,octFirst2026)).to.equal(10)
     });
   });
-  
+
   describe('dateToQuarter', function () {
     it('should set january as being q1', function () {
       let jan =new Date('2016-1-1')
@@ -117,4 +117,23 @@ describe('Timeline Utilities', function () {
   });
   
   
+  describe('IndicatorWidthFromMode', function () {
+    context('in "Quarters" mode', function() {
+      it('should return an indicator width of 5.6875', function () {
+        expect(TimelineUtilities.indicatorWidthFromMode('Quarters', 25, 97.75)).to.equal(5.6875)
+      });
+    })
+    context('in "Months" mode', function() {
+      it('should return an indicator width of 73.41666666666667', function () {
+        expect(TimelineUtilities.indicatorWidthFromMode('Months', 10, 991)).to.equal(73.41666666666667)
+      });
+    })
+    context('in "Incorrect" mode', function() {
+      it('should throw an error', function () {
+        expect(() =>  TimelineUtilities.indicatorWidthFromMode('Incorrect', 10, 991) ).to.throw("Incorrect mode: Incorrect not defined")
+      });
+    })
+  });
+  
+
 });
