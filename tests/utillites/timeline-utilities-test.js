@@ -65,4 +65,56 @@ describe('Timeline Utilities', function () {
     });
   });
   
+  describe('dateToQuarter', function () {
+    it('should set january as being q1', function () {
+      let jan =new Date('2016-1-1')
+      expect(TimelineUtilities.dateToQuarter(jan)).to.equal(1)
+    });
+    it('should set febuary as being q1', function () {
+      let feb = new Date('2016-2-1')
+      expect(TimelineUtilities.dateToQuarter(feb)).to.equal(1)
+    });
+    it('should set march as being q1', function () {
+      let march = new Date('2016-3-1')
+      expect(TimelineUtilities.dateToQuarter(march)).to.equal(1)
+    });
+    it('should set April as being q2', function () {
+      let april = new Date('2016-4-1')
+      expect(TimelineUtilities.dateToQuarter(april)).to.equal(2)
+    });
+    it('should set May as being q2', function () {
+      let may = new Date('2016-5-1')
+      expect(TimelineUtilities.dateToQuarter(may)).to.equal(2)
+    });
+    it('should set June as being q2', function () {
+      let june = new Date('2016-6-1')
+      expect(TimelineUtilities.dateToQuarter(june)).to.equal(2)
+    });
+    it('should set July as being q3', function () {
+      let jul = new Date('2016-7-1')
+      expect(TimelineUtilities.dateToQuarter(jul)).to.equal(3)
+    });
+    it('should set Aug as being q3', function () {
+      let aug = new Date('2016-8-1')
+      expect(TimelineUtilities.dateToQuarter(aug)).to.equal(3)
+    });
+    it('should set Sept as being q3', function () {
+      let sept = new Date('2016-9-1')
+      expect(TimelineUtilities.dateToQuarter(sept)).to.equal(3)
+    });
+    it('should set Oct as being q4', function () {
+      let oct = new Date('2016-10-1')
+      expect(TimelineUtilities.dateToQuarter(oct)).to.equal(4)
+    });
+    it('should set Nov as being q4', function () {
+      let nov = new Date('2016-11-1')
+      expect(TimelineUtilities.dateToQuarter(nov)).to.equal(4)
+    });
+    it('should set Dec as being q4', function () {
+      let dec = new Date('2016-12-1')
+      expect(TimelineUtilities.dateToQuarter(dec)).to.equal(4)
+    });
+  });
+  
+  
 });
