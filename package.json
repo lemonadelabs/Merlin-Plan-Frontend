@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "mocha tests/.setup.js tests/**/*-test.js",
+    "test": "mocha tests/.setup.js tests/**/*-test.js --watch",
     "start": "webpack-dev-server --hot -d --content-base dist/",
     "build": "webpack"
   },
