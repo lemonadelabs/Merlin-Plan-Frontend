@@ -61,7 +61,7 @@ function indicatorWidthFromMode(mode,padding,yearWidth){
       indicatorWidth = calculateIndicatorWidth(4, padding, yearWidth)
       break;
     default:
-      console.error(`Incorrect mode: ${mode} not defined`)
+      throw new Error(`Incorrect mode: ${mode} not defined`)
   }
   return indicatorWidth
 }
