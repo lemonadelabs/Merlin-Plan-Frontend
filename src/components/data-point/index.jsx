@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Compare from 'components/compare';
+import compare from 'components/compare';
 
 class DataPoint extends Component {
   render() {
@@ -12,4 +12,4 @@ class DataPoint extends Component {
   }
 }
 
-export default Compare(DataPoint);
+export default compare(DataPoint);
