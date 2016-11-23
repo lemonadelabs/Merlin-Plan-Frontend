@@ -1,32 +1,24 @@
 import React, {Component} from 'react';
 import ReactTooltip from 'react-tooltip'
 
- const Compare = ComposedComponent => class extends Component {
-  formatData(value){
-    if(typeof this.props.formatter === 'function'){
-      return this.props.formatter(value)
-    }
-    else{
-      return value
-    }
-  }
-  showToolTip(data) {
-    let tooltip = <ReactTooltip id="compare" place="top" type="light" effect="float">
-                    <span>{this.formatData(data[0])}</span> <span>{this.formatData(data[1])}</span>
-                  </ReactTooltip>
-    return data.length === 2 ? tooltip : ''
-  }
-  render(){
-    let {data} = this.props
+ const compare = ComposedComponent => function _compare(props){
+   let data = props.data
+   let formatter = props.formatter ? props.formatter : value => (value)
     return (
       <div>
-        {this.showToolTip(data)}
+        {showToolTip( data, formatter) }
         <a data-tip data-for="compare">
-          {showComparisonStatus(data)}<ComposedComponent {...this.props} value={handleData(data)}/>
+          {showComparisonStatus(data)}<ComposedComponent {...props} value={handleData(data)}/>
         </a>
       </div>
     )
-  }
+}
+
+function showToolTip(data,formatter) {
+  let tooltip = <ReactTooltip id="compare" place="top" type="light" effect="float">
+                  <span>{formatter(data[0])}</span> <span>{formatter(data[1])}</span>
+                </ReactTooltip>
+  return data.length === 2 ? tooltip : ''
 }
 
 function showComparisonStatus(data){
@@ -55,4 +47,4 @@ function handleData(data){
   }
   return value
 }
-export default Compare
+export default compare
