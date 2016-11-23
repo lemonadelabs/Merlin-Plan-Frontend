@@ -43,7 +43,7 @@ function handleData(data){
     value = data[0] - data[1]
   }
   if (value < 0){
-    value = value * -1
+    value *= -1
   }
   return value
 }
