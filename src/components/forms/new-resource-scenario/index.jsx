@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { Form, Control } from 'react-redux-form'
 import {postData} from 'utilities/api-interaction';
+import Name from 'components/forms/fields/name'
 
 class NewResourceScenarioForm extends Component {
   render() {
@@ -10,8 +11,7 @@ class NewResourceScenarioForm extends Component {
 
     return (
       <Form model={"forms.resourceScenario"} onSubmit={formData => { handleFormSubmit(formData,userGroups,userEmail) }}>
-        <label>Resource Scenario Name</label>
-        <Control.text model={".name"}/>
+        <Name newItemName={"Resource Scenario"}/>
         {selectGroup ? addGroupDropDown(userGroups) : ''}
         <button type="submit">Add Scenario</button>
       </Form>
