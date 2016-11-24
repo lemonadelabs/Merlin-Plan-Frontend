@@ -1,4 +1,5 @@
 import { findIndex, forEach } from 'lodash';
+import { getData,postData } from 'utilities/api-interaction';
 import * as api from 'utilities/api-interaction'
 
 function showNewUserModal(){
@@ -42,10 +43,25 @@ function deactivateUsers(){
   }
 }
 
-const actionMap = {
+function addNewFinancialResource(scenarioId, finanacialResourcePayload){
+  return dispatch => {
+    postData(`resourcescenario/${scenarioId}/financialresource`, finanacialResourcePayload)
+    .then( newFinancialResource => {
+      const financialResourceId = newFinancialResource.id
+      getData(`financialresource/${financialResourceId}/partition`)
+      .then( newFinancialPartitions => {
+        dispatch({type:'ADD_FINANCIAL_RESOURCE',resourceScenarioId:scenarioId, newFinancialResource})
+        dispatch({type:'ADD_FINANCIAL_PARTITION',resourceScenarioId:scenarioId, newFinancialPartitions})
+      })
+
+    })
+  }
+}
+
+export {
   deactivateUsers,
   showNewUserModal,
   showNewModal,
-  showEditUserModal
+  showEditUserModal,
+  addNewFinancialResource
 }
-export {actionMap}
