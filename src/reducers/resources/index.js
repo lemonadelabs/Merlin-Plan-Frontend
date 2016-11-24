@@ -29,12 +29,28 @@ export default function resources(state = { accessableScenarios:[], financialPar
       let updatedScenarioDataList = Object.assign({}, state.scenarioData, updatedScenarioData)
       return Object.assign({},state,{scenarioData:updatedScenarioDataList})
     }
+    case 'ADD_FINANCIAL_RESOURCE': {
+      let financialResources = state.scenarioData[action.resourceScenarioId].financialResources
+      let updatedFinancialResources = [...financialResources, action.newFinancialResource]
+      let updatedScenarioData = {}
+      updatedScenarioData[action.resourceScenarioId] = Object.assign({}, state.scenarioData[action.resourceScenarioId], {financialResources:updatedFinancialResources})
+      let updatedScenarioDataList = Object.assign({}, state.scenarioData, updatedScenarioData)
+      return Object.assign({},state,{scenarioData:updatedScenarioDataList})
+    }
     case 'SET_FINANCIAL_PARTITIONS': {
     let newPartionsObject = {
         financialPartitions:{
         }
       }
       newPartionsObject.financialPartitions[action.scenarioId] = action.financialPartitions
+      return Object.assign({},state,newPartionsObject)
+    }
+    case 'ADD_FINANCIAL_PARTITION': {
+    let newPartionsObject = {
+        financialPartitions:{
+        }
+      }
+      newPartionsObject.financialPartitions[action.scenarioId] = [...state.financialPartitions[action.scenarioId], ...action.newFinancialPartitions] 
       return Object.assign({},state,newPartionsObject)
     }
     default:
