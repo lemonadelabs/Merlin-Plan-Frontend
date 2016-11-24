@@ -6,7 +6,7 @@ import {TimelineObject} from 'components/timeline-object'
 import Timeline from 'components/timeline'
 import {Bar} from 'react-chartjs-2';
 import { processFinancialScenarioChartData } from 'actions/resource-chart-data';
-import { addNewFinancialResource } from 'actions';
+import NewFinancialResourceForm from 'components/forms/new-financial-resource';
 
 class ResourcesView extends Component {
   constructor(props, context) {
@@ -73,20 +73,12 @@ class ResourcesView extends Component {
     )
     return timelineObjects
   }
-  addNewFinancialResource(){
-    const scenarioId = this.props.params.scenarioId
-    const dummyFinancialData = {
-      "name" : "New Financial Resource",
-      "startDate" : "2016-01-01",
-      "endDate" : "2020-01-01"
-    }
-    this.props.dispatch(addNewFinancialResource(scenarioId, dummyFinancialData))
-  }
   render() {
+    const scenarioId = this.props.params.scenarioId
     let financialResourceTimelineObjects = this.timelineObjectsForFinancialResources(this.props.financialResources)
     return(
       <div>
-        <button onClick={() => { this.addNewFinancialResource() }}>Add Financial Resource</button>
+        <NewFinancialResourceForm scenarioId={scenarioId}/>
         <Timeline timelineStartYear={2016} numberOfYears={4}>
           {financialResourceTimelineObjects}
         </Timeline>
