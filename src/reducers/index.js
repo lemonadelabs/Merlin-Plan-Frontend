@@ -29,6 +29,14 @@ const initialResourceScenarioState = {
   'group': 0
 }
 
+const initialFinancialResourceState = {
+   "name" : "",
+  "startDate" : "",
+  "endDate" : "",
+  "recurring": false,
+  "defaultPartitionValue": 0
+}
+
 const merlinApp = combineReducers(
   {
     app,
@@ -41,7 +49,8 @@ const merlinApp = combineReducers(
       {
         user: initialUserState,
         group: initialGroupState,
-        resourceScenario: initialResourceScenarioState
+        resourceScenario: initialResourceScenarioState,
+        financialResource: initialFinancialResourceState
       },'forms')
   }
 )
