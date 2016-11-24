@@ -26,10 +26,10 @@ function showComparisonStatus(data){
     return ''
   }
   if(data[0]>data[1]){
-    return <span>down</span>
+    return <span className="compare-data-down">down</span>
   }
   if(data[0]<data[1]){
-    return <span>up</span>
+    return <span className="compare-data-up">up</span>
   }
   return ''
 }
