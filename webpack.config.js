@@ -2,7 +2,7 @@ var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-
+var postcssImport = require('postcss-import');
 
 module.exports = {
   entry: [
@@ -37,15 +37,21 @@ module.exports = {
       {
         test: /\.jsx?$/,
         include: path.join(__dirname, 'src'),
-        loaders: ['react-hot','babel-loader'],
+        loaders: ['react-hot','babel-loader']
+      },
+      {
+        test: /\.css$/,
+        include: path.join(__dirname, 'node_modules'),
+        loader: 'style-loader!css-loader'
       },
       {
         test:   /\.css$/,
+        exclude: path.join(__dirname, 'node_modules'),
         loader: "style-loader!css-loader?modules=true&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader?sourceMap=inline"
       }
     ]
   },
   postcss: function () {
-      return [autoprefixer];
+      return [autoprefixer,postcssImport()];
   }
 }
