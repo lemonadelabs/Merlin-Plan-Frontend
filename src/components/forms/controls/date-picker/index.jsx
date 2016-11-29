@@ -10,11 +10,11 @@ function DatePicker ({model, dispatch}) {
       model = {model}
       component={Picker}
       controlProps={{
-        model,
         dispatch
       }}
       mapProps={{
-        selectedValue: props => (props.modelValue)          
+        selectedValue: props => (props.modelValue),
+        model: props => (props.model)
       }}
     />
   );
