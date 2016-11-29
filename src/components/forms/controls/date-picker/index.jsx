@@ -25,20 +25,35 @@ class Picker extends Component{
   constructor(){
     super()
     this.state = {
-      showDatePicker:false
+      showDatePicker:false,
+      pickingDate:false
     }
   }
   render(){
     let {model, dispatch, viewValue, selectedValue} = this.props
     let DatePickerComponent = <DayPicker 
-                                onDayClick={ (e,day) => dispatch( actions.change(model, day) ) } 
-                                selectedDays= { day => DateUtils.isSameDay(day, new Date(selectedValue) ) }/>
+                                onDayClick={ (e, day) => { dispatch( actions.change(model, day) ); this.setState({showDatePicker:false}) } } 
+                                selectedDays= { day => DateUtils.isSameDay(day, new Date(selectedValue) ) }
+                                onMouseEnter={ () => { this.setState({pickingDate:true}) } }
+                                onMouseLeave={ () => { this.setState({pickingDate:false}) } }/>
     return (
       <div>
         <div>
-          <p onClick={e => { this.setState({showDatePicker:!this.state.showDatePicker}) } }>
-            {viewValue ? new Date(viewValue).toLocaleDateString(): 'No Date' }
-          </p>
+          <input type="text" 
+            value = {viewValue ? new Date(viewValue).toLocaleDateString(): ''}
+            onFocus={ 
+              () => {
+                dispatch( actions.focus(model) )
+                this.setState({showDatePicker:true}) 
+              }
+            } 
+            onBlur={
+              () => {
+                if(this.state.pickingDate) { return }
+                dispatch( actions.blur(model) )
+                this.setState( { showDatePicker:false } ) 
+              } 
+            } />
         </div>
         {
           this.state.showDatePicker ? DatePickerComponent : ''
