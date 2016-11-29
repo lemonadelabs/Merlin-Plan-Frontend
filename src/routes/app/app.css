@@ -1,3 +1,7 @@
+/*:global (
+  @import '~react-day-picker/lib/style.css';
+)*/
+
 :global(html) {
   background-color: rgb(37, 28, 51)
 }
