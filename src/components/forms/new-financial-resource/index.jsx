@@ -9,7 +9,6 @@ import DatePicker from 'components/forms/controls/date-picker'
 
 class NewFinancialResourceForm extends Component {
   render() {
-    console.log(this.props);
     return(
       <Form model={"forms.financialResource"} onSubmit={formData => { 
         this.props.dispatch(addNewFinancialResource(1,formData)) 
