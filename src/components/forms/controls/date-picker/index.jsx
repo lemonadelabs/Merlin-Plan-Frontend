@@ -21,17 +21,31 @@ function DatePicker ({model, dispatch}) {
   );
 }
 
-function Picker ( {model, dispatch, viewValue, selectedValue} ) {
-  return (
-    <div>
+class Picker extends Component{
+  constructor(){
+    super()
+    this.state = {
+      showDatePicker:false
+    }
+  }
+  render(){
+    let {model, dispatch, viewValue, selectedValue} = this.props
+    let DatePickerComponent = <DayPicker 
+                                onDayClick={ (e,day) => dispatch( actions.change(model, day) ) } 
+                                selectedDays= { day => DateUtils.isSameDay(day, new Date(selectedValue) ) }/>
+    return (
       <div>
-        <p>{new Date(viewValue).toLocaleDateString()}</p>
+        <div>
+          <p onClick={e => { this.setState({showDatePicker:!this.state.showDatePicker}) } }>
+            {viewValue ? new Date(viewValue).toLocaleDateString(): 'No Date' }
+          </p>
+        </div>
+        {
+          this.state.showDatePicker ? DatePickerComponent : ''
+        }
       </div>
-      <DayPicker 
-        onDayClick={ (e,day) => dispatch( actions.change(model, day) ) } 
-        selectedDays= { day => DateUtils.isSameDay(day, new Date(selectedValue) ) }/>
-    </div>
-  );
+    );
+  }
 }
 
 export default connect()(DatePicker);
