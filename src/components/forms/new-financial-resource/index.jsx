@@ -18,7 +18,7 @@ class NewFinancialResourceForm extends Component {
         <label>Start Date</label>
         <DatePicker model={"forms.financialResource.startDate"}/>
         <label>End Date</label>
-        <Control.text model={".endDate"}/>
+        <DatePicker model={"forms.financialResource.endDate"}/>
         <label>Recurring Scenario</label>
         <Control.checkbox model={".recurring"}/>
         <label>Total Budget</label>
