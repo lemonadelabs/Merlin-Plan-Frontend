@@ -3,7 +3,7 @@ import { Form, Control } from 'react-redux-form'
 import { addNewFinancialResource } from 'actions'
 import { connect } from 'react-redux'
 import Name from 'components/forms/fields/name'
-import DatePicker from 'components/forms/controls/date-picker'
+import DatePickerControl from 'components/forms/controls/date-picker'
 
 
 
@@ -15,9 +15,9 @@ class NewFinancialResourceForm extends Component {
       }}>
         <Name/>
         <label>Start Date</label>
-        <DatePicker model={".startDate"}/>
+        <DatePickerControl model={".startDate"}/>
         <label>End Date</label>
-        <DatePicker model={".endDate"}/>
+        <DatePickerControl model={".endDate"}/>
         <label>Recurring Scenario</label>
         <Control.checkbox model={".recurring"}/>
         <label>Total Budget</label>
