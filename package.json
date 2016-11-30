@@ -23,6 +23,7 @@
     "password-generator": "^2.0.2",
     "react": "^15.3.0",
     "react-chartjs-2": "^1.2.5",
+    "react-datepicker": "^0.34.0",
     "react-dom": "^15.3.0",
     "react-konva": "1.0.6",
     "react-motion": "^0.4.4",
