@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { actions, Control } from 'react-redux-form';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
@@ -7,42 +6,21 @@ import moment from 'moment';
 import 'moment/locale/en-nz';
 
 
-function DatePickerControl ({model, dispatch}) {
+function DatePickerControl ({model}) {
+  moment.locale('en-nz')
   return (
     <Control
       model = {model}
-      component={Picker}
+      component={DatePicker}
       controlProps={{
-        dispatch
+        locale:'en-nz'
       }}
       mapProps={{
-        modelValue: props => (props.modelValue),
-        model: props => (props.model)
+        selected: props => (props.modelValue || moment() ),
+        onChange: props => ( date => { props.dispatch(actions.change(props.model, date)) } )
       }}
     />
   );
 }
 
-class Picker extends Component{
-  constructor(){
-    super()
-    moment.locale('en-nz')
-    this.handleChange = this.handleChange.bind(this)
-  }
-  handleChange(date){
-    let {model, dispatch} = this.props
-    dispatch(actions.change(model, date))
-  }
-  render(){
-    return (
-      <div>
-        <DatePicker
-        selected={this.props.selectedValue || moment()}
-        onChange={this.handleChange}
-        locale={"en-nz"}/>
-      </div>
-    );
-  }
-}
-
-export default connect()(DatePickerControl);
+export default DatePickerControl;
