@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { actions, Control } from 'react-redux-form';
 import DayPicker, { DateUtils } from "react-day-picker";
+import moment from 'moment';
 import 'react-day-picker/lib/style.css';
 
 function DatePicker ({model, dispatch}) {
@@ -15,7 +16,8 @@ function DatePicker ({model, dispatch}) {
       mapProps={{
         selectedValue: props => (props.modelValue),
         viewValue: props => (props.viewValue),
-        model: props => (props.model)
+        model: props => (props.model),
+        focused: props => {return(props.fieldValue.focus);}
       }}
     />
   );
@@ -31,26 +33,36 @@ class Picker extends Component{
   }
   render(){
     let {model, dispatch, viewValue, selectedValue} = this.props
+    let momentDate = typeof selectedValue === 'object' ? moment(selectedValue): moment(selectedValue, "DD/MM/YYYY",true)
+    let displayValue = momentDate.isValid() ? momentDate.format('DD/MM/YYYY') : viewValue
     let DatePickerComponent = <DayPicker 
                                 onDayClick={ (e, day) => { dispatch( actions.change(model, day) ); this.setState({showDatePicker:false}) } } 
                                 selectedDays= { day => DateUtils.isSameDay(day, new Date(selectedValue) ) }
                                 onMouseEnter={ () => { this.setState({pickingDate:true}) } }
-                                onMouseLeave={ () => { this.setState({pickingDate:false}) } }/>
+                                onMouseLeave={ () => { this.setState({pickingDate:false}) } }
+                              />
     return (
       <div>
         <div>
           <input type="text" 
-            value = {viewValue ? new Date(viewValue).toLocaleDateString(): ''}
-            onFocus={ 
+            value = {displayValue}
+            onFocus = { 
               () => {
                 dispatch( actions.focus(model) )
                 this.setState({showDatePicker:true}) 
               }
-            } 
-            onBlur={
+            }
+            onChange = {
+              e => {
+                let stringParsedToMoment = moment(e.target.value, "DD/MM/YYYY",true)
+                let valueToDispatch = stringParsedToMoment.isValid() ? stringParsedToMoment.toDate() : e.target.value
+                dispatch( actions.change(model, valueToDispatch) )
+              }
+            }
+            onBlur = {
               () => {
-                if(this.state.pickingDate) { return }
                 dispatch( actions.blur(model) )
+                if(this.state.pickingDate) { return }
                 this.setState( { showDatePicker:false } ) 
               } 
             } />
