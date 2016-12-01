@@ -20,6 +20,7 @@
     "konva": "^1.0.2",
     "lodash": "^4.15.0",
     "moment": "^2.15.0",
+    "normalize.css": "^5.0.0",
     "password-generator": "^2.0.2",
     "react": "^15.3.0",
     "react-chartjs-2": "^1.2.5",
@@ -33,6 +34,7 @@
     "react-tooltip": "^3.2.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
+    "sanitize.css": "^4.1.0",
     "shortid": "^2.2.6",
     "webfontloader": "^1.6.26",
     "whatwg-fetch": "^1.0.0"

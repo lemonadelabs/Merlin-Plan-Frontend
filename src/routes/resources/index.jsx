@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux';
 import NewResourceScenario from 'components/forms/new-resource-scenario';
-
 // import PartitionVisualisation from 'components/partition-visualisation';
 
 class ResourcesRoot extends Component {

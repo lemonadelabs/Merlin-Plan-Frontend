@@ -7,7 +7,6 @@ import { Router, browserHistory } from 'react-router'
 import * as Webfont from 'webfontloader'
 import store from 'store'
 
-
 let WebFontConfig = {
   // /*Don't render the app till the font is loaded because canvas doesn't like not having the font not already there.
   //   this could be done in a more elegant way so that the rest of the app isn't waiting on the font but for now this works.*/

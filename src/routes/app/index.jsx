@@ -3,6 +3,8 @@ import { withRouter } from 'react-router'
 import { loggedIn } from 'utilities/auth'
 import NavigationBar from 'components/navigation-bar'
 import { connect } from 'react-redux';
+import "sanitize.css/sanitize.css"
+import "normalize.css/normalize.css"
 import styles from './app.css'
 import { size } from 'lodash';
 
