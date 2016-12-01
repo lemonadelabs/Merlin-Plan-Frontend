@@ -50,7 +50,7 @@ export default function resources(state = { accessableScenarios:[], financialPar
         financialPartitions:{
         }
       }
-      newPartionsObject.financialPartitions[action.scenarioId] = [...state.financialPartitions[action.scenarioId], ...action.newFinancialPartitions] 
+      newPartionsObject.financialPartitions[action.resourceScenarioId] = [...state.financialPartitions[action.resourceScenarioId], action.newFinancialPartitions] 
       return Object.assign({},state,newPartionsObject)
     }
     default:
