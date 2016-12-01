@@ -1,78 +1,29 @@
-import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { actions, Control } from 'react-redux-form';
-import DayPicker, { DateUtils } from "react-day-picker";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import 'react-day-picker/lib/style.css';
+import 'moment/locale/en-nz';
 
-function DatePicker ({model, dispatch}) {
+function DatePickerControl ({model}) {
+  moment.locale('en-nz')
   return (
     <Control
       model = {model}
-      component={Picker}
+      component={DatePicker}
       controlProps={{
-        dispatch
+        locale:'en-nz',
+        showYearDropdown:true,
+        startDate:moment()
       }}
       mapProps={{
-        selectedValue: props => (props.modelValue),
-        viewValue: props => (props.viewValue),
-        model: props => (props.model),
-        focused: props => {return(props.fieldValue.focus);}
+        selected: props => (props.modelValue),
+        onChange: props => ( date => { props.dispatch(actions.change(props.model, date)) } ),
+        onBlur: props => ( () => { props.dispatch(actions.blur(props.model)) } ),
+        onFocus: props => ( () => { props.dispatch(actions.focus(props.model)) } )
       }}
     />
   );
 }
 
-class Picker extends Component{
-  constructor(){
-    super()
-    this.state = {
-      showDatePicker:false,
-      pickingDate:false
-    }
-  }
-  render(){
-    let {model, dispatch, viewValue, selectedValue} = this.props
-    let momentDate = typeof selectedValue === 'object' ? moment(selectedValue): moment(selectedValue, "DD/MM/YYYY",true)
-    let displayValue = momentDate.isValid() ? momentDate.format('DD/MM/YYYY') : viewValue
-    let DatePickerComponent = <DayPicker 
-                                onDayClick={ (e, day) => { dispatch( actions.change(model, day) ); this.setState({showDatePicker:false}) } } 
-                                selectedDays= { day => DateUtils.isSameDay(day, new Date(selectedValue) ) }
-                                onMouseEnter={ () => { this.setState({pickingDate:true}) } }
-                                onMouseLeave={ () => { this.setState({pickingDate:false}) } }
-                              />
-    return (
-      <div>
-        <div>
-          <input type="text" 
-            value = {displayValue}
-            onFocus = { 
-              () => {
-                dispatch( actions.focus(model) )
-                this.setState({showDatePicker:true}) 
-              }
-            }
-            onChange = {
-              e => {
-                let stringParsedToMoment = moment(e.target.value, "DD/MM/YYYY",true)
-                let valueToDispatch = stringParsedToMoment.isValid() ? stringParsedToMoment.toDate() : e.target.value
-                dispatch( actions.change(model, valueToDispatch) )
-              }
-            }
-            onBlur = {
-              () => {
-                dispatch( actions.blur(model) )
-                if(this.state.pickingDate) { return }
-                this.setState( { showDatePicker:false } ) 
-              } 
-            } />
-        </div>
-        {
-          this.state.showDatePicker ? DatePickerComponent : ''
-        }
-      </div>
-    );
-  }
-}
-
-export default connect()(DatePicker);
+export default DatePickerControl;
