@@ -53,6 +53,9 @@ function mergeDuplicateDatasets(datasets){
         if( !isNil(dataset.data[i]) && !isNil(dataToMerge) ){
           mergedDatasets[mergedDatasetIndex].data[i] += dataset.data[i]
         }
+        else if( !isNil(dataset.data[i]) && isNil(dataToMerge)){
+          mergedDatasets[mergedDatasetIndex].data[i] = dataset.data[i]
+        }
       })
     }
     else{
