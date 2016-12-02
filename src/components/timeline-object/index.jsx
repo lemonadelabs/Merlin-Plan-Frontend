@@ -31,7 +31,10 @@ class TimelineObject extends Component {
     let newStageWidth = nextProps.stageWidth
     let oldNumberOfYears = this.props.numberOfYears
     let newNumberOfYears = nextProps.numberOfYears
-    if(oldStageWidth !== newStageWidth || oldNumberOfYears !== newNumberOfYears){
+    let oldTimelineStartYear = this.props.timelineStartYear
+    let newTimelineStartYear = nextProps.timelineStartYear
+    
+    if(oldStageWidth !== newStageWidth || oldNumberOfYears !== newNumberOfYears || oldTimelineStartYear !== newTimelineStartYear){
       this.updateWidthAndX(nextProps)
     }
   }
