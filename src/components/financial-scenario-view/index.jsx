@@ -14,7 +14,7 @@ class FinancialScenarioView extends Component {
     this.handleResourceDragEnd = this.handleResourceDragEnd.bind(this)
     this.state = {
       startYear:2016,
-      endYear:2019
+      endYear:2016
     }
   }
   handleResourceDragEnd(props,state){
@@ -81,7 +81,8 @@ class FinancialScenarioView extends Component {
             onChange={
               e => {
                let year = parseInt( e.target.value, 10 )
-               this.setState({startYear:year})
+               let newState = year > this.state.endYear ? {startYear:year, endYear:year} : {startYear:year}
+               this.setState(newState)
               }
             }>
             {yearOptions}
