@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import { TimelineObject } from 'components/timeline-object'
-import Timeline from 'components/timeline'
 import { connect } from 'react-redux';
-import NewFinancialResourceForm from 'components/forms/new-financial-resource';
 import { Bar } from 'react-chartjs-2';
-import { putData } from 'utilities/api-interaction';
 import { isEqual } from 'lodash';
+import { putData } from 'utilities/api-interaction';
 import { processFinancialScenarioChartData } from 'actions/resource-chart-data';
+import Timeline from 'components/timeline'
+import NewFinancialResourceForm from 'components/forms/new-financial-resource';
+import { TimelineObject } from 'components/timeline-object'
 
 class FinancialScenarioView extends Component {
   constructor(props, context) {
