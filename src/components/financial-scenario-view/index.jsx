@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
-import { isEqual } from 'lodash';
+import { isEqual, times } from 'lodash';
 import { putData } from 'utilities/api-interaction';
 import { processFinancialScenarioChartData } from 'actions/resource-chart-data';
 import Timeline from 'components/timeline'
@@ -12,6 +12,10 @@ class FinancialScenarioView extends Component {
   constructor(props, context) {
     super(props, context);
     this.handleResourceDragEnd = this.handleResourceDragEnd.bind(this)
+    this.state = {
+      startYear:2016,
+      endYear:2019
+    }
   }
   handleResourceDragEnd(props,state){
     const {name,id,resourceScenarioId,recurring} = props
@@ -39,7 +43,7 @@ class FinancialScenarioView extends Component {
           resourceScenarioId={financialResource.resourceScenarioId}
           recurring={financialResource.recurring}
           dragEndFunction={this.handleResourceDragEnd}
-          />
+        />
       )
     )
     timelineObjects.push(
@@ -52,13 +56,49 @@ class FinancialScenarioView extends Component {
       this.props.dispatch(processFinancialScenarioChartData(this.props.scenarioId, nextProps.financialResources, nextProps.financialPartitions))
     }
   }
+  generateYearDropDown(startingYear, amountOfYearOptions = 10){
+    let yearOptions = []
+    times( 
+      amountOfYearOptions,
+      i => {
+        let currentYear = startingYear + i
+        yearOptions.push(<option value={currentYear}>{currentYear}</option>)
+      }
+    )
+    return yearOptions
+  }
   render() {
     let financialResourceTimelineObjects = this.timelineObjectsForFinancialResources(this.props.financialResources)
+    let yearOptions = this.generateYearDropDown(2016)
     const scenarioId = this.props.scenarioId
     return (
       <div>
-        <NewFinancialResourceForm scenarioId={scenarioId}/>
-        <Timeline timelineStartYear={2016} numberOfYears={4}>
+        {/*<NewFinancialResourceForm scenarioId={scenarioId}/>*/}
+        <div>
+          <label>Starting year</label>
+          <select 
+            value={this.state.startYear} 
+            onChange={
+              e => {
+               let year = parseInt( e.target.value, 10 )
+               this.setState({startYear:year})
+              }
+            }>
+            {yearOptions}
+          </select>
+          <label>Ending year</label>
+          <select 
+            value={this.state.endYear} 
+            onChange={
+              e => {
+               let year = parseInt( e.target.value, 10 )
+               this.setState({endYear:year})
+              }
+            }>
+            {this.generateYearDropDown(this.state.startYear)}
+          </select>
+        </div>
+        <Timeline timelineStartYear={this.state.startYear} numberOfYears={(this.state.endYear - this.state.startYear) + 1}>
           {financialResourceTimelineObjects}
         </Timeline>
         <div style={{position:'fixed',bottom:0,width:'100%',height:'250px'}}>
