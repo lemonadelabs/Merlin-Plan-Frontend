@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
-import { isEqual, times } from 'lodash';
+import { isEqual, times, debounce } from 'lodash';
 import { putData } from 'utilities/api-interaction';
 import { processFinancialScenarioChartData } from 'actions/resource-chart-data';
 import Timeline from 'components/timeline'
@@ -17,7 +17,6 @@ class FinancialScenarioView extends Component {
       endYear:2020,
       zoomLevel:1
     }
-    this.setState(zoomLevel, (this.state.startYear - this.state.endYear) + 1)
   }
   handleResourceDragEnd(props,state){
     const {name,id,resourceScenarioId,recurring} = props
@@ -69,6 +68,10 @@ class FinancialScenarioView extends Component {
     )
     return yearOptions
   }
+  handleZoomChange(e){
+    let zoomLevel = parseFloat( e.target.value )
+    this.setState({zoomLevel}) 
+  }
   render() {
     let financialResourceTimelineObjects = this.timelineObjectsForFinancialResources(this.props.financialResources)
     let yearOptions = this.generateYearDropDown(2016)
@@ -106,13 +109,12 @@ class FinancialScenarioView extends Component {
             type="range" 
             min="1" 
             max={(this.state.endYear - this.state.startYear) + 1} 
-            step="0.05" 
+            step="0.1" 
             value={this.state.zoomLevel} 
             onChange={
-               e => {
-                let zoomLevel = parseInt( e.target.value, 10 )
-                this.setState({zoomLevel}) 
-              } 
+              e => {
+                this.handleZoomChange(e)
+              }
             }
           />
         </div>
