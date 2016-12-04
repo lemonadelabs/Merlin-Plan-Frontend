@@ -30,7 +30,7 @@ class Timeline extends Component {
         React.cloneElement(
           child,
           {
-            stageWidth : this.state.windowWidth,
+            stageWidth : this.state.windowWidth * this.props.zoomLevel,
             stageHeight : this.state.windowHeight,
             timelineStartYear : this.props.timelineStartYear,
             numberOfYears : this.props.numberOfYears,
@@ -47,7 +47,7 @@ class Timeline extends Component {
       <Stage width={this.state.windowWidth} height={this.state.windowHeight} >
         <Layer>
           <TimelineTimespan
-            width={this.state.windowWidth}
+            width={this.state.windowWidth * this.props.zoomLevel}
             height={this.state.windowHeight}
             startYear={this.props.timelineStartYear}
             numberOfYears={this.props.numberOfYears}/>
@@ -58,6 +58,10 @@ class Timeline extends Component {
       </Stage>
     );
   }
+}
+
+Timeline.defaultProps = {
+  zoomLevel:1
 }
 
 export default Timeline;

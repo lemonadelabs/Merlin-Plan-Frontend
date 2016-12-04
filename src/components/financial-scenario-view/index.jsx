@@ -14,8 +14,10 @@ class FinancialScenarioView extends Component {
     this.handleResourceDragEnd = this.handleResourceDragEnd.bind(this)
     this.state = {
       startYear:2016,
-      endYear:2016
+      endYear:2020,
+      zoomLevel:1
     }
+    this.setState(zoomLevel, (this.state.startYear - this.state.endYear) + 1)
   }
   handleResourceDragEnd(props,state){
     const {name,id,resourceScenarioId,recurring} = props
@@ -99,7 +101,22 @@ class FinancialScenarioView extends Component {
             {this.generateYearDropDown(this.state.startYear)}
           </select>
         </div>
-        <Timeline timelineStartYear={this.state.startYear} numberOfYears={(this.state.endYear - this.state.startYear) + 1}>
+        <div>
+          <input 
+            type="range" 
+            min="1" 
+            max={(this.state.endYear - this.state.startYear) + 1} 
+            step="0.05" 
+            value={this.state.zoomLevel} 
+            onChange={
+               e => {
+                let zoomLevel = parseInt( e.target.value, 10 )
+                this.setState({zoomLevel}) 
+              } 
+            }
+          />
+        </div>
+        <Timeline timelineStartYear={this.state.startYear} numberOfYears={(this.state.endYear - this.state.startYear) + 1} zoomLevel={this.state.zoomLevel}>
           {financialResourceTimelineObjects}
         </Timeline>
         <div style={{position:'fixed',bottom:0,width:'100%',height:'250px'}}>
