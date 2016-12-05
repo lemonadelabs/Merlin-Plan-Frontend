@@ -73,7 +73,7 @@ class TimelineObject extends Component {
   handleDragBound(pos){
     let scaleDirection = this.scaleDirection
     let newPos = {
-      x: scaleDirection === "right" ? pos.x : this.state.x,
+      x: scaleDirection === "right" ? pos.x : this.state.x + this.props.scrollOffset,
       y: this.state.y
     }
     return newPos
@@ -83,29 +83,31 @@ class TimelineObject extends Component {
     let newDisplayState = calculateNewDisplayState(e.evt, this.state)
     let width = newDisplayState.width || this.state.width
     let x =  this.state.scaleDirection === "right" ? this.state.x : e.target.parent.attrs.x;
+    x-=this.props.scrollOffset
     let newDateState = getNewDateState({width, x, oldState: this.state, timelineStartYear, stageWidth, numberOfYears})
     let newState = Object.assign({}, newDisplayState, newDateState)
     this.setState(newState)
   }
   render() {
     let {x,y, width, draggable} = this.state
-      return (
-        <Group x={x} y={y}>
-          <Rect
-            ref="rect"
-            width={width} height={23}
-            fill={'green'}
-            onMousedown={this.handleMousedown}
-            dragBoundFunc={this.handleDragBound}
-            onDragmove={this.handleDragmove}
-            onDragEnd={this.handleDragEnd}
-            draggable={draggable}            
-            cornerRadius={3}
-            shadowBlur={4}
-          />
-          <TimelineLabel  text={this.props.name} width={width}/>
-        </Group>
-      );
+    let {scrollOffset} = this.props
+    return (
+      <Group x={x + scrollOffset} y={y}>
+        <Rect
+          ref="rect"
+          width={width} height={23}
+          fill={'green'}
+          onMousedown={this.handleMousedown}
+          dragBoundFunc={this.handleDragBound}
+          onDragmove={this.handleDragmove}
+          onDragEnd={this.handleDragEnd}
+          draggable={draggable}            
+          cornerRadius={3}
+          shadowBlur={4}
+        />
+        <TimelineLabel  text={this.props.name} width={width}/>
+      </Group>
+    );
   }
 }
 

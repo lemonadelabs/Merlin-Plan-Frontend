@@ -14,7 +14,7 @@ class FinancialScenarioView extends Component {
     this.handleResourceDragEnd = this.handleResourceDragEnd.bind(this)
     this.state = {
       startYear:2016,
-      endYear:2020,
+      endYear:2018,
       zoomLevel:1
     }
   }

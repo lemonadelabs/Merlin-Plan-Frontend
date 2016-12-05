@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Stage, Layer } from 'react-konva';
 import throttle from 'lodash/throttle'
 import TimelineTimespan from 'components/timeline-timespan';
+import TimeLineScrollbar from 'components/timeline-scrollbar';
 import { castArray } from 'lodash';
 
 class Timeline extends Component {
@@ -10,7 +11,8 @@ class Timeline extends Component {
     this.handleResize = throttle(this.handleResize.bind(this),100)
     this.state = {
       windowWidth: window.innerWidth,
-      windowHeight: window.innerWidth
+      windowHeight: window.innerWidth,
+      scrollOffset: 0
     }
   }
   handleResize() {
@@ -34,7 +36,8 @@ class Timeline extends Component {
             stageHeight : this.state.windowHeight,
             timelineStartYear : this.props.timelineStartYear,
             numberOfYears : this.props.numberOfYears,
-            verticalPosition: index
+            verticalPosition: index,
+            scrollOffset : this.state.scrollOffset
           }
         ) 
       ) 
@@ -50,10 +53,15 @@ class Timeline extends Component {
             width={this.state.windowWidth * this.props.zoomLevel}
             height={this.state.windowHeight}
             startYear={this.props.timelineStartYear}
-            numberOfYears={this.props.numberOfYears}/>
+            numberOfYears={this.props.numberOfYears}
+            scrollOffset={this.state.scrollOffset}  
+          />
         </Layer>
         <Layer>
           {childrenWithProps}
+        </Layer>
+        <Layer>
+          <TimeLineScrollbar windowWidth={this.state.windowWidth} zoomLevel={this.props.zoomLevel} updateOffset={scrollOffset => { this.setState({scrollOffset}) }}/>
         </Layer>
       </Stage>
     );
