@@ -17,24 +17,23 @@ class TimelineScrollbar extends Component {
     if(isEqual(nextProps, this.props)){
       return
     }
+    let zoomLevelChanged = nextProps.zoomLevel !== this.props.zoomLevel
     let width = nextProps.windowWidth / nextProps.zoomLevel
-    let x = this.state.x
-    let changeInWidth = this.state.width - width
-    let spaceAvailable = nextProps.windowWidth - width
-    if(nextProps.zoomLevel !== this.props.zoomLevel){
-      let newX = spaceAvailable * this.state.percentageIntoTimeline //this.state.x + changeInWidth * (this.state.percentageIntoTimeline)
-      x = newX >= 0 ? newX : this.state.x
-    }
+    let x = zoomLevelChanged ? this.state.x : this.calculateNewX(width, nextProps.windowWidth, this.state.percentageIntoTimeline)
     this.setState({width,x})
-    if(nextProps.zoomLevel !== this.props.zoomLevel){
+    if(zoomLevelChanged){
       this.triggerScrollOffsetUpdate(x,nextProps.zoomLevel)
     }
+  }
+  calculateNewX(width, windowWidth, percentageIntoTimeline){
+    let scrollBarEndX = windowWidth * percentageIntoTimeline
+    let newX = scrollBarEndX - width
+    return (newX >= 0 ? newX : 0)
   }
   dragConstraintFunc(pos){
     let width = this.rect.attrs.width
     let x = this.rect.attrs.x
     if(pos.x + width >= this.props.windowWidth){
-      console.log('end of the line');
       return {
         x:this.props.windowWidth - width,
         y:0
@@ -47,13 +46,13 @@ class TimelineScrollbar extends Component {
   }
   handleDragMove(){
     let x = this.rect.attrs.x
-    let percentageIntoTimeline = (x) / this.props.windowWidth
+    let width = this.rect.attrs.width
+    let percentageIntoTimeline = (x + width) / this.props.windowWidth
     this.setState({x,percentageIntoTimeline})
     this.triggerScrollOffsetUpdate(this.state.x, this.props.zoomLevel)
   }
-  triggerScrollOffsetUpdate(x,zoomLevel){
+  triggerScrollOffsetUpdate(x, zoomLevel){
     let updatedOffset = (x * zoomLevel) * -1
-    console.log(x,zoomLevel,updatedOffset);
     this.props.updateOffset(updatedOffset)
   }
   render() {
