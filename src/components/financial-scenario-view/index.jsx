@@ -86,7 +86,7 @@ class FinancialScenarioView extends Component {
             onChange={
               e => {
                let year = parseInt( e.target.value, 10 )
-               let newState = year > this.state.endYear ? {startYear:year, endYear:year} : {startYear:year}
+               let newState = year >= this.state.endYear ? {startYear:year, endYear:year, zoomLevel:1} : {startYear:year}
                this.setState(newState)
               }
             }>
@@ -98,7 +98,11 @@ class FinancialScenarioView extends Component {
             onChange={
               e => {
                let year = parseInt( e.target.value, 10 )
-               this.setState({endYear:year})
+               let newState = {endYear:year}
+               if (year === this.state.startYear){
+                newState.zoomLevel = 1
+               }
+               this.setState(newState)
               }
             }>
             {this.generateYearDropDown(this.state.startYear)}
