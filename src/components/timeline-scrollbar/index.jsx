@@ -22,7 +22,7 @@ class TimelineScrollbar extends Component {
     let x = zoomLevelChanged ? this.state.x : this.calculateNewX(width, nextProps.windowWidth, this.state.percentageIntoTimeline)
     this.setState({width,x})
     if(zoomLevelChanged){
-      this.triggerScrollOffsetUpdate(x,nextProps.zoomLevel)
+      this.triggerScrollOffsetUpdate(nextProps.zoomLevel, nextProps.windowWidth, this.state.percentageIntoTimeline)
     }
   }
   calculateNewX(width, windowWidth, percentageIntoTimeline){
@@ -49,11 +49,14 @@ class TimelineScrollbar extends Component {
     let width = this.rect.attrs.width
     let percentageIntoTimeline = (x + width) / this.props.windowWidth
     this.setState({x,percentageIntoTimeline})
-    this.triggerScrollOffsetUpdate(this.state.x, this.props.zoomLevel)
+    this.triggerScrollOffsetUpdate(this.props.zoomLevel,this.props.windowWidth,percentageIntoTimeline)
   }
-  triggerScrollOffsetUpdate(x, zoomLevel){
-    let updatedOffset = (x * zoomLevel) * -1
-    this.props.updateOffset(updatedOffset)
+  triggerScrollOffsetUpdate(zoomLevel, windowWidth, percentageIntoTimeline = 0){
+    let zoomedTimelineLength = windowWidth * zoomLevel,
+        desiredEndOfTimeline = zoomedTimelineLength * percentageIntoTimeline,
+        endOfTimelineMovedToEndOfScreen = desiredEndOfTimeline - windowWidth,
+        offset = endOfTimelineMovedToEndOfScreen * -1
+    this.props.updateOffset(offset<0?offset:0)
   }
   render() {
     return (
