@@ -32,7 +32,6 @@ class TimelineScrollbar extends Component {
   }
   dragConstraintFunc(pos){
     let width = this.rect.attrs.width
-    let x = this.rect.attrs.x
     if(pos.x + width >= this.props.windowWidth){
       return {
         x:this.props.windowWidth - width,
