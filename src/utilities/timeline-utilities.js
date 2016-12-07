@@ -175,13 +175,16 @@ function calculateNewDisplayState(evt, oldState, scrollOffset = 0){
   let newState = {}
   let relPos = relativePosition({x: evt.x, y: evt.y}, {x:oldState.x, y:oldState.y})
   switch (oldState.scaleDirection) {
-    case 'right':
-      newState.width = evt.x - oldState.x
+    case 'right':{
+      let width = evt.x - oldState.x
+      newState.width = width >= minWidth ? width : minWidth
       break;
+    }
     case 'left':{
-      newState.width = oldState.width + (relPos.x * -1)
+      let width = oldState.width + (relPos.x * -1)
+      newState.width =  width >= minWidth ? width : minWidth
       //draggable doesn't seem update position when we change width, poos :(
-      newState.x = oldState.x + relPos.x
+      newState.x = width >= minWidth ? oldState.x + relPos.x : oldState.x
       break;
     }
     default:{
