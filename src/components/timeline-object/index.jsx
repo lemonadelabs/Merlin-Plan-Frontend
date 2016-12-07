@@ -44,7 +44,7 @@ class TimelineObject extends Component {
     this.setState({width: width, x: x})
   }
   handleMousedown(e) {
-    let myPos = {x:this.state.x, y:this.state.y}
+    let myPos = {x:this.state.x + this.props.scrollOffset, y:this.state.y}
     let clickPos = {x: e.evt.x, y: e.evt.y}
     let relPos = relativePosition(clickPos, myPos)
     this.setState({offsetX:relPos.x})
@@ -70,20 +70,23 @@ class TimelineObject extends Component {
       this.props.dragEndFunction(this.props,this.state)
     }
   }
-  handleDragBound(pos){
-    let scaleDirection = this.scaleDirection
+  handleDragBound(){
     let newPos = {
-      x: scaleDirection === "right" ? pos.x : this.state.x + this.props.scrollOffset,
+      x: this.state.x + this.props.scrollOffset,
       y: this.state.y
     }
     return newPos
   }
   handleDragmove(e){
     let {timelineStartYear, stageWidth, numberOfYears} = this.props
-    let newDisplayState = calculateNewDisplayState(e.evt, this.state)
+    let newDisplayState = calculateNewDisplayState(e.evt, this.state, this.props.scrollOffset)
     let width = newDisplayState.width || this.state.width
     let x =  this.state.scaleDirection === "right" ? this.state.x : e.target.parent.attrs.x;
-    x-=this.props.scrollOffset
+    console.log(e);
+    console.log('x pre offset applied',x);
+    x-= this.props.scrollOffset
+    console.log('x post offset applied',x,'offset',this.props.scrollOffset);
+
     let newDateState = getNewDateState({width, x, oldState: this.state, timelineStartYear, stageWidth, numberOfYears})
     let newState = Object.assign({}, newDisplayState, newDateState)
     this.setState(newState)

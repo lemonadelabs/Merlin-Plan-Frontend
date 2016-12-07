@@ -170,7 +170,7 @@ function relativePosition(pos, myPos){
   return {x: pos.x - myPos.x, y: pos.y - myPos.y}
 }
 
-function calculateNewDisplayState(evt, oldState){
+function calculateNewDisplayState(evt, oldState, scrollOffset = 0){
   const minWidth = 30
   let newState = {}
   let relPos = relativePosition({x: evt.x, y: evt.y}, {x:oldState.x, y:oldState.y})
@@ -186,7 +186,7 @@ function calculateNewDisplayState(evt, oldState){
     }
     default:{
       let offset = evt.x - oldState.offsetX - oldState.x
-      newState.x = oldState.x + offset
+      newState.x = (oldState.x + offset) - scrollOffset
     }
   }
   return newState
