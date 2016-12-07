@@ -7,11 +7,19 @@ class TimelineScrollbar extends Component {
     super(props, context);
     this.dragConstraintFunc = this.dragConstraintFunc.bind(this)
     this.handleDragMove = this.handleDragMove.bind(this)
+    this.handleHorizonalScroll = this.handleHorizonalScroll.bind(this)
+    this.updateScrollBar = this.updateScrollBar.bind(this)
     this.state = {
       width:props.windowWidth / props.zoomLevel,
       x:0,
       percentageIntoTimeline:0
     }
+  }
+  componentDidMount() {
+    window.addEventListener('wheel',this.handleHorizonalScroll)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('wheel',this.handleHorizonalScroll)
   }
   componentWillReceiveProps(nextProps){
     if(isEqual(nextProps, this.props)){
@@ -24,6 +32,22 @@ class TimelineScrollbar extends Component {
     if(zoomLevelChanged){
       this.triggerScrollOffsetUpdate(nextProps.zoomLevel, nextProps.windowWidth, this.state.percentageIntoTimeline)
     }
+  }
+  handleHorizonalScroll(e){
+    if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
+      //Shouldn't block the verical scroll if it's dominant
+      return
+    }
+    if(this.state.x + this.state.width >= this.props.windowWidth && e.deltaX > 0){
+      //Checks to see the end of the scroll track has been hit
+      return
+    }
+    if (this.state.x !== 0) {
+      e.preventDefault();
+    } 
+    let xWithDeltaX = this.state.x + e.deltaX,
+        maxX = this.props.windowWidth - this.state.width
+    this.updateScrollBar(xWithDeltaX + this.state.width < this.props.windowWidth ? xWithDeltaX : maxX)
   }
   calculateNewX(width, windowWidth, percentageIntoTimeline){
     let scrollBarEndX = windowWidth * percentageIntoTimeline
@@ -45,10 +69,13 @@ class TimelineScrollbar extends Component {
   }
   handleDragMove(){
     let x = this.rect.attrs.x
-    let width = this.rect.attrs.width
+    this.updateScrollBar(x)
+  }
+  updateScrollBar(x){
+   let width = this.state.width
     let percentageIntoTimeline = (x + width) / this.props.windowWidth
     this.setState({x,percentageIntoTimeline})
-    this.triggerScrollOffsetUpdate(this.props.zoomLevel,this.props.windowWidth,percentageIntoTimeline)
+    this.triggerScrollOffsetUpdate(this.props.zoomLevel,this.props.windowWidth,percentageIntoTimeline)    
   }
   triggerScrollOffsetUpdate(zoomLevel, windowWidth, percentageIntoTimeline = 0){
     let zoomedTimelineLength = windowWidth * zoomLevel,
