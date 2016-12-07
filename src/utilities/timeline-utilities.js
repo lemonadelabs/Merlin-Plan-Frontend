@@ -176,7 +176,7 @@ function calculateNewDisplayState(evt, oldState, scrollOffset = 0){
   let relPos = relativePosition({x: evt.x, y: evt.y}, {x:oldState.x, y:oldState.y})
   switch (oldState.scaleDirection) {
     case 'right':{
-      let width = evt.x - oldState.x
+      let width = (evt.x - oldState.x) - scrollOffset
       newState.width = width >= minWidth ? width : minWidth
       break;
     }
