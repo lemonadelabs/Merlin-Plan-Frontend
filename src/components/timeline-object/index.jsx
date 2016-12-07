@@ -82,13 +82,9 @@ class TimelineObject extends Component {
     let newDisplayState = calculateNewDisplayState(e.evt, this.state, this.props.scrollOffset)
     let width = newDisplayState.width || this.state.width
     let x =  this.state.scaleDirection === "right" ? this.state.x : e.target.parent.attrs.x;
-    console.log(e);
-    console.log('x pre offset applied',x);
     x-= this.props.scrollOffset
-    console.log('x post offset applied',x,'offset',this.props.scrollOffset);
-
     let newDateState = getNewDateState({width, x, oldState: this.state, timelineStartYear, stageWidth, numberOfYears})
-    let newState = Object.assign({}, newDisplayState, newDateState)
+    let newState =  {...newDisplayState, ...newDateState}
     this.setState(newState)
   }
   render() {
