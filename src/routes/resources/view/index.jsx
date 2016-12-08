@@ -8,6 +8,8 @@ class ResourcesView extends Component {
     let {scenarioId} = this.props.params
     let {dispatch} = this.props
     dispatch( getResourceScenarioData(scenarioId) )
+    dispatch({ type:"SET_ACTIONS", actions:[{title:"Share Scenario", name:'showNewModal'}]})
+
   }
   render() {
     const scenarioId = this.props.params.scenarioId
@@ -18,5 +20,7 @@ class ResourcesView extends Component {
     )
   }
 }
-
+// function mapStateToProps(state) {
+//   return()
+// }
 export default connect()(ResourcesView);

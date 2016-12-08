@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { map, union } from 'lodash'
+import { map, union, findIndex, uniqBy } from 'lodash'
 import moment from 'moment'
 import Card from 'components/card';
 import { getData } from 'utilities/api-interaction';
@@ -40,12 +40,24 @@ class ResourcesList extends Component {
     );
   }
 }
-function filterScenarios(allScenarios, filterState){
+function filterScenarios(allScenarioLists, filterState){
   let scenariosToReturn
   switch (filterState) {
     case 'ALL': {
-      let scenariosFlattened = map(allScenarios, scenarios => (scenarios))
-      scenariosToReturn = union( ...scenariosFlattened )
+      let scenariosFlattened = map(
+        allScenarioLists, 
+        scenarioList => {
+          let returnObject = scenarioList
+          let indexOfFirstDocumentsObject = findIndex(scenarioList, o =>  Object.keys(o).includes("documents")  )
+          if(indexOfFirstDocumentsObject !== -1){
+            returnObject = map(scenarioList, scenarios => (scenarios.documents) )
+            returnObject = union(...returnObject)
+          }
+          return(returnObject)
+        }
+      )
+      let scenarioListsCombined = union( ...scenariosFlattened )
+      scenariosToReturn = uniqBy(scenarioListsCombined, 'id')
       break
     }
     default:
