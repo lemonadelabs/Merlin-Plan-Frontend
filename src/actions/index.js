@@ -1,5 +1,5 @@
 import { findIndex, forEach } from 'lodash';
-import { getData,postData } from 'utilities/api-interaction';
+import { putData, getData, postData } from 'utilities/api-interaction';
 import * as api from 'utilities/api-interaction'
 
 function showNewUserModal(){
@@ -58,10 +58,24 @@ function addNewFinancialResource(scenarioId, finanacialResourcePayload){
   }
 }
 
+function shareToGroup({endPoint,id}) {
+  return dispatch => {
+    putData(`${endPoint}/${id}/group/share`)
+  }
+}
+
+function shareToOrganisation({endPoint,id}) {
+  return dispatch => {
+    putData(`${endPoint}/${id}/share`)
+  }
+}
+
 export {
   deactivateUsers,
   showNewUserModal,
   showNewModal,
   showEditUserModal,
-  addNewFinancialResource
+  addNewFinancialResource,
+  shareToGroup,
+  shareToOrganisation
 }

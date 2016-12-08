@@ -8,7 +8,12 @@ class ResourcesView extends Component {
     let {scenarioId} = this.props.params
     let {dispatch} = this.props
     dispatch( getResourceScenarioData(scenarioId) )
-    dispatch({ type:"SET_ACTIONS", actions:[{title:"Share Scenario", name:'showNewModal'}]})
+    dispatch({ 
+      type:"SET_ACTIONS", 
+      actions:[
+        {title:"Share Scenario To Group ", 'actionsToCreatorsToRun':[{name:'shareToGroup', props:{"endPoint":"resourcescenario","id":1}}]},
+        {title:"Share Scenario To Organisation", 'actionsToCreatorsToRun':[{name:'shareToOrganisation', props:{"endPoint":"resourcescenario","id":1}}]},
+        ]})
 
   }
   render() {
