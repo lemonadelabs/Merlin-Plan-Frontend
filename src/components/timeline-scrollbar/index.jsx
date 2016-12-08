@@ -82,7 +82,7 @@ class TimelineScrollbar extends Component {
         desiredEndOfTimeline = zoomedTimelineLength * percentageIntoTimeline,
         endOfTimelineMovedToEndOfScreen = desiredEndOfTimeline - windowWidth,
         offset = endOfTimelineMovedToEndOfScreen * -1
-    this.props.updateOffset(offset<0?offset:0)
+    this.props.updateOffset(offset < 0 ? offset:0)
   }
   render() {
     return (
