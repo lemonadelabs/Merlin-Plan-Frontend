@@ -70,6 +70,12 @@ function shareToOrganisation({endPoint,id}) {
   }
 }
 
+function shareToUsers({endPoint,id,users}) {
+  return dispatch => {
+    putData(`${endPoint}/${id}/share`,{users})
+  }
+}
+
 export {
   deactivateUsers,
   showNewUserModal,
@@ -77,5 +83,6 @@ export {
   showEditUserModal,
   addNewFinancialResource,
   shareToGroup,
-  shareToOrganisation
+  shareToOrganisation,
+  shareToUsers
 }
