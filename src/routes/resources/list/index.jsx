@@ -68,7 +68,7 @@ function filterScenarios(allScenarioLists, filterState){
 }
 
 function stateToProps(state){
-  return { userId: state.user.id, scenarios:state.resources.accessableScenarios}
+  return { userId: state.user.id, scenarios:state.resources.scenarios}
 }
 
 export default connect(stateToProps)(ResourcesList);
