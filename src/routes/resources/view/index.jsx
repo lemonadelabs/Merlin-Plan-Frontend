@@ -13,6 +13,7 @@ class ResourcesView extends Component {
       actions:[
         {title:"Share Scenario To Group ", 'actionsToCreatorsToRun':[{name:'shareToGroup', props:{"endPoint":"resourcescenario","id":1}}]},
         {title:"Share Scenario To Organisation", 'actionsToCreatorsToRun':[{name:'shareToOrganisation', props:{"endPoint":"resourcescenario","id":1}}]},
+        {title:"Share Scenario To User",  'actionsToCreatorsToRun':[{name:'shareToUsers', props:{"endPoint":"resourcescenario","id":1,"users":["caleb.sawtell@lemonadelabs.io"]}}]}
         ]})
 
   }
