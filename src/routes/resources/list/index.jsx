@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { map, union, findIndex, uniqBy } from 'lodash'
+import { filter } from 'lodash'
 import moment from 'moment'
 import Card from 'components/card';
 import { getData } from 'utilities/api-interaction';
@@ -17,8 +17,8 @@ class ResourcesList extends Component {
     })
   }
   render() {
-    let {scenarios} = this.props
-    let scenariosFiltered = filterScenarios(scenarios, "ALL")
+    let {scenarios,userId} = this.props
+    let scenariosFiltered = filterScenarios(scenarios, "ALL", userId)
     return (
       <div>
         {
@@ -40,24 +40,27 @@ class ResourcesList extends Component {
     );
   }
 }
-function filterScenarios(allScenarioLists, filterState){
+function filterScenarios(scenarios, filterState, userId){
   let scenariosToReturn
   switch (filterState) {
     case 'ALL': {
-      let scenariosFlattened = map(
-        allScenarioLists, 
-        scenarioList => {
-          let returnObject = scenarioList
-          let indexOfFirstDocumentsObject = findIndex(scenarioList, o =>  Object.keys(o).includes("documents")  )
-          if(indexOfFirstDocumentsObject !== -1){
-            returnObject = map(scenarioList, scenarios => (scenarios.documents) )
-            returnObject = union(...returnObject)
+      scenariosToReturn = scenarios
+      break
+    }
+    case 'MINE': {
+      scenariosToReturn = filter(scenarios, scenario => (scenario.creator === userId))
+      break
+    }
+    case 'GROUP': {
+      scenariosToReturn = filter(scenarios, 'sharing.groupShared')
+      break
           }
-          return(returnObject)
+    case 'ORG': {
+      scenariosToReturn = filter(scenarios, 'sharing.organisationShared')
+      break
         }
-      )
-      let scenarioListsCombined = union( ...scenariosFlattened )
-      scenariosToReturn = uniqBy(scenarioListsCombined, 'id')
+    case 'USER': {
+      scenariosToReturn = filter(scenarios, scenario => (scenario.sharing.userShare.length))
       break
     }
     default:
