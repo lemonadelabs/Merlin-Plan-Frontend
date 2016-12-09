@@ -13,7 +13,7 @@ class ResourcesList extends Component {
     dispatch({ type:"SET_ACTIONS", actions:[{title:"New Scenario", name:'showNewModal'}]})
     getData(`resourcescenario/useraccess/${userId}`)
     .then( scenarios => {
-      dispatch({ type:"SET_ACCESSABLE_SCENARIOS", scenarios })
+      dispatch({ type:"SET_RESOURCE_SCENARIOS", scenarios:scenarios.documents })
     })
   }
   render() {
