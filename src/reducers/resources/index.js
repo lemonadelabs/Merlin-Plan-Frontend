@@ -4,6 +4,10 @@ export default function resources(state = { scenarios:[], financialPartitions:{}
   switch (action.type) {
     case 'SET_RESOURCE_SCENARIOS':
       return {...state, ...{scenarios:action.scenarios}}
+    case 'ADD_RESOURCE_SCENARIO':{
+      let updatedScenarios = [...state.scenarios,action.scenarioMetaData]
+      return ( { ...state, ...{ scenarios: updatedScenarios} } )
+    }
     case 'ADD_SCENARIO_DATA': {
       let newDataObject = {
         scenarioData:{
