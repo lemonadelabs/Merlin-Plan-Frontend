@@ -64,15 +64,33 @@ function shareToGroup({endPoint,id}) {
   }
 }
 
+function unshareToGroup({endPoint,id}) {
+  return dispatch => {
+    putData(`${endPoint}/${id}/group/unshare`)
+  }
+}
+
 function shareToOrganisation({endPoint,id}) {
   return dispatch => {
     putData(`${endPoint}/${id}/share`)
   }
 }
 
+function unshareToOrganisation({endPoint,id}) {
+  return dispatch => {
+    putData(`${endPoint}/${id}/unshare`)
+  }
+}
+
 function shareToUsers({endPoint,id,users}) {
   return dispatch => {
-    putData(`${endPoint}/${id}/share`,{users})
+    putData(`${endPoint}/${id}/user/share`,{users})
+  }
+}
+
+function unshareToUsers({endPoint,id,users}) {
+  return dispatch => {
+    putData(`${endPoint}/${id}/user/unshare`,{users})
   }
 }
 
@@ -84,5 +102,8 @@ export {
   addNewFinancialResource,
   shareToGroup,
   shareToOrganisation,
-  shareToUsers
+  shareToUsers,
+  unshareToGroup,
+  unshareToOrganisation,
+  unshareToUsers
 }
