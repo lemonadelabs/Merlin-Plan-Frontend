@@ -14,6 +14,16 @@ export function getResourceScenarioData(scenarioId) {
   }
 }
 
+export function getResourceScenarioMetadata(scenarioId) {
+  return dispatch => {
+    getData(`resourcescenario/${scenarioId}`)
+    .then( metadata => {
+        dispatch({type:'ADD_RESOURCE_SCENARIO',scenarioMetaData:metadata})
+      }
+    )
+  }
+}
+
 function getFinancialResourcePartitions(financialResources){
   let partitionPromises = financialResources.map(
     financialResource => {
