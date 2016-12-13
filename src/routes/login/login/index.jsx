@@ -29,23 +29,17 @@ class Login extends Component {
     let password = this.refs.password.value
     login(username, password)
       .then(this.handleLogin)
+      .catch( error =>{
+        this.setState({loginFailed:true, playAnimation:true})
+      })
   }
-  handleLogin({loginSucceed, loginPayload}){
+  handleLogin({loginPayload}){
     let nextRoute = "/"
     if(this.props.location.state){
       nextRoute = this.props.location.state.nextPathname
     }
-    if(loginSucceed){
-      getUserInfoAndSetUserState(loginPayload.sub, this.props.dispatch)
-      .then( () => {
-          this.props.router.push(nextRoute)
-        }
-      )
-    }
-    else{
-      this.setState({loginFailed:true, playAnimation:true})
-      return;
-    }
+    getUserInfoAndSetUserState(loginPayload.sub, this.props.dispatch)
+    .then( this.props.router.push(nextRoute) )
   }
   render(){
 

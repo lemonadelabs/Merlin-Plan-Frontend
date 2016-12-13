@@ -49,21 +49,8 @@ function createLoginRequestBody({username, password}){
 
 function handleLoginResponse(response) {
   saveSessionInfo(response)
-  let loginSucceed = loginSuccessful(response)
-  let loginPayload
-  if(loginSucceed){
-    loginPayload = decodePayload(response.access_token)
-  }
-  return ({'loginSucceed':loginSucceed,'loginPayload':loginPayload})
-}
-
-function loginSuccessful({error}){
-  if(error){
-    return false;
-  }
-  else{
-    return true;
-  }
+  let loginPayload = decodePayload(response.access_token)
+  return ({'loginPayload':loginPayload})
 }
 
 function saveSessionInfo({access_token, expires_in, refresh_token}){
