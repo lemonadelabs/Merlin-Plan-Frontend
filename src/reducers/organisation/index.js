@@ -1,14 +1,14 @@
 import {findIndex, forEach, cloneDeep} from 'lodash';
+import { replace, drop, findAndDrop } from 'utilities/array';
 
 export default function organisation(state = { users:[], selectedUsers:[], groups:[] }, action){
   switch (action.type) {
     case 'SET_ORG_USERS' :
-      return Object.assign({}, state, {users: action.users})
+      return {...state, ...{users: action.users}}
     case 'NEW_ORG_USER' :
       return Object.assign({}, state, {users: [...state.users, action.user]})
     case 'UPDATE_ORG_USER' :{
-      let updateUserIndex = findIndex(state.users, user => (user.id === action.user.id))
-      let updatedUsers = [...state.users.slice(0, updateUserIndex),action.user, ...state.users.slice(updateUserIndex+1)]
+      let updatedUsers = replace(state.users, action.user)
       return Object.assign({}, state, {users:updatedUsers})
     }
     case 'SET_ORG_GROUPS' :
@@ -16,13 +16,11 @@ export default function organisation(state = { users:[], selectedUsers:[], group
     case 'ADD_ORG_GROUP' :
       return Object.assign({}, state, {groups: [...state.groups, ...action.groups]})
     case 'SELECT_ORG_USER' :{
-      let selectedUsersWithNewSelection = [...state.selectedUsers,action.user]
+      let selectedUsersWithNewSelection = [...state.selectedUsers, action.user]
       return Object.assign({}, state, {selectedUsers: selectedUsersWithNewSelection})
     }
     case 'DESELECT_ORG_USER' :{
-      let userIndex = findIndex(state.selectedUsers, user => (user.id === action.user.id))
-      let selectedUsers = [...state.selectedUsers.slice(0,userIndex), ...state.selectedUsers.slice(userIndex+1)]
-
+      let selectedUsers = findAndDrop(state.selectedUsers, action.user)
       return Object.assign({}, state, {selectedUsers: selectedUsers})
     }
     case 'DELETE_ORG_USERS' :{
@@ -30,7 +28,7 @@ export default function organisation(state = { users:[], selectedUsers:[], group
       forEach(action.userIds,
         id => {
           let userIndex = findIndex(users, orgUser => (orgUser.id === id))
-          users = [...users.slice(0,userIndex),...users.slice(userIndex+1)]
+          users = drop(state.users, userIndex)
         }
       )
       return Object.assign({}, state, {users: users})
