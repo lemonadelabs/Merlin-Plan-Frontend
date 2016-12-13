@@ -60,7 +60,7 @@ class ResourcesView extends Component {
           }
         ]
       },
-      {title:"Share Scenario To User",  'actionsToCreatorsToRun':[{name:'shareToUsers', props:{"endPoint":"resourcescenario","id":1,"users":["caleb.sawtell@lemonadelabs.io"]}}]}
+      {title:"Share Scenario To User", 'actionsToCreatorsToRun':[{name:'shareToUsers', props:{"endPoint":"resourcescenario","id":1,"users":["caleb.sawtell@lemonadelabs.io"]}}]}
     ]
     return sharingAction
   }
