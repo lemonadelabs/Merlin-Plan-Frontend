@@ -73,17 +73,19 @@ function fetchRequest(request){
    let promise = fetch(request)
     .then( response => {
       switch (response.status) {
-        case 200:
-        case 400:
-          return response.text()
+        case 500:
+          throw new Error('Server gnomes have died!')
         default:{
-          let error = new Error(`${response.status} ${response.statusText}`)
-          throw error
+          return response.json().then(data=>({status:response.status, statusText:response.statusText, data}))
         }
       }
     })
-    .then( responseText => {
-      return(responseText ? JSON.parse(responseText) : responseText)
+    .then( responseParsed => {
+      if(responseParsed.status !== 200){
+        let error = new Error(`Status: ${responseParsed.status} StatusText: ${responseParsed.statusText} Response: ${JSON.stringify(responseParsed.data)}`)
+        throw error
+      }
+      return(responseParsed.data)
     })
     return promise
 }
