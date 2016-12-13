@@ -1,61 +1,66 @@
-import {findIndex, forEach, cloneDeep} from 'lodash';
+import {replace} from 'utilities/array'
 
 export default function resources(state = { scenarios:[], financialPartitions:{}, scenarioData:{}, chartData:{} }, action) {
   switch (action.type) {
     case 'SET_RESOURCE_SCENARIOS':
       return {...state, ...{scenarios:action.scenarios}}
     case 'ADD_RESOURCE_SCENARIO':{
-      let updatedScenarios = [...state.scenarios,action.scenarioMetaData]
+      let updatedScenarios = [...state.scenarios, action.scenarioMetaData]
+      return ( { ...state, ...{ scenarios: updatedScenarios} } )
+    }
+    case 'UPDATE_RESOURCE_SCENARIO':{
+      let updatedScenarios = replace(state.scenarios, action.scenario)
       return ( { ...state, ...{ scenarios: updatedScenarios} } )
     }
     case 'ADD_SCENARIO_DATA': {
       let newDataObject = {
         scenarioData:{
+          [action.id]: {...action.data}
         }
       }
-      newDataObject.scenarioData[action.id] = Object.assign({}, action.data) 
-      return Object.assign({},state,newDataObject)
+      return {...state, ...newDataObject}
     }
     case 'SET_FINANCIAL_SCENARIO_CHART_DATA': {
       let newDataChartObject = {
         chartData:{
+          [action.id]: {...action.data}
         }
       }
-      newDataChartObject.chartData[action.id] = Object.assign({}, action.data) 
-      return Object.assign({},state,newDataChartObject)
+      return {...state, ...newDataChartObject}
     }
     case 'UPDATE_FINANCIAL_RESOURCE': {
       let financialResources = state.scenarioData[action.resourceScenarioId].financialResources
-      let resourceToUpdateIndex = findIndex( financialResources, financialResource => (financialResource.id === action.id) )
-      let updatedFinancialResources = [...financialResources.slice(0,resourceToUpdateIndex), action.updatedFinancialResource,...financialResources.slice(resourceToUpdateIndex+1)]
-      let updatedScenarioData = {}
-      updatedScenarioData[action.resourceScenarioId] = Object.assign({}, state.scenarioData[action.resourceScenarioId], {financialResources:updatedFinancialResources})
-      let updatedScenarioDataList = Object.assign({}, state.scenarioData, updatedScenarioData)
-      return Object.assign({},state,{scenarioData:updatedScenarioDataList})
+      let updatedFinancialResources = replace(financialResources, action.updatedFinancialResource)
+      let updatedScenarioData = {
+        [action.resourceScenarioId] : {...state.scenarioData[action.resourceScenarioId], ...{financialResources:updatedFinancialResources}}
+      }
+      let updatedScenarioDataList = {...state.scenarioData, ...updatedScenarioData}
+      return {...state, ...{scenarioData:updatedScenarioDataList}}
     }
     case 'ADD_FINANCIAL_RESOURCE': {
       let financialResources = state.scenarioData[action.resourceScenarioId].financialResources
       let updatedFinancialResources = [...financialResources, action.newFinancialResource]
-      let updatedScenarioData = {}
-      updatedScenarioData[action.resourceScenarioId] = Object.assign({}, state.scenarioData[action.resourceScenarioId], {financialResources:updatedFinancialResources})
-      let updatedScenarioDataList = Object.assign({}, state.scenarioData, updatedScenarioData)
-      return Object.assign({},state,{scenarioData:updatedScenarioDataList})
+      let updatedScenarioData = {
+        [action.resourceScenarioId] : {...state.scenarioData[action.resourceScenarioId], ...{financialResources:updatedFinancialResources}}
+      }
+      let updatedScenarioDataList = {...state.scenarioData, ...updatedScenarioData}
+      return {...state, ...{scenarioData:updatedScenarioDataList}}
     }
     case 'SET_FINANCIAL_PARTITIONS': {
     let newPartionsObject = {
         financialPartitions:{
+          [action.scenarioId] : action.financialPartitions
         }
       }
-      newPartionsObject.financialPartitions[action.scenarioId] = action.financialPartitions
-      return Object.assign({},state,newPartionsObject)
+      return {...state, ...newPartionsObject}
     }
     case 'ADD_FINANCIAL_PARTITION': {
     let newPartionsObject = {
         financialPartitions:{
+          [action.resourceScenarioId]: [...state.financialPartitions[action.resourceScenarioId], action.newFinancialPartitions] 
         }
       }
-      newPartionsObject.financialPartitions[action.resourceScenarioId] = [...state.financialPartitions[action.resourceScenarioId], action.newFinancialPartitions] 
-      return Object.assign({},state,newPartionsObject)
+      return {...state, ...newPartionsObject}
     }
     default:
       return state;
