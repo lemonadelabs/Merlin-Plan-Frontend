@@ -74,10 +74,11 @@ function fetchRequest(request){
     .then( response => {
       switch (response.status) {
         case 200:
+        case 400:
           return response.text()
         default:{
           let error = new Error(`${response.status} ${response.statusText}`)
-          promise.reject(error)
+          throw error
         }
       }
     })
