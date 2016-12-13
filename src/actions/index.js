@@ -1,4 +1,4 @@
-import { findIndex, forEach } from 'lodash';
+import { findIndex, forEach, find } from 'lodash';
 import { putData, getData, postData } from 'utilities/api-interaction';
 import * as api from 'utilities/api-interaction'
 
@@ -59,38 +59,79 @@ function addNewFinancialResource(scenarioId, finanacialResourcePayload){
 }
 
 function shareToGroup({endPoint,id}) {
-  return dispatch => {
+  return (dispatch, getState) => {
     putData(`${endPoint}/${id}/group/share`)
+    .then( () => {
+      let state = getState()
+      updateSharing(endPoint, id, {groupShared:true},state,dispatch)
+    })
   }
 }
 
 function unshareToGroup({endPoint,id}) {
-  return dispatch => {
+  return (dispatch, getState) => {
     putData(`${endPoint}/${id}/group/unshare`)
+    .then( () => {
+      let state = getState()
+      updateSharing(endPoint, id, {groupShared:false},state,dispatch)
+    })
   }
 }
 
 function shareToOrganisation({endPoint,id}) {
-  return dispatch => {
+  return (dispatch, getState) => {
     putData(`${endPoint}/${id}/share`)
+    .then(
+      () => {
+        let state = getState()
+        updateSharing(endPoint, id, {organisationShared:true},state,dispatch)
+      }
+    )
   }
 }
 
 function unshareToOrganisation({endPoint,id}) {
-  return dispatch => {
+  return (dispatch, getState) => {
     putData(`${endPoint}/${id}/unshare`)
+    .then(
+      () => {
+        let state = getState()
+        updateSharing(endPoint, id, {organisationShared:false},state,dispatch)
+      }
+    )
   }
 }
 
 function shareToUsers({endPoint,id,users}) {
-  return dispatch => {
+  return (dispatch, getState) => {
     putData(`${endPoint}/${id}/user/share`,{users})
   }
 }
 
 function unshareToUsers({endPoint,id,users}) {
-  return dispatch => {
+  return (dispatch, getState) => {
     putData(`${endPoint}/${id}/user/unshare`,{users})
+  }
+}
+
+function updateSharing(endPoint, id, sharingChange, state, dispatch){
+  let dataToUpdate
+  switch (endPoint) {
+    case 'resourcescenario':
+      let resourceScenarioMetadata = find(state.resources.scenarios, scenario => (scenario.id === id) )
+      dataToUpdate = {...resourceScenarioMetadata}
+      break;
+    default:
+      break;
+  }
+  dataToUpdate.sharing = {...dataToUpdate.sharing,...sharingChange}
+
+  switch (endPoint) {
+    case 'resourcescenario':
+      dispatch({type:"UPDATE_RESOURCE_SCENARIO",scenario:dataToUpdate})
+      break;
+    default:
+      break;
   }
 }
 
