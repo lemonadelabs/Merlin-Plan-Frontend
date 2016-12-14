@@ -135,6 +135,15 @@ function updateSharing(endPoint, id, sharingChange, state, dispatch){
   }
 }
 
+function getOrgUsers(organisationId){
+  return dispatch => {
+    getData(`organisation/${organisationId}/user`)
+    .then( orgUsers => {
+      dispatch({type:'SET_ORG_USERS', users:orgUsers})
+    })
+  }
+}
+
 export {
   deactivateUsers,
   showNewUserModal,
@@ -146,5 +155,6 @@ export {
   shareToUsers,
   unshareToGroup,
   unshareToOrganisation,
-  unshareToUsers
+  unshareToUsers,
+  getOrgUsers
 }

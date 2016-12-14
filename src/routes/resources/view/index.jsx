@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { find,isEqual } from 'lodash'
 import  * as actions from 'actions/resource-scenario';
 import FinancialScenarioView from 'components/financial-scenario-view';
-
+import SharingSettings from 'components/sharing-settings';
 class ResourcesView extends Component {
   componentDidMount() {
     let {scenarioId} = this.props.params
@@ -68,6 +68,7 @@ class ResourcesView extends Component {
     const scenarioId = this.props.params.scenarioId
     return(
       <div>
+        <SharingSettings endPoint="resourcescenario" documentId={scenarioId} sharingSettings={this.props.scenarioMetadata ? this.props.scenarioMetadata.sharing:{}}/>
         <FinancialScenarioView scenarioId={scenarioId} />
       </div>
     )

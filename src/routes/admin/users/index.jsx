@@ -7,6 +7,7 @@ import { find } from 'lodash'
 import NewUserForm from 'components/forms/new-user';
 import UpdateUserForm from 'components/forms/update-user';
 import Modal from 'components/modal'
+import { getOrgUsers } from 'actions';
 
 class AdminUsers extends Component {
   constructor(){
@@ -33,17 +34,10 @@ class AdminUsers extends Component {
         }
       ]
     })
-    this.getAndDespatchUsersData(this.props.organisationId)
+    getOrgUsers(this.props.organisationId)
   }
   componentWillUnmount(){
     this.props.dispatch({type:"SET_ACTIONS",actions:[]})
-  }
-  getAndDespatchUsersData(organisationId){
-
-    getData(`organisation/${organisationId}/user`)
-    .then( orgUsers => {
-      this.props.dispatch({type:'SET_ORG_USERS', users:orgUsers})
-    })
   }
   toggleUserSelection(user){
     let {selectedUsers} = this.props
