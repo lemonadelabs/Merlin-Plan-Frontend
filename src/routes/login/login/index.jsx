@@ -9,7 +9,8 @@ class Login extends Component {
   constructor(...args){
     super(...args)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleLogin = this.handleLogin.bind(this)
+    this.handleLoginSuccess = this.handleLoginSuccess.bind(this)
+    this.handleLoginFailure = this.handleLoginFailure.bind(this)
     this.handleLoginFailAnimationEnd = this.handleLoginFailAnimationEnd.bind(this)
     this.state={
       loginFailed:false,
@@ -28,18 +29,19 @@ class Login extends Component {
     let username = this.refs.username.value
     let password = this.refs.password.value
     login(username, password)
-      .then(this.handleLogin)
-      .catch( error =>{
-        this.setState({loginFailed:true, playAnimation:true})
-      })
+      .then(this.handleLoginSuccess)
+      .catch(this.handleLoginFailure)
   }
-  handleLogin({loginPayload}){
+  handleLoginSuccess({loginPayload}){
     let nextRoute = "/"
     if(this.props.location.state){
       nextRoute = this.props.location.state.nextPathname
     }
     getUserInfoAndSetUserState(loginPayload.sub, this.props.dispatch)
     .then( this.props.router.push(nextRoute) )
+  }
+  handleLoginFailure(error){
+    this.setState({loginFailed:true, playAnimation:true})
   }
   render(){
 
