@@ -33,10 +33,7 @@ class Login extends Component {
       .catch(this.handleLoginFailure)
   }
   handleLoginSuccess({loginPayload}){
-    let nextRoute = "/"
-    if(this.props.location.state){
-      nextRoute = this.props.location.state.nextPathname
-    }
+    let nextRoute = this.props.location.state ? this.props.location.state.nextPathname : "/"
     getUserInfoAndSetUserState(loginPayload.sub, this.props.dispatch)
     .then( this.props.router.push(nextRoute) )
   }

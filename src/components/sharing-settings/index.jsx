@@ -77,12 +77,15 @@ class SharingSettings extends Component {
           <option value="ORGANISATION">{`Share with all of ${orginisationName}`}</option>
           <option value="PRIVATE">{`Only me, and the people below`}</option>
         </select>
+        <label>Users</label>
         <FuzzySearchInput 
           list={this.props.organisationUsers}
+          placeholder={"Enter names, email address, or employee ids"}
           keys={[
-            {name:"firstName",weight:0.6},
+            {name:"firstName",weight:0.4},
             {name:"lastName",weight:0.2},
-            {name:"email",weight:0.2}
+            {name:"email",weight:0.2},
+            {name:'employeeId',weight:0.2}
           ]}
           handleSelection={selectedUser => { this.setState({usersSharedWith:[...this.state.usersSharedWith,selectedUser.id]}) }}
         />

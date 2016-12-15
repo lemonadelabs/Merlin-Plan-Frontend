@@ -30,7 +30,7 @@ class FuzzySearchInput extends Component {
     return (
       <div>
         <form onSubmit={ e => { e.preventDefault(); let result = this.state.results[0]; this.props.handleSelection(result)} }>
-          <input onChange={this.handleChange}/>
+          <input placeholder={this.props.placeholder} onChange={this.handleChange}/>
         </form>
         <div style={{border:'solid 1px white'}}>
           {
