@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { isEqual } from 'lodash';
 import Fuse from 'fuse.js';
+import styles from './style.css';
 
 class FuzzySearchInput extends Component {
   constructor(props, context) {
@@ -65,13 +66,14 @@ class FuzzySearchInput extends Component {
   }
   renderDropdown(){
     return (
-      <div style={{border:'solid 1px white'}}>
+      <div className={styles['fuzzy-search-dropdown']} style={{border:'solid 1px white'}}>
         {
           this.state.results.map(
             (result, index) => {
+              let classNames = this.state.selectedEntry === index && this.state.selectingEntry ? `${styles['fuzzy-search-dropdown-item']} ${styles['fuzzy-search-dropdown-item-selected']}`: styles['fuzzy-search-dropdown-item']
               return (
                 <p 
-                  style={{backgroundColor:this.state.selectedEntry===index&&this.state.selectingEntry?'blue':'transparent'}}
+                  className={classNames}
                   onClick={
                     () => {
                       this.props.handleSelection(result);
@@ -90,11 +92,11 @@ class FuzzySearchInput extends Component {
   }
   render() {
     return (
-      <div>
+      <div className={styles['fuzzy-search-component']}>
         <form onSubmit={ this.handleSubmit }>
-          <input value={ this.state.searchTerm } placeholder={this.props.placeholder} onChange={this.handleChange} onKeyUp={this.handleKeyUp}/>
-          {this.state.results.length ? this.renderDropdown() : ''}
+          <input className={styles['fuzzy-search-input']} value={ this.state.searchTerm } placeholder={this.props.placeholder} onChange={this.handleChange} onKeyUp={this.handleKeyUp}/>
         </form>
+        {this.state.results.length ? this.renderDropdown() : ''}
       </div>
     );
   }

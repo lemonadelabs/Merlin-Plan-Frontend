@@ -1,0 +1,24 @@
+.fuzzy-search-component{
+  width: 350px;
+}
+
+.fuzzy-search-input{
+  width: 100%;
+}
+
+.fuzzy-search-dropdown{
+  background: white;
+  border-radius: 3px;
+}
+
+.fuzzy-search-dropdown-item{
+  margin:0;
+  padding: 10px;
+  font-size: 10pt;
+  color: rgb(60, 60, 60);
+  cursor: pointer;
+}
+
+.fuzzy-search-dropdown-item-selected{
+  background: rgb(210, 210, 210);
+}

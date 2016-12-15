@@ -87,7 +87,7 @@ class SharingSettings extends Component {
             {name:"email",weight:0.2}
           ]}
           handleSelection={selectedUser => { this.setState({usersSharedWith:[...this.state.usersSharedWith,selectedUser.id]}) }}
-          resultTemplate={ result => { return (`${result.firstName} ${result.lastName} - ${result.email}`) } }
+          resultTemplate={ result => { return (<span>{`${result.firstName} ${result.lastName} - `}<i>{result.email}</i></span>) } }
         />
         {this.state.usersSharedWith.map(
           (userID, index) => {
