@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { isEqual } from 'lodash';
 import Fuse from 'fuse.js';
 
@@ -69,7 +69,19 @@ class FuzzySearchInput extends Component {
         {
           this.state.results.map(
             (result, index) => {
-              return (<p style={{backgroundColor:this.state.selectedEntry===index&&this.state.selectingEntry?'blue':'transparent'}} onClick={ e => {this.props.handleSelection(result);    this.setState({searchTerm:'',results:[]});} }>{`${result.firstName} ${result.lastName}`}</p>)
+              return (
+                <p 
+                  style={{backgroundColor:this.state.selectedEntry===index&&this.state.selectingEntry?'blue':'transparent'}}
+                  onClick={
+                    () => {
+                      this.props.handleSelection(result);
+                      this.setState({searchTerm:'',results:[]});
+                    }
+                  }
+                >
+                  {this.props.resultTemplate(result)}
+                </p>
+              )
             }
           )
         }

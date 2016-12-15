@@ -80,14 +80,14 @@ class SharingSettings extends Component {
         <label>Users</label>
         <FuzzySearchInput 
           list={this.props.organisationUsers}
-          placeholder={"Enter names, email address, or employee ids"}
+          placeholder={"Enter names, email address"}
           keys={[
             {name:"firstName",weight:0.4},
-            {name:"lastName",weight:0.2},
-            {name:"email",weight:0.2},
-            {name:'employeeId',weight:0.2}
+            {name:"lastName",weight:0.4},
+            {name:"email",weight:0.2}
           ]}
           handleSelection={selectedUser => { this.setState({usersSharedWith:[...this.state.usersSharedWith,selectedUser.id]}) }}
+          resultTemplate={ result => { return (`${result.firstName} ${result.lastName} - ${result.email}`) } }
         />
         {this.state.usersSharedWith.map(
           (userID, index) => {
