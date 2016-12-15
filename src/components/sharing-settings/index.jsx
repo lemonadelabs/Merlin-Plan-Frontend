@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { isEqual, find } from 'lodash';
+import { isEqual, find, sortBy, filter, includes,isEmpty} from 'lodash';
 import {
   shareToGroup,
   shareToOrganisation,
@@ -10,6 +10,7 @@ import {
   unshareToUsers,
   getOrgUsers } from 'actions';
 import FuzzySearchInput from 'components/fuzzy-search-input';
+import {drop} from 'utilities/array';
 
 class SharingSettings extends Component {
   constructor(props, context) {
@@ -18,7 +19,7 @@ class SharingSettings extends Component {
     this.handleSharingModeChange = this.handleSharingModeChange.bind(this)
     this.state = {
       selectedSharingMode:shareModeFromShareSettings(props.sharingSettings),
-      newUsersSharedWith:[]
+      usersSharedWith:[]
     }
   }
   componentWillMount() {
@@ -26,7 +27,11 @@ class SharingSettings extends Component {
   }
   componentWillReceiveProps(nextProps){
     if(!isEqual(this.props.sharingSettings, nextProps.sharingSettings)){
-      this.setState({selectedSharingMode:shareModeFromShareSettings(nextProps.sharingSettings)})
+      this.setState({
+        selectedSharingMode:shareModeFromShareSettings(nextProps.sharingSettings),
+        usersSharedWith:nextProps.sharingSettings.userShare
+      })
+
     }
   }
   persistChanges() {
@@ -45,6 +50,17 @@ class SharingSettings extends Component {
         break;
       default:
         break;
+    }
+
+    let oldUsersSharedWith = sortBy(this.props.sharingSettings.userShare)
+    let newUsersSharedWith = sortBy(this.state.usersSharedWith)
+    let usersToAdd = filter(newUsersSharedWith, userId => ( !includes(oldUsersSharedWith, userId) ) )
+    let usersToRemove = filter(oldUsersSharedWith, userId => ( !includes(newUsersSharedWith, userId) ) )
+    if(!isEmpty(usersToAdd)){
+      this.props.dispatch(shareToUsers({endPoint: this.props.endPoint,id:this.props.documentId,users:usersToAdd}))
+    }
+    if(!isEmpty(usersToRemove)){
+      this.props.dispatch(unshareToUsers({endPoint: this.props.endPoint,id:this.props.documentId,users:usersToRemove}))
     }
   }
   handleSharingModeChange(e){
@@ -68,11 +84,12 @@ class SharingSettings extends Component {
             {name:"lastName",weight:0.2},
             {name:"email",weight:0.2}
           ]}
+          handleSelection={selectedUser => { this.setState({usersSharedWith:[...this.state.usersSharedWith,selectedUser.id]}) }}
         />
-        {sharingSettings.userShare.map(
-          userID => {
+        {this.state.usersSharedWith.map(
+          (userID, index) => {
             let userData= find(this.props.organisationUsers,{"id": userID})
-            return (<p>{`${userData.firstName} ${userData.lastName}`}</p>)
+            return (<p>{`${userData.firstName} ${userData.lastName} `}<span onClick={ () => { this.setState({usersSharedWith:drop(this.state.usersSharedWith,index)}) } }>x</span></p>)
           }
         )}
         <button onClick={this.persistChanges}>Save</button>

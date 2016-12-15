@@ -29,12 +29,14 @@ class FuzzySearchInput extends Component {
   render() {
     return (
       <div>
-        <input onChange={this.handleChange}/>
+        <form onSubmit={ e => { e.preventDefault(); let result = this.state.results[0]; this.props.handleSelection(result)} }>
+          <input onChange={this.handleChange}/>
+        </form>
         <div style={{border:'solid 1px white'}}>
           {
             this.state.results.map(
               result => {
-                return ( <p>{`${result.firstName} ${result.lastName}`}</p>)
+                return (<p onClick={ e => {this.props.handleSelection(result);} }>{`${result.firstName} ${result.lastName}`}</p>)
               }
             )
           }
