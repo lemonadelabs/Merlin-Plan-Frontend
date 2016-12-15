@@ -32,6 +32,7 @@ class FuzzySearchInput extends Component {
   }
   handleKeyUp(e){
     if(e.key === "ArrowDown" || e.key === "ArrowUp"){
+      e.preventDefault()
       let selectedEntry = this.state.selectedEntry
       switch (e.key) {
         case "ArrowDown":
@@ -62,21 +63,26 @@ class FuzzySearchInput extends Component {
     this.props.handleSelection(result)
     this.setState({searchTerm:'',results:[]})
   }
+  renderDropdown(){
+    return (
+      <div style={{border:'solid 1px white'}}>
+        {
+          this.state.results.map(
+            (result, index) => {
+              return (<p style={{backgroundColor:this.state.selectedEntry===index&&this.state.selectingEntry?'blue':'transparent'}} onClick={ e => {this.props.handleSelection(result);    this.setState({searchTerm:'',results:[]});} }>{`${result.firstName} ${result.lastName}`}</p>)
+            }
+          )
+        }
+      </div>
+    )
+  }
   render() {
     return (
       <div>
         <form onSubmit={ this.handleSubmit }>
           <input value={ this.state.searchTerm } placeholder={this.props.placeholder} onChange={this.handleChange} onKeyUp={this.handleKeyUp}/>
+          {this.state.results.length ? this.renderDropdown() : ''}
         </form>
-        <div style={{border:'solid 1px white'}}>
-          {
-            this.state.results.map(
-              (result, index) => {
-                return (<p style={{backgroundColor:this.state.selectedEntry===index&&this.state.selectingEntry?'blue':'transparent'}} onClick={ e => {this.props.handleSelection(result);    this.setState({searchTerm:'',results:[]});} }>{`${result.firstName} ${result.lastName}`}</p>)
-              }
-            )
-          }
-        </div>
       </div>
     );
   }
