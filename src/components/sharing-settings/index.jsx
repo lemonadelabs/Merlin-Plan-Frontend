@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { isEqual } from 'lodash';
+import { isEqual, find } from 'lodash';
 import {
   shareToGroup,
   shareToOrganisation,
   shareToUsers,
   unshareToGroup,
   unshareToOrganisation,
-  unshareToUsers } from 'actions';
+  unshareToUsers,
+  getOrgUsers } from 'actions';
+import FuzzySearchInput from 'components/fuzzy-search-input';
 
 class SharingSettings extends Component {
   constructor(props, context) {
@@ -18,6 +20,9 @@ class SharingSettings extends Component {
       selectedSharingMode:shareModeFromShareSettings(props.sharingSettings),
       newUsersSharedWith:[]
     }
+  }
+  componentWillMount() {
+    this.props.dispatch(getOrgUsers(this.props.organisationId))
   }
   componentWillReceiveProps(nextProps){
     if(!isEqual(this.props.sharingSettings, nextProps.sharingSettings)){
@@ -46,7 +51,7 @@ class SharingSettings extends Component {
     this.setState({selectedSharingMode:e.target.value})
   }
   render() {
-    let {groupName} = this.props
+    let {groupName, sharingSettings} = this.props
     let orginisationName = "POO ORG"
     return (
       <div>
@@ -56,9 +61,31 @@ class SharingSettings extends Component {
           <option value="ORGANISATION">{`Share with all of ${orginisationName}`}</option>
           <option value="PRIVATE">{`Only me, and the people below`}</option>
         </select>
+        <FuzzySearchInput 
+          list={this.props.organisationUsers}
+          keys={[
+            {name:"firstName",weight:0.6},
+            {name:"lastName",weight:0.2},
+            {name:"email",weight:0.2}
+          ]}
+        />
+        {sharingSettings.userShare.map(
+          userID => {
+            let userData= find(this.props.organisationUsers,{"id": userID})
+            return (<p>{`${userData.firstName} ${userData.lastName}`}</p>)
+          }
+        )}
         <button onClick={this.persistChanges}>Save</button>
       </div>
     );
+  }
+}
+
+SharingSettings.defaultProps = {
+  sharingSettings:{
+    groupShared:false,
+    organisationShared:false,
+    userShare:[]
   }
 }
 
@@ -72,5 +99,11 @@ function shareModeFromShareSettings(shareSettings) {
   return "PRIVATE"
 }
 
+function mapStateToProps(state){
+  return {
+    organisationId:state.user.organisationId,
+    organisationUsers:state.organisation.users
+  }
+}
 
-export default connect()(SharingSettings);
+export default connect(mapStateToProps)(SharingSettings);

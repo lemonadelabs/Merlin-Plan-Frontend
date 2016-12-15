@@ -117,10 +117,11 @@ function unshareToUsers({endPoint,id,users}) {
 function updateSharing(endPoint, id, sharingChange, state, dispatch){
   let dataToUpdate
   switch (endPoint) {
-    case 'resourcescenario':
+    case 'resourcescenario':{
       let resourceScenarioMetadata = find(state.resources.scenarios, scenario => (scenario.id === id) )
       dataToUpdate = {...resourceScenarioMetadata}
       break;
+    }
     default:
       break;
   }

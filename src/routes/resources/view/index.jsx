@@ -68,7 +68,7 @@ class ResourcesView extends Component {
     const scenarioId = this.props.params.scenarioId
     return(
       <div>
-        <SharingSettings endPoint="resourcescenario" documentId={scenarioId} sharingSettings={this.props.scenarioMetadata ? this.props.scenarioMetadata.sharing:{}}/>
+        <SharingSettings endPoint="resourcescenario" documentId={scenarioId} sharingSettings={this.props.scenarioMetadata ? this.props.scenarioMetadata.sharing : undefined}/>
         <FinancialScenarioView scenarioId={scenarioId} />
       </div>
     )
