@@ -92,7 +92,7 @@ class SharingSettings extends Component {
         {this.state.usersSharedWith.map(
           (userID, index) => {
             let userData= find(this.props.organisationUsers,{"id": userID})
-            return (<p>{`${userData.firstName} ${userData.lastName} `}<span onClick={ () => { this.setState({usersSharedWith:drop(this.state.usersSharedWith,index)}) } }>x</span></p>)
+            return (<p>{`${userData.firstName} ${userData.lastName} `}<span style={{backgroundColor:'white',width:'20px'}} onClick={ () => { this.setState({usersSharedWith:drop(this.state.usersSharedWith,index)}) } }>x</span></p>)
           }
         )}
         <button onClick={this.persistChanges}>Save</button>
