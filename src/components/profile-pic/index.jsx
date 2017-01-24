@@ -30,8 +30,8 @@ class ProfilePic extends Component {
     let {width, padding} = this.state
     let initials = firstName && lastName ? firstName[0] + lastName[0] : "??"
     let userColor = hashbow(firstName+lastName+id,70)
-    let textColor = color(userColor).luminosity() < 0.1 ? color(userColor).lighten(0.3).rgbString() : userColor
-    let backgroundColor = color(userColor).darken(0.9).alpha(0.5).rgbString()
+    let textColor = color(userColor).luminosity() < 0.1 ? color(userColor).lighten(0.3).rgb().string() : userColor
+    let backgroundColor = color(userColor).darken(0.9).alpha(0.5).rgb().string()
     let borderColor = profilePic ? 'white' : userColor
 
     return (
