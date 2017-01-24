@@ -15,8 +15,12 @@ module.exports = {
     path: './dist/',
     filename: 'index.js'
   },
-  plugins: [new HtmlWebpackPlugin({template:'./src/index.html'})],
-  debug: true,
+  plugins: [
+    new HtmlWebpackPlugin({template:'./src/index.html'}),
+    new webpack.LoaderOptionsPlugin({
+      debug: true
+    })
+  ],
   devtool: 'cheap-module-inline-source-map',
   devServer:{
     historyApiFallback: true,
@@ -29,29 +33,52 @@ module.exports = {
     port: 3333
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
-    root: path.resolve('./src')
+    modules:[
+      path.join(__dirname, './src'),
+      "node_modules"
+    ],
+    extensions: ['.js', '.jsx','.css']
   },
   module:{
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         include: path.join(__dirname, 'src'),
-        loaders: ['react-hot','babel-loader']
+        use: ['react-hot-loader','babel-loader']
       },
       {
         test: /\.css$/,
         include: path.join(__dirname, 'node_modules'),
-        loader: 'style-loader!css-loader'
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
       },
       {
         test:   /\.css$/,
         exclude: path.join(__dirname, 'node_modules'),
-        loader: "style-loader!css-loader?modules=true&localIdentName=[name]-[local]-[hash:base64:5]!postcss-loader?sourceMap=inline"
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options:{
+              sourceMap: true,
+              modules:true,
+              localIdentName:"[name]-[local]-[hash:base64:5]"
+            }
+          },
+          {
+            loader:"postcss-loader",
+            options:{
+              sourceMap:"inline"
+            }
+          }
+        ]
       }
     ]
-  },
-  postcss: function () {
-      return [autoprefixer,postcssImport()];
   }
+  // },
+  // postcss: function () {
+  //     return [autoprefixer,postcssImport()];
+  // }
 }

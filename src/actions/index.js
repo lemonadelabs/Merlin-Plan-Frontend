@@ -1,5 +1,4 @@
 import { findIndex, forEach, find } from 'lodash';
-import { putData, getData, postData } from 'utilities/api-interaction';
 import * as api from 'utilities/api-interaction'
 
 function showNewUserModal(){
@@ -45,10 +44,10 @@ function deactivateUsers(){
 
 function addNewFinancialResource(scenarioId, finanacialResourcePayload){
   return dispatch => {
-    postData(`resourcescenario/${scenarioId}/financialresource`, finanacialResourcePayload)
+    api.postData(`resourcescenario/${scenarioId}/financialresource`, finanacialResourcePayload)
     .then( newFinancialResource => {
       const financialResourceId = newFinancialResource.id
-      getData(`financialresource/${financialResourceId}/partition`)
+      api.getData(`financialresource/${financialResourceId}/partition`)
       .then( newFinancialPartitions => {
         dispatch({type:'ADD_FINANCIAL_RESOURCE',resourceScenarioId:scenarioId, newFinancialResource})
         dispatch({type:'ADD_FINANCIAL_PARTITION',resourceScenarioId:scenarioId, newFinancialPartitions})
@@ -60,7 +59,7 @@ function addNewFinancialResource(scenarioId, finanacialResourcePayload){
 
 function shareToGroup({endPoint,id}) {
   return (dispatch, getState) => {
-    putData(`${endPoint}/${id}/group/share`)
+    api.putData(`${endPoint}/${id}/group/share`)
     .then( () => {
       let state = getState()
       updateSharing(endPoint, id, {groupShared:true},state,dispatch)
@@ -70,7 +69,7 @@ function shareToGroup({endPoint,id}) {
 
 function unshareToGroup({endPoint,id}) {
   return (dispatch, getState) => {
-    putData(`${endPoint}/${id}/group/unshare`)
+    api.putData(`${endPoint}/${id}/group/unshare`)
     .then( () => {
       let state = getState()
       updateSharing(endPoint, id, {groupShared:false},state,dispatch)
@@ -80,7 +79,7 @@ function unshareToGroup({endPoint,id}) {
 
 function shareToOrganisation({endPoint,id}) {
   return (dispatch, getState) => {
-    putData(`${endPoint}/${id}/share`)
+    api.putData(`${endPoint}/${id}/share`)
     .then(
       () => {
         let state = getState()
@@ -92,7 +91,7 @@ function shareToOrganisation({endPoint,id}) {
 
 function unshareToOrganisation({endPoint,id}) {
   return (dispatch, getState) => {
-    putData(`${endPoint}/${id}/unshare`)
+    api.putData(`${endPoint}/${id}/unshare`)
     .then(
       () => {
         let state = getState()
@@ -104,13 +103,13 @@ function unshareToOrganisation({endPoint,id}) {
 
 function shareToUsers({endPoint,id,users}) {
   return (dispatch, getState) => {
-    putData(`${endPoint}/${id}/user/share`,{users})
+    api.putData(`${endPoint}/${id}/user/share`,{users})
   }
 }
 
 function unshareToUsers({endPoint,id,users}) {
   return (dispatch, getState) => {
-    putData(`${endPoint}/${id}/user/unshare`,{users})
+    api.putData(`${endPoint}/${id}/user/unshare`,{users})
   }
 }
 
@@ -138,7 +137,7 @@ function updateSharing(endPoint, id, sharingChange, state, dispatch){
 
 function getOrgUsers(organisationId){
   return dispatch => {
-    getData(`organisation/${organisationId}/user`)
+    api.getData(`organisation/${organisationId}/user`)
     .then( orgUsers => {
       dispatch({type:'SET_ORG_USERS', users:orgUsers})
     })
